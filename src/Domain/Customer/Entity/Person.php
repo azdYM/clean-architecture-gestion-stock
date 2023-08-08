@@ -3,26 +3,21 @@
 namespace App\Domain\Customer\Entity;
 
 use DateTimeInterface;
-use App\Domain\Customer\ClientInterface;
-use App\Domain\Customer\Repository\PersonRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Customer\Repository\PersonRepository;
 
 #[ORM\Entity(repositoryClass: PersonRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
 #[ORM\DiscriminatorMap(['person' => Person::class, 'individual' => Individual::class, 'corporate' => Corporate::class])]
-abstract class Person implements ClientInterface
+abstract class Person
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue()]
     protected ?int $id = null;
-
-    #[ORM\Column(type: 'integer', unique: true)]
-    protected ?int $folio = null;
 
     #[ORM\Column(name: 'name', length: 255)]
     protected ?string $name = null;
@@ -73,11 +68,6 @@ abstract class Person implements ClientInterface
     {
         $this->name = $name;
         return $this;
-    }
-
-    public function getFolio(): ?int
-    {
-        return $this->folio;
     }
 
     public function getContacts(): Collection

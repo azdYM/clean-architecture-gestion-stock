@@ -2,13 +2,12 @@
 
 namespace App\Domain\Customer\Entity;
 
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-
 use App\Domain\Customer\Entity\Location;
-use App\Domain\Customer\Repository\CorporateRepository;
-use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Customer\Repository\CorporateRepository;
 
 /**
  * Corporate représente les entités corporatives dans le système de gestion de crédits. 
@@ -16,7 +15,7 @@ use Doctrine\Common\Collections\Collection;
  * légale distincte des individus.
  */
 #[ORM\Entity(repositoryClass: CorporateRepository::class)]
-class Corporate extends Person
+class Corporate extends Client
 {
     #[ORM\Column(length: 255)]
     private ?string $legalForm = null;
@@ -41,9 +40,6 @@ class Corporate extends Person
     #[ORM\InverseJoinColumn(name: 'manager_id', referencedColumnName: 'id')]
     #[ORM\ManyToMany(targetEntity: Person::class)]
     private Collection $managers;
-
-    #[ORM\Column(type: 'datetime')]
-    private ?DateTimeInterface $memberShipAt;
 
     public function __construct()
     {
@@ -102,17 +98,6 @@ class Corporate extends Person
     public function setComercialRegistry(string $comercialRegistry): self
     {
         $this->comericialRegistry = $comercialRegistry;
-        return $this;
-    }
-
-    public function getMembershipAt(): DateTimeInterface
-    {
-        return $this->memberShipAt;
-    }
-
-    public function setMembershipAr(DateTimeInterface $memberShipAt): self
-    {
-        $this->memberShipAt = $memberShipAt;
         return $this;
     }
 

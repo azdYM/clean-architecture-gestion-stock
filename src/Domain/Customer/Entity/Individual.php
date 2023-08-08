@@ -2,16 +2,16 @@
 
 namespace App\Domain\Customer\Entity;
 
-use App\Domain\Customer\Repository\IndividualRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use App\Domain\Customer\Repository\IndividualRepository;
 
 /**
  * Individual représente les individus dans le système. Elle est utilisée pour gérer les informations 
  * spécifiques aux personnes physiques et les actions liées à ces individus dans le processus de gestion de crédits.
  */
 #[ORM\Entity(repositoryClass: IndividualRepository::class)]
-class Individual extends Person
+class Individual extends Client
 {
     #[ORM\Column(name: 'nick_name', length: 100, nullable: true)]
     private ?string $nickname = null;
@@ -33,9 +33,6 @@ class Individual extends Person
 
     #[ORM\OneToOne(targetEntity:MatrimonialStatus::class, cascade: ['persist', 'remove'])]
     private ?MatrimonialStatus $matrimonialStatus = null;
-
-    #[ORM\Column(type: 'datetime', name: 'membership_at')]
-    private ?DateTimeInterface $membershipAt;
 
     public function getNickname(): string
     {
@@ -111,17 +108,6 @@ class Individual extends Person
     public function setMatrimonialStatus(MatrimonialStatus $matrimonialStatus): self
     {
         $this->matrimonialStatus = $matrimonialStatus;
-        return $this;
-    }
-
-    public function getMembershipAt(): DateTimeInterface
-    {
-        return $this->membershipAt;
-    }
-
-    public function setMembershipAt(DateTimeInterface $membershipAt): self
-    {
-        $this->membershipAt = $membershipAt;
         return $this;
     }
 }

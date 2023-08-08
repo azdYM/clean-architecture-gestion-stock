@@ -1,24 +1,19 @@
 <?php
 
 namespace App\Domain\Garantee\Entity;
-use Doctrine\ORM\Mapping as ORM;
 
-use App\Domain\Garantee\GaranteeInterface;
+use App\Domain\Garantee\Garantee;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: CollateralGarantee::class)]
-class CollateralGarantee implements GaranteeInterface
+class CollateralGarantee extends Garantee
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     /**
      * @var Collection<int, CollateralGaranteeItem>
      */
-    #[ORM\OneToMany(targetEntity: CollateralGaranteeItem::class, mappedBy: 'CollateralGarantee')]
+    #[ORM\OneToMany(targetEntity: CollateralGaranteeItem::class, mappedBy: 'collateralGarantee')]
     private Collection $items;
 
     private int|float $totalValue;
@@ -26,11 +21,6 @@ class CollateralGarantee implements GaranteeInterface
     public function __construct()
     {
         $this->items = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getItems(): Collection

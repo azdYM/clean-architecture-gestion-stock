@@ -2,6 +2,8 @@
 
 namespace App\Domain\Customer;
 
+use App\Domain\Application\PortfolioInterface;
+
 /**
  * L'interface ClientInterface sert à définir un ensemble de méthodes que chaque classe de 
  * client (par exemple, les classes Individual, Corporate, etc.) doit fournir. 
@@ -11,5 +13,6 @@ namespace App\Domain\Customer;
  */
 interface ClientInterface
 {
-    
+    public function getFolio(): int;
+    public function getMembershipAt(): \DateTimeInterface;
 }

@@ -46,12 +46,14 @@ abstract class Person
     #[ORM\JoinColumn(name: 'person_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'contact_id', referencedColumnName: 'id', unique: true)]
     #[ORM\ManyToMany(targetEntity: Contact::class)]
-    protected ?array $contacts = null;
+    protected Collection $contacts;
 
     public function __construct()
     {
         $this->locations = new ArrayCollection();
         $this->contacts = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): int

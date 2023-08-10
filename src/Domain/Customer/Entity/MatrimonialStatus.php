@@ -36,6 +36,9 @@ class MatrimonialStatus
         return $this->id;
     }
 
+    /**
+     * @var Collection<int, Situation>
+     */
     public function getSituations(): Collection
     {
         return $this->situations;

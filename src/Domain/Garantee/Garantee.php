@@ -5,8 +5,6 @@ namespace App\Domain\Garantee;
 use App\Domain\Credit\Credit;
 use App\Domain\Credit\CreditInterface;
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Mounting\Entity\Folder;
-use App\Domain\Mounting\FolderInterface;
 use App\Domain\Customer\Repository\GaranteeRepository;
 
 #[ORM\MappedSuperclass(repositoryClass: GaranteeRepository::class)]

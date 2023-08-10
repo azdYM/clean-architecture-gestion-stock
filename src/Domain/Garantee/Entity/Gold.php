@@ -2,7 +2,6 @@
 
 namespace App\Domain\Garantee\Entity;
 
-use App\Domain\Garantee\PriceGeneratorInterfate;
 use App\Domain\Garantee\Repository\GoldRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
@@ -78,17 +77,5 @@ class Gold extends CollateralGaranteeItem
     {
         $this->weight = $weight;
         return $this;
-    }
-
-
-    public function calculateAndSetValue(PriceGeneratorInterfate $generator): void
-    {
-        $this->value = $this->generatePricePerGram($generator);
-    }
-
-    private function generatePricePerGram(PriceGeneratorInterfate $generatorPriceFromCarrat): int
-    {
-        //Appeller une librairie qui génere le prix d'un gramme d'or selon le carrat fournit
-        return $generatorPriceFromCarrat->setCarrat($this->carrat)->generate();
     }
 }

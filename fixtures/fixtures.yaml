@@ -1,0 +1,16 @@
+include:
+  - templates.yaml
+
+App\Domain\Customer\Entity\Married:
+  married{1...5} (extends situation):
+    spouses: ['@person*']
+
+App\Domain\Customer\Entity\Divorced:
+  divorced{1...5} (extends situation):
+    
+App\Domain\Customer\Entity\Single:
+  single{1...5} (extends situation):
+    
+App\Domain\Customer\Entity\Widower:
+  widower{1...5} (extends situation):
+    

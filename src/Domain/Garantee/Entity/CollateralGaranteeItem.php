@@ -2,12 +2,12 @@
 
 namespace App\Domain\Garantee\Entity;
 
-use App\Domain\Garantee\PriceGeneratorInterfate;
+use App\Domain\Garantee\GaranteeItemInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 
 #[MappedSuperclass(repositoryClass: CollateralGaranteeItem::class)]
-abstract class CollateralGaranteeItem 
+abstract class CollateralGaranteeItem implements GaranteeItemInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -57,11 +57,9 @@ abstract class CollateralGaranteeItem
         return $this->value;
     }
 
-    public function setValue(PriceGeneratorInterfate $priceGenerator): self
+    public function setValue(int|float $value): self
     {
-        $this->calculateAndSetValue($priceGenerator);
+        $this->value = $value;
         return $this;
     }
-
-    abstract function calculateAndSetValue(PriceGeneratorInterfate $generator): void;
 }

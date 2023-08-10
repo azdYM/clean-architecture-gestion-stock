@@ -10,6 +10,8 @@ use Doctrine\Common\Collections\Collection;
 use App\Domain\Application\Entity\Portfolio;
 use App\Domain\Application\PortfolioInterface;
 use App\Domain\Credit\Credit;
+use App\Domain\Employee\Entity\CreditAgent;
+use App\Domain\Employee\Repository\Employee;
 
 #[ORM\MappedSuperclass()]
 abstract class Folder implements FolderInterface
@@ -30,6 +32,10 @@ abstract class Folder implements FolderInterface
 
     #[ORM\Column(type: 'datetime')]
     protected \DateTimeInterface $updatedAt;
+
+    #[ORM\ManyToOne(targetEntity: CreditAgent::class, inversedBy: 'folders')]
+    #[ORM\JoinColumn(name: 'agent_id', referencedColumnName: 'id')]
+    protected ?Employee $creditAgent = null;
 
     public function __construct()
     {
@@ -85,6 +91,17 @@ abstract class Folder implements FolderInterface
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    public function getCreditAgent(): ?Employee
+    {
+        return $this->creditAgent;
+    }
+
+    public function setCreditAgent(Employee $creditAgent): self
+    {
+        $this->creditAgent = $creditAgent;
         return $this;
     }
 }

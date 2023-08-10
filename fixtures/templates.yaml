@@ -1,0 +1,96 @@
+App\Domain\Customer\Entity\Contact:
+  contact (template):
+    telephone: 333 33 3<current()>
+    email: azad<current()>\@gmail.com
+
+App\Domain\Customer\Entity\Location:
+  location (template):
+    region: <rendomElement(['Itsandra', 'Bambao', 'Mistamihouli', 'Mbadjini'])>
+    city: <rendomElement(['Tsidjé', 'Moroni', 'Mistamihouli', 'Ntsudjini', 'Iconi'])>
+    neightborhood: <rendomElement(['Hananika', 'Sanfil', 'Dima', 'Madina'])>
+
+App\Domain\Employee\Entity\Employee:
+  employee (template):
+    username: employee<current()>
+    email: employee<current()>\@meck-moroni.org
+    password: <password('0000')>
+    createdAt: <dateTimeThisYear()>
+
+App\Domain\Customer\Entity\Person:
+  person (template):
+    name: <word(2, true)>
+    created_at: <dateTimeThisYear()>
+    updated_at: <dateTimeThisYear()>
+    contacts: ['@contact*']
+    locations: ['@location*']
+
+App\Domain\Application\Entity\Porfolio:
+  portfolio (template):
+    created_at: <dateTimeThisYear()>
+    updated_at: <dateTimeThisYear()>
+    short_term_credits: ['@short_term_folder*']
+    client: '@person*'
+
+App\Domain\Mounting\Entity\ShortTermFolder:
+  short_term_folder (template):
+    portfolio: '@portfolio*'
+    created_at: <dateTime()>
+    updated_at: <dateTime()>
+    credit: '@credit*'
+    credit_agent: '@employee'
+
+App\Domain\Customer\Entity\Individual:
+  individual (template):
+    name: <word(2, true)>
+    created_at: <dateTimeThisYear()>
+    updated_at: <dateTimeThisYear()>
+    contacts: ['@contact*']
+    locations: ['@location*']
+    folio: <numberBetween(1, 9999)>
+    membership_at: <dateTime()>
+    portfolio: '@portfolio*'
+    nickname: <word(2, true)>
+    gender: <rendomElement(['F', 'M'])>
+    profession: <word(2, true)>
+    birth_day: <dateTime()>
+    birth_location: '@location*'
+    nin: <numberBetwen(1, 9999)>
+
+App\Domain\Customer\Entity\Corporate:
+  corporate (template):
+    name: <word(2, true)>
+    created_at: <dateTimeThisYear()>
+    updated_at: <dateTimeThisYear()>
+    contacts: ['@contact*']
+    locations: ['@location*']
+    folio: <numberBetween(1, 9999)>
+    membership_at: <dateTime()>
+    portfolio: '@portfolio*'
+    legal_form: <word(2, true)>
+    created_location: '@location*'
+    central_location: '@location*'
+    activity_domain: <word(3, true)>
+    comercial_registry: <uid()>
+
+App\Domain\Customer\Entity\Situation:
+  situation (template):
+    created_at: <dateTimeThisYear()>
+    updated_at: <dateTimeThisYear()>
+
+App\Domain\Garantee\Entity\Gold:
+  gold (template):
+    name: <word(2, true)>
+    quantity: <numberBetween(1, 5)>
+    carrat: <numberBetween(18, 22)>
+    unit_price: <numberBetween(1000, 2000)>
+    weight: <numberBetween(1, 10)>
+
+App\Domain\Garantee\Entity\CollateralGarantee:
+  collateral_garantee (template):
+    items: ['@gold*']
+
+App\Domain\Garantee\Entity\Evaluation:
+  evaluation (template):
+    evaluated_at: <dateTimeThisYear()>
+    garantee_evaluated: '@collateral_garantee*'
+    description_evaluator: <text(500)>

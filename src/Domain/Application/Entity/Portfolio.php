@@ -10,50 +10,31 @@ use App\Domain\Customer\ClientInterface;
 use App\Domain\Mounting\FolderInterface;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Application\PortfolioInterface;
-use App\Domain\Mounting\Entity\ShortTermFolder;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Application\Repository\PortfolioRepository;
+use App\Domain\Mounting\Entity\GageFolder;
 
 #[ORM\Entity(repositoryClass: PortfolioRepository::class)]
 class Portfolio implements PortfolioInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    use IdentifiableTrait;
+    use TimestampTrait;
     
     #[ORM\OneToOne(targetEntity: Person::class, inversedBy: 'portfolio')]
-    #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false)]
     private ?ClientInterface $client = null;
 
     /**
-     * @var Collection<int, LongTermFolder>
+     * @var Collection<int, GageFolder>
      */
-    private Collection $longTermCredits;
-
-    /**
-     * @var Collection<int, ShortTermFolder>
-     */
-    #[ORM\OneToMany(targetEntity: ShortTermFolder::class, mappedBy: 'portfolio')]
-    private Collection $shortTermCredits;
-
-    #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $createdAt;
-
-    #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $updatedAt;
+    #[ORM\OneToMany(targetEntity: GageFolder::class, mappedBy: 'portfolio')]
+    private Collection $gageCreditFolders;
 
     public function __construct()
     {
-        $this->longTermCredits = new ArrayCollection();
-        $this->shortTermCredits = new ArrayCollection();
+        $this->gageCreditFolders = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     public function getClient(): ClientInterface
@@ -67,47 +48,23 @@ class Portfolio implements PortfolioInterface
         return $this;
     }
 
-    public function getLongTermCredits(): Collection
+    public function getGageCreditFolders(): Collection
     {
-        return $this->longTermCredits;
+        return $this->gageCreditFolders;
     }
 
-    public function addLongTermCredit(FolderInterface $longTermCredit): self
+    public function addGageCreditFolder(FolderInterface $folder): self
     {
-        if (!$this->longTermCredits->contains($longTermCredit)) {
-            $this->longTermCredits->add($longTermCredit);
+        if (!$this->gageCreditFolders->contains($folder)) {
+            $this->gageCreditFolders->add($folder);
         }
 
         return $this;
     }
 
-    public function getShortTermCredits(): Collection
+    public function equals(Portfolio $other): bool
     {
-        return $this->shortTermCredits;
+        return $this->id === $other->getId();
     }
 
-    public function addShortTermCredit(FolderInterface $shortTermCredit): self
-    {
-        if (!$this->shortTermCredits->contains($shortTermCredit)) {
-            $this->shortTermCredits->add($shortTermCredit);
-        }
-
-        return $this;
-    }
-
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function getUpdatedAt(): \DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
-    }
 }

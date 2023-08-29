@@ -1,0 +1,29 @@
+include:
+  - ../../fixtures/templates.yaml
+
+App\Domain\Garantee\Entity\Gold\Gold:
+  gold:
+    name: Bague
+    quantity: <numberBetween(1, 5)>
+    carrat: <numberBetween(17, 25)>
+    unit_price: <numberBetween(5000, 20000)>
+    weight: <numberBetween(1, 5)>
+    created_at: <datetime()>
+    updated_at: <datetime()>
+
+App\Domain\Garantee\Entity\Gold\GoldAttestation:
+  gold_attestation: 
+    # items: ['@gold*']
+    evaluator: '@evaluator*'
+    creditTypeTargeted: '@credit_type*'
+    client: '@individual1'
+    created_at: <datetime()>
+    updated_at: <datetime()>
+
+App\Domain\Garantee\Entity\AttestationApproval:
+  attestation_approval:
+    attestation: '@gold_attestation*'
+    approving: '@evaluation_supervisor*'
+    created_at: <datetime()>
+    updated_at: <datetime()>
+    comment: <sentence()>

@@ -2,6 +2,7 @@
 
 namespace App\Domain\Customer\Entity;
 
+use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Customer\Repository\LocationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -13,11 +14,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 )]
 class Location 
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue()]
-    private ?int $id = null;
-
+    use IdentifiableTrait;
+    
     #[ORM\Column(length: 100)]
     private ?string $region = null;
 
@@ -26,11 +24,6 @@ class Location
 
     #[ORM\Column(length: 100)]
     private ?string $neighborhood = null;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     public function getRegion(): ?string
     {

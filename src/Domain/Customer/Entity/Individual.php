@@ -4,13 +4,12 @@ namespace App\Domain\Customer\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Customer\Repository\IndividualRepository;
 
 /**
  * Individual représente les individus dans le système. Elle est utilisée pour gérer les informations 
  * spécifiques aux personnes physiques et les actions liées à ces individus dans le processus de gestion de crédits.
  */
-#[ORM\Entity(repositoryClass: IndividualRepository::class)]
+#[ORM\Entity]
 class Individual extends Client
 {
     #[ORM\Column(name: 'nick_name', length: 100, nullable: true)]

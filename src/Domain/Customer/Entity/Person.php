@@ -2,7 +2,8 @@
 
 namespace App\Domain\Customer\Entity;
 
-use DateTimeInterface;
+use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Application\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,22 +12,18 @@ use App\Domain\Customer\Repository\PersonRepository;
 #[ORM\Entity(repositoryClass: PersonRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
-#[ORM\DiscriminatorMap(['person' => Person::class, 'individual' => Individual::class, 'corporate' => Corporate::class])]
-abstract class Person
+#[ORM\DiscriminatorMap([
+    'person' => Person::class, 
+    'individual' => Individual::class, 
+    'corporate' => Corporate::class
+])]
+class Person
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue()]
-    protected ?int $id = null;
+    use IdentifiableTrait;
+    use TimestampTrait;
 
     #[ORM\Column(name: 'name', length: 255)]
     protected ?string $name = null;
-
-    #[ORM\Column(name: 'created_at', type: 'datetime')]
-    protected ?DateTimeInterface $createdAt;
-
-    #[ORM\Column(name: 'updated_at', type: 'datetime')]
-    protected ?DateTimeInterface $updatedAt;
 
     /**
      * Plusieurs personnes peuvent avoir plusieurs adresses
@@ -56,11 +53,6 @@ abstract class Person
         $this->updatedAt = new \DateTimeImmutable();
     }
 
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
     public function getName(): ?string
     {
         return $this->name;
@@ -77,10 +69,19 @@ abstract class Person
         return $this->contacts;
     }
 
-    public function addContacts(Contact $contact): self
+    public function addContact(Contact $contact): self
     {
         if (!$this->contacts->contains($contact)) {
             $this->contacts->add($contact);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->contains($contact)) {
+            $this->contacts->remove($contact->getId());
         }
 
         return $this;
@@ -95,6 +96,15 @@ abstract class Person
     {
         if (!$this->locations->contains($location)) {
             $this->locations->add($location);
+        }
+
+        return $this;
+    }
+
+    public function removeLocation(Location $location): self
+    {
+        if ($this->contacts->contains($location)) {
+            $this->contacts->remove($location->getId());
         }
 
         return $this;

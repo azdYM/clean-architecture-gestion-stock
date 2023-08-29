@@ -1,0 +1,45 @@
+include:
+  - ../../fixtures/templates.yaml
+
+App\Domain\Customer\Entity\Contact:
+  contact{1..12} (extends contact):
+
+App\Domain\Customer\Entity\Location:
+  location{1..12} (extends location):
+  
+
+App\Domain\Customer\Entity\Person:
+  person{9..12} (extends person):
+    contacts: ["@contact<current()>"]
+
+App\Domain\Customer\Entity\Married:
+  married (extends situation):
+    spouses: ['@person<numberBetween(9, 12)>']
+
+App\Domain\Customer\Entity\Single:
+  single (extends situation):
+
+App\Domain\Customer\Entity\Divorced:
+  divorced (extends situation):
+
+App\Domain\Customer\Entity\Widower:
+  widower (extends situation):
+
+App\Domain\Customer\Entity\MatrimonialStatus:
+  matrimonial_status{1..4}:
+    situations: ["<randomElement([@married*, @single*, @widower*, @divorced*])>"]
+
+App\Domain\Customer\Entity\Individual:
+  individual{1..4} (extends individual):
+    name: john<current()>
+    profession: profession-<current()>
+    matrimonial_status: '@matrimonial_status<current()>'
+    birth_location: '@location<current()>'
+    contacts: ["@contact<current()>"]
+
+App\Domain\Customer\Entity\Corporate:
+  corporate{5..8} (extends corporate):
+    name: Meck-<current()>
+    contacts: ["@contact<current()>"]
+    managers: ['@person9', '@person10', '@individual1']
+

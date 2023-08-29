@@ -1,0 +1,3 @@
+App\Domain\Mounting\Entity\GageFolder:
+  gage_folder:
+    attestations: ['@gold_attestation']

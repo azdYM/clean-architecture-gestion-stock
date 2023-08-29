@@ -2,6 +2,7 @@
 
 namespace App\Domain\Customer\Entity;
 
+use App\Domain\Application\Entity\IdentifiableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,25 +16,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity()]
 class MatrimonialStatus
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue()]
-    private ?int $id = null;
+    use IdentifiableTrait;
 
     /**
      * @var Collection<int, Situation>
      */
-    #[ORM\OneToMany(targetEntity: Situation::class, mappedBy: 'matrimonialStatus', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(
+        targetEntity: Situation::class, 
+        mappedBy: 'matrimonialStatus', 
+        cascade: ['persist', 'remove']
+    )]
     private Collection $situations;
 
     public function __construct()
     {
         $this->situations = new ArrayCollection();
-    }
-
-    public function getId(): int
-    {
-        return $this->id;
     }
 
     /**
@@ -53,6 +50,15 @@ class MatrimonialStatus
     {
         if (!$this->situations->contains($situation)) {
             $this->situations->add($situation);
+        }
+
+        return $this;
+    }
+
+    public function removeSituation(Situation $situation): self
+    {
+        if ($this->situations->contains($situation)) {
+            $this->situations->remove($situation->getId());
         }
 
         return $this;

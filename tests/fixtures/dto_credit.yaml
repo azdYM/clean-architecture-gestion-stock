@@ -1,0 +1,12 @@
+App\Domain\Mounting\DTO\CreditRequirements:
+  credit_requirement:
+    capital: <numberBetween(10000, 100000)>
+    interest: <numberBetween(2000, 10000)>
+    duration: <randomElement([3, 6])>
+    startedAt: <datetime()>
+    endAt: <datetime()>
+    weight: <numberBetween(1, 5)>
+    value: <numberBetween(10000, 100000)>
+    code: 'KFM'
+    attestation: '@gold_attestation'
+    idADBankingFolder: <numberBetween(1, 10)>

@@ -1,32 +1,32 @@
 <?php
 
-namespace App\Domain\Employee\Entity;
+namespace App\Domain\Employee;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Entity\Sealer;
-use App\Domain\Employee\Entity\CreditAgent;
-use App\Domain\Employee\Entity\GaranteeEvaluator;
-use App\Domain\Employee\Repository\EmployeeRepository;
-use App\Domain\Employee\ROLE;
 use DateTimeInterface;
+use Doctrine\ORM\Mapping as ORM;
+use App\Domain\Notification\Entity\Notifiable;
+use App\Domain\Application\Entity\TimestampTrait;
+use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Employee\Repository\EmployeeRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'disc', type: 'string')]
 #[ORM\DiscriminatorMap([
     'employe' => Employee::class,
-    'evaluator_garantee' => GaranteeEvaluator::class,
-    'sealer' => Sealer::class,
-    'credit_agent' => CreditAgent::class
+    'gold_evaluator' => \App\Domain\Garantee\Entity\Evaluator::class,
+    'gold_supervisor' => \App\Domain\Garantee\Entity\Supervisor::class,
+    'credit_agent' => \App\Domain\Mounting\Entity\CreditAgent::class,
+    'credit_supervisor' => \App\Domain\Mounting\Entity\CreditSupervisor::class
 ])]
 class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    #[ORM\Id]
-    #[ORM\Column]
-    #[ORM\GeneratedValue]
-    protected ?int $id = null;
+    use IdentifiableTrait;
+    use TimestampTrait;
+    use Notifiable;
 
     #[ORM\Column(length: 180, unique: true)]
     protected ?string $email = null;
@@ -37,21 +37,26 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     protected array $roles = [];
 
-    #[ORM\Column(type: 'datetime')]
-    protected \DateTimeInterface $createdAt;
-
     /**
      * @var string The hashed password
      */
     #[ORM\Column]
-    private ?string $password = null;
+    protected ?string $password = null;
+
+    protected EventDispatcherInterface $event;
 
     public function __construct()
     {
         $this->setRoles([]);
         $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
+    /**
+     * Obtenir l'email de l'utilisateur
+     *
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -132,5 +137,10 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->roles = $roles;
         return $this;
+    }
+
+    public function setEvent(EventDispatcherInterface $event)
+    {
+        $this->event = $event;
     }
 }

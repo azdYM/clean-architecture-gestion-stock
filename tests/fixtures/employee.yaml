@@ -1,0 +1,51 @@
+include:
+  - ../../fixtures/templates.yaml
+
+App\Domain\Employee\Entity\Agency:
+  agency{1..3} (extends agency):
+
+App\Domain\Garantee\Entity\EvaluationGageService:
+  evaluation_gage_service:
+    service_name: gold
+    agency: '@agency<numberBetween(1, 3)>'
+
+App\Domain\Garantee\Entity\GageSection:
+  gage_section:
+    evaluation_gage_service: '@evaluation_gage_service*'
+
+App\Domain\Mounting\Entity\MountingCreditFolderService:
+  mounting_credit_folder_service:
+    service_name: gage
+    agency: '@agency<numberBetween(1, 3)>'
+
+App\Domain\Mounting\Entity\MountingSection:
+  mounting_section:
+    mounting_folder_service: '@mounting_credit_folder_service*'
+
+App\Domain\Garantee\Entity\Evaluator:
+  evaluator (extends employee):
+    username: Azad Hassani
+    email: azad_hassani\@meck-moroni.org
+    roles: ['ROLE_AGENT']
+    gage_section: '@gage_section*'
+
+App\Domain\Garantee\Entity\Supervisor:
+  evaluation_supervisor (extends employee):
+    username: Imamou Mina
+    email: imamou_mina\@meck-moroni.org
+    roles: ['ROLE_SUPERVISOR']
+    gage_section: '@gage_section*'
+
+App\Domain\Mounting\Entity\CreditAgent:
+  credit_agent (extends employee):
+    username: Radjabou Saandi
+    email: radjabou_saandi\@meck-moroni.org
+    roles: ['ROLE_AGENT']
+    mounting_section: '@mounting_section'
+
+App\Domain\Mounting\Entity\CreditSupervisor:
+  credit_supervisor (extends employee):
+    username: Abdoul-karim Ibrahim
+    email: abdoul_karim\@meck-moroni.org
+    roles: ['ROLE_SUPERVISOR']
+    mounting_section: '@mounting_section'

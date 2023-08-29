@@ -4,8 +4,10 @@ namespace App\Domain\Employee;
 
 class ROLE 
 {
-    const CREDIT_AGENT      = 'ROLE_CREDIT_AGENT';
-    const PAWN_EVALUATOR    = 'ROLE_PAWN_EVALUATOR';
-    const SEALER            = 'ROLE_SEALER';
+    const CREDIT_MANAGER    = 'ROLE_CREDIT_MANAGER';
+    const GAGE_MANAGER      = 'ROLE_GAGE_MANAGER';
+    const AGENCY_MANAGER    = 'ROLE_AGENCY_MANAGER';
+    const AGENT             = 'ROLE_AGENT';
+    const SUPERVISOR        = 'ROLE_SUPERVISOR';
     const USER              = 'ROLE_USER';
 }

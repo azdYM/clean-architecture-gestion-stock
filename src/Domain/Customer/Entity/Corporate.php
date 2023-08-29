@@ -7,14 +7,13 @@ use App\Domain\Customer\Entity\Location;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Domain\Customer\Repository\CorporateRepository;
 
 /**
  * Corporate représente les entités corporatives dans le système de gestion de crédits. 
  * Une entité corporative peut être une entreprise, une société, une organisation ou toute autre entité 
  * légale distincte des individus.
  */
-#[ORM\Entity(repositoryClass: CorporateRepository::class)]
+#[ORM\Entity]
 class Corporate extends Client
 {
     #[ORM\Column(length: 255)]
@@ -43,6 +42,7 @@ class Corporate extends Client
 
     public function __construct()
     {
+        parent::__construct();
         $this->managers = new ArrayCollection();
     }
 
@@ -114,4 +114,15 @@ class Corporate extends Client
 
         return $this;
     }
+
+    public function removeManager(Person $manager): self
+    {
+        if ($this->managers->contains($manager)) {
+            $this->managers->remove($manager->getId());
+        }
+
+        return $this;
+    }
+
+
 }

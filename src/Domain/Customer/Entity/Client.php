@@ -2,16 +2,14 @@
 
 namespace App\Domain\Customer\Entity;
 
-use App\Domain\Application\CreatorPortfolio;
-use App\Domain\Application\Entity\Portfolio;
-use App\Domain\Application\PortfolioCreatorInterface;
-use App\Domain\Application\PortfolioInterface;
-use App\Domain\Customer\ClientInterface;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use App\Domain\Customer\ClientInterface;
+use App\Domain\Application\Entity\Portfolio;
+use App\Domain\Application\PortfolioInterface;
 
-#[ORM\MappedSuperclass()]
-abstract class Client extends Person implements ClientInterface, PortfolioCreatorInterface
+#[ORM\MappedSuperclass]
+class Client extends Person implements ClientInterface
 {
     #[ORM\Column(type: 'integer', unique: true)]
     protected ?int $folio = null;
@@ -20,9 +18,9 @@ abstract class Client extends Person implements ClientInterface, PortfolioCreato
     protected ?DateTimeInterface $membershipAt;
 
     #[ORM\OneToOne(targetEntity: Portfolio::class, mappedBy: 'individual', cascade: ['persist'])]
-    protected ?PortfolioInterface $portfolio = null; 
-
-    public function getFolio(): int
+    protected ?PortfolioInterface $portfolio = null;
+    
+    public function getFolio(): ?int
     {
         return $this->folio;
     }
@@ -33,7 +31,7 @@ abstract class Client extends Person implements ClientInterface, PortfolioCreato
         return $this;
     }
 
-    public function getMembershipAt(): DateTimeInterface
+    public function getMembershipAt(): \DateTimeInterface
     {
         return $this->membershipAt;
     }
@@ -43,12 +41,17 @@ abstract class Client extends Person implements ClientInterface, PortfolioCreato
         $this->membershipAt = $membershipAt;
         return $this;
     }
-    public function getPortfolio(): PortfolioInterface
+
+    public function getPortfolio(): ?Portfolio
     {
+        if ($this->portfolio === null) {
+            $this->makePortfolio();
+        }
+
         return $this->portfolio;
     }
 
-    public function createPortfolio(): void
+    private function makePortfolio(): void
     {
         $this->portfolio = (new Portfolio)
             ->setClient($this)

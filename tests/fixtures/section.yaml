@@ -1,0 +1,3 @@
+App\Domain\Employee\Entity\Section:
+  production_gage:
+    name: Production gage

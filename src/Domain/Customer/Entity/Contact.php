@@ -2,27 +2,20 @@
 
 namespace App\Domain\Customer\Entity;
 
+use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Customer\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'integer')]
-    #[ORM\GeneratedValue()]
-    private ?int $id = null;
+    use IdentifiableTrait;
 
     #[ORM\Column(length: 50, unique: true, nullable: true)]
     private ?string $telephone = null;
 
     #[ORM\Column(length: 50, unique: true, nullable: true)]
     private ?string $email = null;
-
-    public function getId(): int
-    {
-        return $this->id;
-    }
 
     public function getTelephone(): ?string
     {

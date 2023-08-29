@@ -1,0 +1,5 @@
+App\Domain\Credit\CreditType:
+  credit_type:
+    label: 'prêt sur gage'
+    name: 'prêt sur gage'
+    mounting_section: '@mounting_section*'

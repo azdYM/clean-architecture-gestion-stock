@@ -2,23 +2,16 @@
 
 namespace App\Domain\Customer\Entity;
 
-use App\Domain\Customer\Repository\SituationRepository;
+use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Application\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\MappedSuperclass(repositoryClass: SituationRepository::class)]
-abstract class Situation 
+#[ORM\MappedSuperclass]
+class Situation 
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue()]
-    #[ORM\Column(type: 'integer')]
-    protected ?int $id = null;
+    use IdentifiableTrait;
+    use TimestampTrait;
 
-    #[ORM\Column(type: 'datetime')]
-    protected \DateTimeInterface $createdAt;
-
-    #[ORM\Column(type: 'datetime')]
-    protected \DateTimeInterface $updatedAt;
-    
     #[ORM\ManyToOne(targetEntity: MatrimonialStatus::class, inversedBy: 'situations')]
     #[ORM\JoinColumn(name: 'matrimonial_status_id', referencedColumnName: 'id')]
     protected ?MatrimonialStatus $matrimonialStatus = null;
@@ -37,22 +30,6 @@ abstract class Situation
     public function setMatrimonialStatus(MatrimonialStatus $matrimonialStatus): self
     {
         $this->matrimonialStatus = $matrimonialStatus;
-        return $this;
-    }
-
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function getUpdatedAt(): \DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
         return $this;
     }
 }

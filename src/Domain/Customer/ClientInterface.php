@@ -2,7 +2,7 @@
 
 namespace App\Domain\Customer;
 
-use App\Domain\Application\PortfolioInterface;
+use App\Domain\Application\Entity\Portfolio;
 
 /**
  * L'interface ClientInterface sert à définir un ensemble de méthodes que chaque classe de 
@@ -13,6 +13,7 @@ use App\Domain\Application\PortfolioInterface;
  */
 interface ClientInterface
 {
-    public function getFolio(): int;
+    public function getFolio(): ?int;
     public function getMembershipAt(): \DateTimeInterface;
+    public function getPortfolio(): ?Portfolio;
 }

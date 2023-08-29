@@ -2,10 +2,11 @@
 
 namespace App\Domain\Application;
 
-use App\Domain\Garantee\GaranteeItemInterface;
+use App\Domain\Garantee\ItemInterface;
+
 
 interface ItemEvaluatorInterface
 {
-    public function setItem(GaranteeItemInterface $item): self;
-    public function generate(): int|float;
+    public function setItem(ItemInterface $item): self;
+    public function generate(): int|float|\Throwable;
 }

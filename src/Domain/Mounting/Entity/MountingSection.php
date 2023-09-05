@@ -3,7 +3,7 @@
 namespace App\Domain\Mounting\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\Entity\Supervisor;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Application\Entity\IdentifiableTrait;

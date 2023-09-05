@@ -20,5 +20,10 @@ services:
     App\Http\Controller\:
         resource: '../src/Http/Controller/'
         tags: ['controller.service_arguments']
+
+    App\Infrastructure\Extension\Twig\TwigAssetExtension:
+        arguments:
+            $assetPath: '%kernel.project_dir%/public/assets'
+            $env: '%kernel.environment%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

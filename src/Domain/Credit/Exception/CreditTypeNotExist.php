@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Credit;
+namespace App\Domain\Credit\Exception;
 
 class CreditTypeNotExist extends \Exception
 {

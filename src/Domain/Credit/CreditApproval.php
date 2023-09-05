@@ -2,14 +2,14 @@
 
 namespace App\Domain\Credit;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
-use App\Domain\Application\Entity\TimestampTrait;
-use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Credit\Credit;
+use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Credit\CreditInterface;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Credit\Gage\Entity\GageCredit;
 use App\Domain\Mounting\Entity\CreditSupervisor;
+use App\Domain\Application\Entity\TimestampTrait;
+use App\Domain\Application\Entity\IdentifiableTrait;
 
 #[ORM\Entity]
 class CreditApproval

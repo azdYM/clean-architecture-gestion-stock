@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Credit\Repository\Contract;
+namespace App\Domain\Contract\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
-use App\Domain\Credit\Entity\Contract\GageContract;
+use App\Domain\Contract\Entity\GageContract;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**

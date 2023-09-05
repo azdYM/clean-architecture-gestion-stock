@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Infrastructure\Encoder;
+namespace App\Infrastructure\Encoder;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Contract;
+namespace App\Domain\Contract\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Contract\Entity\Contract;
@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Contract\Components\SignatureLabel;
 use App\Domain\Contract\Entity\GeneralContentTrait;
 use App\Domain\Contract\Entity\LabelsForSignatureTrait;
-use App\Domain\Credit\Repository\Contract\DeathSolidarityContractRepository;
+use App\Domain\Contract\Repository\DeathSolidarityContractRepository;
 
 #[ORM\Entity(repositoryClass: DeathSolidarityContractRepository::class)]
 class DeathSolidarityContract extends Contract

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Application;
 
-use App\Domain\Employee\Employee;
+use App\Domain\Employee\Entity\Employee;
 
 interface CancellableInterface
 {

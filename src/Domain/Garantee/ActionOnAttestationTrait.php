@@ -2,7 +2,7 @@
 
 namespace App\Domain\Garantee;
 
-use App\Domain\Employee\Employee;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Application\CancellableInterface;
 use App\Domain\Garantee\Entity\AttestationApproval;
 use App\Domain\Garantee\Entity\AttestationRejection;

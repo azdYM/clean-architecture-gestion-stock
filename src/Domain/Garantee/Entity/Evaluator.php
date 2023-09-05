@@ -3,9 +3,9 @@
 namespace App\Domain\Garantee\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
 use App\Domain\Garantee\DTO\Garantee;
 use App\Domain\Garantee\ItemInterface;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Garantee\Entity\Gold\Gold;
 use App\Domain\Garantee\Entity\GageSection;
 use App\Domain\Garantee\EvaluatorInterface;

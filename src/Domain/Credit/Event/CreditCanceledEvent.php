@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Credit;
+namespace App\Domain\Credit\Event;
 
-use App\Domain\Application\CancellableInterface;
+use App\Domain\Credit\CreditInterface;
 
 class CreditCanceledEvent
 {

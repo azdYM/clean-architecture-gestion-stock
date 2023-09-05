@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Domain\Credit;
+namespace App\Domain\Application\Event;
 
-use App\Domain\Employee\Employee;
+use App\Domain\Credit\CreditApproval;
+use App\Domain\Employee\Entity\Employee;
 
 class ApprovalCreatedEvent
 {

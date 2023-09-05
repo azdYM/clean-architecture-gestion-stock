@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Infrastrucutre\Evaluator\Item;
+namespace App\Infrastructure\Generator\Item;
 
 use App\Domain\Garantee\ItemInterface;
 use App\Domain\Garantee\Entity\Gold\Gold;
-use App\Domain\Garantee\GaranteeItemInterface;
 use App\Domain\Application\ItemEvaluatorInterface;
-use App\Infrastrucutre\Generator\Price\GeneratePriceForItemException;
+use App\Infrastructure\Generator\Item\GeneratePriceForItemException;
 
 class GoldEvaluator implements ItemEvaluatorInterface
 {

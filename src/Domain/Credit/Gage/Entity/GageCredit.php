@@ -4,8 +4,8 @@ namespace App\Domain\Credit\Gage\Entity;
 
 use App\Domain\Credit\Credit;
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
 use App\Domain\Contract\Entity\Contract;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\Entity\GageFolder;
 use App\Domain\Garantee\Entity\Attestation;
 use App\Domain\Mounting\Entity\CreditAgent;

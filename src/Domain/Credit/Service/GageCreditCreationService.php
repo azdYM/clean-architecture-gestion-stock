@@ -3,10 +3,10 @@
 namespace App\Domain\Credit\Service;
 
 use App\Domain\Credit\CreditInterface;
-use App\Domain\Credit\Gage\Entity\GageCredit;
-use App\Domain\Employee\Employee;
-use App\Domain\Mounting\DTO\CreditRequirements;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\Entity\GageFolder;
+use App\Domain\Credit\Gage\Entity\GageCredit;
+use App\Domain\Mounting\DTO\CreditRequirements;
 
 class GageCreditCreationService implements CreditCreationServiceInterface
 {

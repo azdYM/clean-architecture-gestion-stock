@@ -3,10 +3,10 @@
 namespace App\Domain\Garantee\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
+use App\Domain\Employee\Entity\Employee;
+use App\Domain\Garantee\Entity\Evaluator;
+use App\Domain\Garantee\Entity\Supervisor;
 use Doctrine\Common\Collections\Collection;
-use App\Domain\Garantee\Gold\Entity\Evaluator;
-use App\Domain\Garantee\Gold\Entity\Supervisor;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Application\Entity\IdentifiableTrait;

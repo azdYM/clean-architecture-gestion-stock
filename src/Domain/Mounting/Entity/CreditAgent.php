@@ -3,8 +3,8 @@
 namespace App\Domain\Mounting\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
 use App\Domain\Credit\CreditInterface;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\FolderInterface;
 use App\Domain\Mounting\TargetCreditTrait;
 use Doctrine\Common\Collections\Collection;

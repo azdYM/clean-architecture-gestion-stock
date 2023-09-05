@@ -3,7 +3,7 @@
 namespace App\Domain\Garantee\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Garantee\Entity\Attestation;
 use App\Domain\Garantee\AttestationInterface;
 use App\Domain\Application\Entity\TimestampTrait;

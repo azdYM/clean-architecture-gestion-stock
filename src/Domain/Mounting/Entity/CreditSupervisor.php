@@ -2,19 +2,19 @@
 
 namespace App\Domain\Mounting\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
-use App\Domain\Credit\CreditInterface;
-use App\Domain\Credit\CreditApprovedEvent;
-use App\Domain\Credit\CreditCanceledEvent;
-use App\Domain\Credit\CreditRejectedEvent;
-use App\Domain\Credit\ApprovalCreatedEvent;
 use App\Domain\Credit\Credit;
+use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Credit\CreditApproval;
+use App\Domain\Credit\CreditInterface;
 use App\Domain\Credit\CreditRejection;
+use App\Domain\Employee\Entity\Employee;
+use App\Domain\Credit\Event\CreditApprovedEvent;
+use App\Domain\Credit\Event\CreditCanceledEvent;
+use App\Domain\Credit\Event\CreditRejectedEvent;
+use App\Domain\Application\Event\ApprovalCreatedEvent;
+use App\Domain\Mounting\WorkingCreditMountingSectionTrait;
 use App\Domain\Credit\Service\CreditApprovalServiceInterface;
 use App\Domain\Credit\Service\CreditRejectionServiceInterface;
-use App\Domain\Mounting\WorkingCreditMountingSectionTrait;
 
 #[ORM\Entity]
 class CreditSupervisor extends Employee

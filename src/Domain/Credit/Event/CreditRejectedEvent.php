@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Domain\Credit;
+namespace App\Domain\Credit\Event;
 
+use App\Domain\Credit\CreditInterface;
 use App\Domain\Credit\CreditRejection;
 
 class CreditRejectedEvent

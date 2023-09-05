@@ -2,11 +2,10 @@
 
 namespace App\Domain\Garantee\Entity\Gold;
 
-use App\Domain\Application\CancellableInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Credit\CreditType;
-use App\Domain\Employee\Employee;
 use App\Domain\Garantee\ItemInterface;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Garantee\EvaluationTrait;
 use App\Domain\Garantee\Entity\Evaluator;
 use App\Domain\Garantee\Entity\Gold\Gold;
@@ -15,6 +14,7 @@ use App\Domain\Garantee\Entity\Attestation;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Garantee\Entity\ApprovalTrait;
 use App\Domain\Garantee\Entity\RejectionTrait;
+use App\Domain\Application\CancellableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Garantee\ActionOnAttestationTrait;

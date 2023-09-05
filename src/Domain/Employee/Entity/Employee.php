@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Employee;
+namespace App\Domain\Employee\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;

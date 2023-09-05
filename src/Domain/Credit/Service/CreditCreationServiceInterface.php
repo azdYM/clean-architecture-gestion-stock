@@ -3,7 +3,7 @@
 namespace App\Domain\Credit\Service;
 
 use App\Domain\Credit\CreditInterface;
-use App\Domain\Employee\Employee;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\DTO\CreditRequirements;
 
 interface CreditCreationServiceInterface

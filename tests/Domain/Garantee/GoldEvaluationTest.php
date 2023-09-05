@@ -10,7 +10,7 @@ use App\Domain\Garantee\Entity\Evaluator;
 use App\Domain\Garantee\Entity\Supervisor;
 use App\Domain\Mounting\Entity\MountingSection;
 use App\Domain\Application\CancellableInterface;
-use App\Infrastrucutre\Evaluator\Item\GoldEvaluator;
+use App\Infrastructure\Generator\Item\GoldEvaluator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class GoldEvaluationTest extends KernelTestKase

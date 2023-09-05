@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\CreditType\Repository;
+namespace App\Domain\Credit;
 
 use App\Domain\Credit\CreditType;
 use Doctrine\Persistence\ManagerRegistry;

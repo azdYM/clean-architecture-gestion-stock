@@ -2,9 +2,9 @@
 
 namespace App\Domain\Credit;
 
-use App\Domain\Employee\Employee;
 use App\Domain\Credit\CreditApproval;
 use App\Domain\Credit\CreditRejection;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\FolderInterface;
 use App\Domain\Contract\ContractInterface;
 use App\Domain\Mounting\Entity\CreditAgent;

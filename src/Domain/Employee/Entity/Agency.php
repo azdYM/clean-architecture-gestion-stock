@@ -3,12 +3,12 @@
 namespace App\Domain\Employee\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
-use App\Domain\Repository\AgencyRepository;
+use App\Domain\Employee\Entity\Employee;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Employee\Entity\AgencyManager;
 use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Employee\Repository\AgencyRepository;
 use App\Domain\Garantee\Entity\EvaluationGageService;
 use App\Domain\Mounting\Entity\MountingCreditFolderService;
 

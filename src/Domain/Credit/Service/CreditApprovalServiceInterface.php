@@ -4,7 +4,7 @@ namespace App\Domain\Credit\Service;
 
 use App\Domain\Credit\CreditApproval;
 use App\Domain\Credit\CreditInterface;
-use App\Domain\Employee\Employee;
+use App\Domain\Employee\Entity\Employee;
 
 interface CreditApprovalServiceInterface
 {

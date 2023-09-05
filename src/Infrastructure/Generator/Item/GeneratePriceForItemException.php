@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastrucutre\Generator\Price;
+namespace App\Infrastructure\Generator\Item;
 
 class GeneratePriceForItemException extends \Exception
 {

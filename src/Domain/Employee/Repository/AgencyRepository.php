@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Repository;
+namespace App\Domain\Employee\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use App\Domain\Employee\Entity\Agency;

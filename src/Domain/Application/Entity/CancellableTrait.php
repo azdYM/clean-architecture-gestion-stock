@@ -2,8 +2,8 @@
 
 namespace App\Domain\Application\Entity;
 
-use App\Domain\Employee\Employee;
 use Doctrine\ORM\Mapping as ORM;
+use App\Domain\Employee\Entity\Employee;
 
 trait CancellableTrait
 {

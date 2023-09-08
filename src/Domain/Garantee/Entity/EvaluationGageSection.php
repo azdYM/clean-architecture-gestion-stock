@@ -14,7 +14,7 @@ use App\Domain\Garantee\Entity\EvaluationGageService;
 use App\Domain\Garantee\Repository\GageSectionRepository;
 
 #[ORM\Entity(repositoryClass: GageSectionRepository::class)]
-class GageSection 
+class EvaluationGageSection 
 {
     use IdentifiableTrait;
     use TimestampTrait;
@@ -22,10 +22,16 @@ class GageSection
     #[ORM\OneToOne(targetEntity: EvaluationGageService::class, mappedBy: 'section')]
     private ?EvaluationGageService $evaluationGageService;
     
-    #[ORM\OneToMany(targetEntity: Employee::class, mappedBy: 'section')]
+    #[ORM\JoinTable(name: 'agents_gage_sections')]
+    #[ORM\JoinColumn(name: 'section_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'gage_evaluator_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\ManyToMany(targetEntity: Employee::class)]
     private Collection $evaluators;
     
-    #[ORM\OneToMany(targetEntity: Employee::class, mappedBy: 'section')]
+    #[ORM\JoinTable(name: 'supervisors_gage_sections')]
+    #[ORM\JoinColumn(name: 'section_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'gage_supervisor_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\ManyToMany(targetEntity: Employee::class)]
     private Collection $supervisors;
 
     public function __construct()
@@ -44,7 +50,7 @@ class GageSection
         return $this->evaluators;
     }
 
-    public function addEvaluators(Evaluator $evaluator): self
+    public function addEvaluators(Employee $evaluator): self
     {
         if (!$this->supervisors->contains($evaluator)) {
             $this->supervisors->add($evaluator);
@@ -53,7 +59,7 @@ class GageSection
         return $this;
     }
 
-    public function removeEvaluators(Evaluator $evaluator): self
+    public function removeEvaluators(Employee $evaluator): self
     {
         if ($this->supervisors->contains($evaluator)) {
             $this->supervisors->removeElement($evaluator);
@@ -70,7 +76,7 @@ class GageSection
         return $this->supervisors;
     }
 
-    public function addSupervisor(Supervisor $supervisor): self
+    public function addSupervisor(Employee $supervisor): self
     {
         if (!$this->supervisors->contains($supervisor)) {
             $this->supervisors->add($supervisor);
@@ -79,7 +85,7 @@ class GageSection
         return $this;
     }
 
-    public function removeSupervisor(Supervisor $supervisor): self
+    public function removeSupervisor(Employee $supervisor): self
     {
         if ($this->supervisors->contains($supervisor)) {
             $this->supervisors->removeElement($supervisor);

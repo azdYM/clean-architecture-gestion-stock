@@ -41,4 +41,10 @@ class FolderRequirements
     {
         return $this->attestations->first()->getClient();
     }
+
+    public function setClient(ClientInterface $client): self
+    {
+        $this->client = $client;
+        return $this;
+    }
 }

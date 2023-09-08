@@ -19,7 +19,7 @@ class CreditApproval
 
     #[ORM\OneToOne(targetEntity: Employee::class)]
     #[ORM\JoinColumn(name: 'approving_id', referencedColumnName: 'id')]
-    private ?CreditSupervisor $approving = null;
+    private ?Employee $approving = null;
 
     #[ORM\ManyToOne(targetEntity: GageCredit::class, inversedBy: 'approvals')]
     #[ORM\JoinColumn(name: 'credit_id', referencedColumnName: 'id')]
@@ -34,12 +34,12 @@ class CreditApproval
         $this->updatedAt = new \DateTimeImmutable();
     }
 
-    public function getApproving(): CreditSupervisor
+    public function getApproving(): Employee
     {
         return $this->approving;
     }
 
-    public function setApproving(CreditSupervisor $approving): self
+    public function setApproving(Employee $approving): self
     {
         $this->approving = $approving;
         return $this;

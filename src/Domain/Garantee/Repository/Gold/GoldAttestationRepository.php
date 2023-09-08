@@ -4,9 +4,17 @@ namespace App\Domain\Garantee\Repository\Gold;
 
 use Doctrine\Persistence\ManagerRegistry;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Infrastructure\Orm\AbstractRepository;
 
-class GoldAttestationRepository extends ServiceEntityRepository
+/**
+ * @extends AbstractRepository<GoldAttestationRepository>
+ *
+ * @method GoldAttestationRepository|null find($id, $lockMode = null, $lockVersion = null)
+ * @method GoldAttestationRepository|null findOneBy(array $criteria, array $orderBy = null)
+ * @method GoldAttestationRepository[]    findAll()
+ * @method GoldAttestationRepository[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class GoldAttestationRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

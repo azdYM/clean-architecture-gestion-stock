@@ -8,7 +8,6 @@ use App\Domain\Contract\Entity\Contract;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\Entity\GageFolder;
 use App\Domain\Garantee\Entity\Attestation;
-use App\Domain\Mounting\Entity\CreditAgent;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Application\CancellableInterface;
 use App\Domain\Application\Entity\CancellableTrait;
@@ -49,7 +48,7 @@ class GageCredit extends Credit implements CancellableInterface
 
     #[ORM\ManyToOne(targetEntity: Employee::class)]
     #[ORM\JoinColumn(name: 'agent_id', referencedColumnName: 'id')]
-    private ?CreditAgent $creditAgent = null;
+    private ?Employee $creditAgent = null;
 
     #[ORM\JoinTable(name: 'contracts_credits')]
     #[ORM\JoinColumn(name: 'credit_id', referencedColumnName: 'id')]
@@ -161,12 +160,12 @@ class GageCredit extends Credit implements CancellableInterface
         return $this;
     }
 
-    public function getCreditAgent(): CreditAgent
+    public function getCreditAgent(): Employee
     {
         return $this->creditAgent;
     }
 
-    public function setCreditAgent(CreditAgent $creditAgent): self
+    public function setCreditAgent(Employee $creditAgent): self
     {
         $this->creditAgent = $creditAgent;
         return $this;

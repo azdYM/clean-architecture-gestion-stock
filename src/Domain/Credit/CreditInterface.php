@@ -7,7 +7,6 @@ use App\Domain\Credit\CreditRejection;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\FolderInterface;
 use App\Domain\Contract\ContractInterface;
-use App\Domain\Mounting\Entity\CreditAgent;
 use Doctrine\Common\Collections\Collection;
 
 interface CreditInterface
@@ -33,5 +32,5 @@ interface CreditInterface
 
     public function rejected(Employee $supervisor, string $cause): CreditRejection;
 
-    public function getCreditAgent(): CreditAgent;
+    public function getCreditAgent(): Employee;
 }

@@ -8,7 +8,6 @@ use App\Domain\Garantee\Entity\Attestation;
 use App\Domain\Garantee\AttestationInterface;
 use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Application\Entity\IdentifiableTrait;
-use App\Domain\Garantee\Gold\Entity\GoldAttestation;
 
 #[ORM\Entity()]
 class AttestationRejection

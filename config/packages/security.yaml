@@ -5,10 +5,15 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
+        user_provider:
             entity:
-                class: App\Domain\Entity\Employee
+                class: App\Domain\Auth\User
                 property: email
+        employee_provider:
+            entity:
+                class: App\Domain\Employee\Entity\Employee
+                property: email
+
         # used to reload user from session & other features (e.g. switch_user)
         # used to reload user from session & other features (e.g. switch_user)
     firewalls:
@@ -17,7 +22,12 @@ security:
             security: false
         main:
             lazy: true
-            provider: app_user_provider
+            provider: employee_provider
+            user_checker: App\Domain\Auth\Security\UserChecker
+            custom_authenticators:
+                - App\Domain\Auth\Authenticator
+            logout:
+                path: auth_logout
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -30,6 +40,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        # - { path: ^/login, roles: PUBLIC_ACCESS }
+        # - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

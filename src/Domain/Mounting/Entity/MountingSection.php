@@ -7,6 +7,7 @@ use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\Entity\Supervisor;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Mounting\Entity\MountingCreditFolderService;
 use App\Domain\Mounting\Repository\MountingSectionRepository;
 
 #[ORM\Entity(repositoryClass: MountingSectionRepository::class)]
@@ -14,13 +15,13 @@ class MountingSection
 {
     use IdentifiableTrait;
 
-    #[ORM\JoinTable(name: 'agents_sections')]
+    #[ORM\JoinTable(name: 'agents_mounting_sections')]
     #[ORM\JoinColumn(name: 'section_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'credit_agent_id', referencedColumnName: 'id', unique: true)]
     #[ORM\ManyToMany(targetEntity: Employee::class, cascade: ['persist'])]
     private Collection $creditAgents;
 
-    #[ORM\JoinTable(name: 'supervisors_sections')]
+    #[ORM\JoinTable(name: 'supervisors_mounting_sections')]
     #[ORM\JoinColumn(name: 'section_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'credit_supervisor_id', referencedColumnName: 'id', unique: true)]
     #[ORM\ManyToMany(targetEntity: Employee::class, cascade: ['persist'])]
@@ -30,14 +31,14 @@ class MountingSection
     private ?MountingCreditFolderService $mountingFolderService = null;
 
     /**
-     * @return Collection<int, CreditAgent>
+     * @return Collection<int, Employee>
      */
     public function getCreditAgents(): Collection
     {
         return $this->creditAgents;
     }
 
-    public function addCreditAgent(CreditAgent $agent): self
+    public function addCreditAgent(Employee $agent): self
     {
         if (!$this->creditAgents->contains($agent)) {
             $this->creditAgents->add($agent);
@@ -46,7 +47,7 @@ class MountingSection
         return $this;
     }
 
-    public function removeCreditAgent(CreditAgent $agent): self
+    public function removeCreditAgent(Employee $agent): self
     {
         if ($this->creditAgents->contains($agent)) {
             $this->creditAgents->removeElement($agent);
@@ -63,7 +64,7 @@ class MountingSection
         return $this->supervisors;
     }
 
-    public function addSupervisor(CreditSupervisor $supervisor)
+    public function addSupervisor(Employee $supervisor)
     {
         if (!$this->supervisors->contains($supervisor)) {
             $this->supervisors->add($supervisor);
@@ -72,7 +73,7 @@ class MountingSection
         return $this;
     }
 
-    public function removeSupervisor(CreditSupervisor $supervisor)
+    public function removeSupervisor(Employee $supervisor)
     {
         if ($this->supervisors->contains($supervisor)) {
             $this->supervisors->removeElement($supervisor);

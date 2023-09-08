@@ -3,18 +3,18 @@
 namespace App\Domain\Customer\Repository;
 
 use App\Domain\Customer\Entity\Person;
+use App\Infrastructure\Orm\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Person>
+ * @extends AbstractRepository<Person>
  *
  * @method Person|null find($id, $lockMode = null, $lockVersion = null)
  * @method Person|null findOneBy(array $criteria, array $orderBy = null)
  * @method Person[]    findAll()
  * @method Person[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PersonRepository extends ServiceEntityRepository
+class PersonRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

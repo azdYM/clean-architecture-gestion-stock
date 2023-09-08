@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Se connecter' %}
+
+{% block body %}
+    <div class="auth-container my5">
+
+      <h1 class="auth-title fade">Se connecter</h1>
+
+      {% if error %}
+          {{ error.messageKey | trans(error.messageData, 'security') }}
+        <alert-message type="danger">
+          {{ error.messageKey | trans(error.messageData, 'security') }}
+        </alert-message>
+      {% endif %}
+
+      <form class="auth-form fade fade-1" method="post">
+        <div class="form-group">
+          <label for="inputEmail">Nom d'utilisateur</label>
+          <input type="text" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" required autofocus>
+        </div>
+        <div class="form-group">
+          <label for="inputPassword">Mot de passe</label>
+          <input type="password" name="password" id="inputPassword" class="form-control" required>
+        </div>
+        <button type="submit" class="btn-gradient">Se connecter</button>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+      </form>
+    </div>
+    <waves-shape target=".auth-form"></waves-shape>
+{% endblock %}

@@ -2,14 +2,16 @@
 
 namespace App\Domain\Garantee;
 
+use App\Domain\Employee\Entity\Employee;
+
 trait EvaluationTrait
 {
-    public function getEvaluator(): EvaluatorInterface
+    public function getEvaluator(): Employee
     {
         return $this->evaluator;
     }
 
-    public function setEvaluator(EvaluatorInterface $evaluator): static
+    public function setEvaluator(Employee $evaluator): static
     {
         $this->evaluator = $evaluator;
         return $this;

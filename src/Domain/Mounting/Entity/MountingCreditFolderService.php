@@ -20,7 +20,7 @@ class MountingCreditFolderService
     #[ORM\JoinColumn(name: 'agency_id', referencedColumnName: 'id')]
     private ?Agency $agency = null;
 
-    #[ORM\OneToOne(targetEntity: MountingSection::class, inversedBy: 'evaluationGageService')]
+    #[ORM\OneToOne(targetEntity: MountingSection::class, inversedBy: 'mountingFolderService')]
     #[ORM\JoinColumn(name: 'section_id', referencedColumnName: 'id')]
     private ?MountingSection $section = null;
 

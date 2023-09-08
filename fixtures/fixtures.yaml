@@ -14,3 +14,55 @@ App\Domain\Customer\Entity\Single:
 App\Domain\Customer\Entity\Widower:
   widower{1...5} (extends situation):
     
+App\Domain\Employee\Entity\Agency:
+  agency{1..3} (extends agency):
+
+App\Domain\Garantee\Entity\EvaluationGageService:
+  evaluation_gage_service{1..3}:
+    service_name: gold
+    agency: '@agency<current()>'
+
+App\Domain\Garantee\Entity\EvaluationGageSection:
+  evaluation_gage_section{1..3}:
+    evaluation_gage_service: '@evaluation_gage_service<current()>'
+
+App\Domain\Mounting\Entity\MountingCreditFolderService:
+  mounting_credit_folder_service{1..3}:
+    service_name: gage
+    agency: '@agency<current()>'
+
+App\Domain\Mounting\Entity\MountingSection:
+  mounting_section{1..3}:
+    mounting_folder_service: '@mounting_credit_folder_service<current()>'
+
+App\Domain\Auth\User:
+  user{1} (extends employee):
+
+App\Domain\Employee\Entity\Employee:
+  evaluator (extends employee):
+    username: azad
+    fullname: Azad Hassani
+    email: azad_hassani\@meck-moroni.org
+    roles: ['ROLE_GAGE_EVALUATOR']
+    current_evaluation_section: '@evaluation_gage_section<numberbetween(1, 3)>'
+
+  evaluation_supervisor (extends employee):
+    fullname: Imamou Mina
+    username: azad
+    email: imamou_mina\@meck-moroni.org
+    roles: ['ROLE_GAGE_SUPERVISOR']
+    current_evaluation_section: '@evaluation_gage_section<numberbetween(1, 3)>'
+
+  credit_agent (extends employee):
+    fullname: Radjabou Saandi
+    username: radjabou
+    email: radjabou_saandi\@meck-moroni.org
+    roles: ['ROLE_CREDIT_AGENT']
+    current_mounting_section: '@mounting_section<numberbetween(1, 3)>'
+
+  credit_supervisor (extends employee):
+    fullname: Abdoul-karim Ibrahim
+    username: abdoul_karim
+    email: abdoul_karim\@meck-moroni.org
+    roles: ['ROLE_CREDIT_SUPERVISOR']
+    current_mounting_section: '@mounting_section<numberbetween(1, 3)>'

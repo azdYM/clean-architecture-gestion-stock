@@ -4,6 +4,7 @@ namespace App\Domain\Garantee;
 
 use App\Domain\Credit\CreditType;
 use App\Domain\Customer\ClientInterface;
+use App\Domain\Employee\Entity\Employee;
 use Doctrine\Common\Collections\Collection;
 
 interface AttestationInterface
@@ -16,5 +17,5 @@ interface AttestationInterface
     public function getValorisation(): int;
     public function getClient(): ClientInterface;
     public function getCreditTypeTargeted(): CreditType;
-    public function getEvaluator(): EvaluatorInterface;
+    public function getEvaluator(): Employee;
 }

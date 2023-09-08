@@ -2,27 +2,42 @@
 
 namespace App\Domain\Notification\Entity;
 
-use App\Domain\Employee\Employee;
+use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Application\Entity\TimestampTrait;
+use App\Domain\Auth\User;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
+
+#[ORM\Entity(repositoryClass: App\Domain\Notification\Repository\NotificationRepository::class)]
 class Notification
 {
-    private ?int $id = null;
+    use IdentifiableTrait;
+    use TimestampTrait;
 
-    private ?Employee $employee = null;
+    #[ORM\ManyToOne(targetEntity: \App\Domain\Auth\User::class)]
+    #[ORM\JoinColumn(name: 'user_id', onDelete: 'CASCADE', nullable: true)]
+    private ?User $user = null;
 
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank]
     private string $message;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Url]
     private ?string $url = null;
 
-    private \DateTimeInterface $createdAt;
-
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $channel = 'public';
 
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $target = null;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -30,14 +45,14 @@ class Notification
         return $this->id;
     }
 
-    public function getEmployee(): ?Employee
+    public function getUser(): ?User
     {
-        return $this->employee;
+        return $this->user;
     }
 
-    public function setEmployee(Employee $employee): self
+    public function serUser(User $user): self
     {
-        $this->employee = $employee;
+        $this->user = $user;
         return $this;
     }
 
@@ -92,11 +107,11 @@ class Notification
 
     public function isRead(): bool
     {
-        if (null === $this->employee) {
+        if (null === $this->user) {
             return false;
         }
 
-        $notificationReadAt = $this->employee->getNotificationReadAt();
+        $notificationReadAt = $this->user->getNotificationReadAt();
         return $notificationReadAt ? ($this->getCreatedAt() > $notificationReadAt) : false;
     }
 }

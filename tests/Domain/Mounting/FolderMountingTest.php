@@ -4,12 +4,17 @@ namespace App\Tests\Domain\Mounting;
 
 use App\Tests\FixtureTrait;
 use App\Tests\KernelTestKase;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Customer\Entity\Individual;
+use App\Domain\Mounting\Entity\GageFolder;
 use App\Domain\Mounting\Entity\CreditAgent;
 use App\Domain\Mounting\DTO\FolderRequirements;
 use App\Tests\Domain\Garantee\CreationItemTrait;
+use App\Domain\Garantee\Entity\AttestationApproval;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
+use App\Domain\Employee\Service\CreditMountingService;
 use App\Tests\Domain\Garantee\EvaluationGaranteeTrait;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use App\Domain\Mounting\Service\GageFolderMountingService;
 
 class FolderMountingTest extends KernelTestKase
@@ -19,29 +24,30 @@ class FolderMountingTest extends KernelTestKase
     use EvaluationGaranteeTrait;
 
     private Individual $individual;
-    private CreditAgent $creditAgent;
-    private GoldAttestation $attestation;
+    private Employee $creditAgent;
+    private AttestationApproval $attestationApproval;
 
     public function setUp(): void
     {
         parent::setUp();
         [
             'credit_agent' => $this->creditAgent,
-            'gold_attestation' => $this->attestation,
+            'attestation_approval' => $this->attestationApproval,
         ] = $this->loadFixtures(['employee', 'credit_type', 'person', 'attestation']);
     }
 
-    public function testGageFolderCreation()
+    public function testFolderCreditMounting()
     {
-        $montingService = new GageFolderMountingService();
-        $folderRequirements = (new FolderRequirements())
-            ->addAttestation($this->attestation)
+        $attestation = $this->attestationApproval->getAttestation();
+        $folderRequirements = (new FolderRequirements)
+            ->setClient($attestation->getClient())
+            ->addAttestation($attestation)
         ;
 
-        $portfolio = $this->attestation->getClient()->getPortfolio();
-        $folder = $this->creditAgent->mountFolder($montingService, $folderRequirements);
+        $service = new CreditMountingService($this->creditAgent, new EventDispatcher);
+        $folder = $service->mountFolder(new GageFolderMountingService($this->creditAgent), $folderRequirements);
 
-        $this->assertContains($folder, $portfolio->getGageCreditFolders());
-        $this->assertEquals($portfolio, $folder->getPortfolio());
+        $this->assertInstanceOf(GageFolder::class, $folder);
+        $this->assertContains($folder, $attestation->getClient()->getPortfolio()->getGageCreditFolders());
     }
 }

@@ -4,9 +4,17 @@ namespace App\Domain\Garantee\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use App\Domain\Garantee\Entity\GageSection;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Infrastructure\Orm\AbstractRepository;
 
-class GageSectionRepository extends ServiceEntityRepository
+/**
+ * @extends AbstractRepository<GageSectionRepository>
+ *
+ * @method GageSectionRepository|null find($id, $lockMode = null, $lockVersion = null)
+ * @method GageSectionRepository|null findOneBy(array $criteria, array $orderBy = null)
+ * @method GageSectionRepository[]    findAll()
+ * @method GageSectionRepository[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class GageSectionRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

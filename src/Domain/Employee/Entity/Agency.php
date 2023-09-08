@@ -29,7 +29,7 @@ class Agency
 
     #[ORM\OneToOne(targetEntity: Employee::class, inversedBy: 'agency')]
     #[ORM\JoinColumn(name: 'manager_id', referencedColumnName: 'id')]
-    private ?AgencyManager $manager = null;
+    private ?Employee $manager = null;
 
     public function __construct()
     {
@@ -48,12 +48,12 @@ class Agency
         return $this;
     }
 
-    public function getManager(): AgencyManager
+    public function getManager(): Employee
     {
         return $this->manager;
     }
 
-    public function setManager(AgencyManager $manager): self
+    public function setManager(Employee $manager): self
     {
         $this->manager = $manager;
         return $this;

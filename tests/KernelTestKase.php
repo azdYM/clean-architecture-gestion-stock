@@ -13,9 +13,9 @@ class KernelTestKase extends KernelTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
         self::bootKernel();
         $this->container = self::getContainer();
-        parent::setUp();
         $this->em = $this->container->get(EntityManagerInterface::class);
     }
 }

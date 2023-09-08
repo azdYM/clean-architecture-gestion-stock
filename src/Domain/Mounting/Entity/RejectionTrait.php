@@ -3,7 +3,6 @@
 namespace App\Domain\Mounting\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Credit\CreditApproval;
 use App\Domain\Credit\CreditRejection;
 use Doctrine\Common\Collections\Collection;
 

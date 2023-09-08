@@ -2,11 +2,11 @@
 
 namespace App\Domain\Notification;
 
-use App\Domain\Employee\Employee;
-use App\Domain\Infrastructure\Encoder\PathEncoder;
+use App\Domain\Employee\Entity\Employee;
+use App\Infrastructure\Encoder\PathEncoder;
 use App\Domain\Notification\Entity\Notification;
-use App\Domain\Notification\Event\NotificationCreatedEvent;
 use Symfony\Component\Serializer\SerializerInterface;
+use App\Domain\Notification\Event\NotificationCreatedEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class NotificationService

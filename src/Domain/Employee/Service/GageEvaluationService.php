@@ -1,38 +1,35 @@
 <?php
 
-namespace App\Domain\Garantee\Entity;
+namespace App\Domain\Employee\Service;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Garantee\DTO\Garantee;
 use App\Domain\Garantee\ItemInterface;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Garantee\Entity\Gold\Gold;
-use App\Domain\Garantee\Entity\GageSection;
-use App\Domain\Garantee\EvaluatorInterface;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Garantee\AttestationInterface;
 use App\Domain\Application\ItemEvaluatorException;
 use App\Domain\Application\ItemEvaluatorInterface;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
 use App\Domain\Garantee\Event\EvaluationCreatedEvent;
-use App\Domain\Garantee\WorkingEvaluationSectionTrait;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-#[ORM\Entity]
-class Evaluator extends Employee implements EvaluatorInterface
-{
-    use WorkingEvaluationSectionTrait;
-
-    #[ORM\ManyToOne(targetEntity: GageSection::class, inversedBy: 'evaluators')]
-    #[ORM\JoinColumn(name: 'gage_section_id', referencedColumnName: 'id')]
-    private ?GageSection $gageSection = null;
-    
+class GageEvaluationService
+{   
     private ItemEvaluatorInterface $itemEvaluator;
+
+    public function __construct
+    (
+        private Employee $evaluator,
+        private EventDispatcherInterface $event
+    ){}
 
     /**
      * Evalue une garantie en utilisant un evaluateur tier. L'évaluateur va fournir le prix 
      * unitaire de chaque item contenu dans la garantie. On genere une attestation,
      * et enfin on publie une évènement pour la validation de l'attestation
      *
+     * @param ItemEvaluatorInterface $evaluator
      * @param Garantee $garantee
      * @return AttestationInterface
      */
@@ -44,7 +41,7 @@ class Evaluator extends Employee implements EvaluatorInterface
         
         $this->event->dispatch(new EvaluationCreatedEvent(
             $attestation, 
-            $this->getGageSection()->getEvaluationGageService()
+            $this->evaluator->getCurrentEvaluationSection()->getEvaluationGageService()
         ));
 
         return $attestation;
@@ -85,7 +82,7 @@ class Evaluator extends Employee implements EvaluatorInterface
     {
         $attestation = GoldAttestation::create()
             ->setClient($garantee->getClient())
-            ->setEvaluator($this)
+            ->setEvaluator($this->evaluator)
             ->setEvaluatorDescription($garantee->getDescription())
             ->setCreditTypeTargeted($garantee->getCreditTypeTargeted())
         ;

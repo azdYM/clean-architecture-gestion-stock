@@ -3,18 +3,18 @@
 namespace App\Domain\Customer\Repository;
 
 use App\Domain\Customer\Entity\MatrimonialStatus;
+use App\Infrastructure\Orm\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<MatrimonialStatus>
+ * @extends AbstractRepository<MatrimonialStatus>
  *
  * @method MatrimonialStatus|null find($id, $lockMode = null, $lockVersion = null)
  * @method MatrimonialStatus|null findOneBy(array $criteria, array $orderBy = null)
  * @method MatrimonialStatus[]    findAll()
  * @method MatrimonialStatus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MatrimonialStatusRepository extends ServiceEntityRepository
+class MatrimonialStatusRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

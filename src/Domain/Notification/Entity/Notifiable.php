@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Domain\Notification\Entity;
+use Doctrine\ORM\Mapping as ORM;
 
 trait Notifiable 
 {
-    private ?\DateTimeInterface $notificationReadAt = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    protected ?\DateTimeInterface $notificationReadAt = null;
 
     public function getNotificationReadAt(): ?\DateTimeInterface
     {

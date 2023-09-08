@@ -1,0 +1,8 @@
+
+Une historique de travail des employés : (EmployeeWorkHistory). chaque historique contiendrait
+l'employé, le poste qu'il occupe, la date qu'il a commencé, la date de la fin.
+le poste aura l'agence ou il travaille, le role et le service 
+
+une historique de l'activité des clients.
+
+crée des service pour l'evaluation des gages. comme je l'ai fait sur les montages de dossier

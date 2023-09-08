@@ -4,17 +4,17 @@ namespace App\Domain\Contract\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use App\Domain\Contract\Entity\DeathSolidarityContract;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Infrastructure\Orm\AbstractRepository;
 
 /**
- * @extends ServiceEntityRepository<DeathSolidarityContract>
+ * @extends AbstractRepository<DeathSolidarityContract>
  *
  * @method DeathSolidarityContract|null find($id, $lockMode = null, $lockVersion = null)
  * @method DeathSolidarityContract|null findOneBy(array $criteria, array $orderBy = null)
  * @method DeathSolidarityContract[]    findAll()
  * @method DeathSolidarityContract[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class DeathSolidarityContractRepository extends ServiceEntityRepository
+class DeathSolidarityContractRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

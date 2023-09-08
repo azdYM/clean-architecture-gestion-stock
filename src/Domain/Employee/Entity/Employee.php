@@ -2,145 +2,87 @@
 
 namespace App\Domain\Employee\Entity;
 
-use DateTimeInterface;
+use App\Domain\Auth\User;
+use App\Domain\Auth\UserRole;
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Notification\Entity\Notifiable;
-use App\Domain\Application\Entity\TimestampTrait;
-use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Employee\CanAddRoleTrait;
+use App\Domain\Employee\Exception\RoleAttributionException;
+use App\Domain\Mounting\Entity\MountingSection;
+use App\Domain\Garantee\Entity\EvaluationGageSection;
 use App\Domain\Employee\Repository\EmployeeRepository;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
-#[ORM\InheritanceType('SINGLE_TABLE')]
-#[ORM\DiscriminatorColumn(name: 'disc', type: 'string')]
-#[ORM\DiscriminatorMap([
-    'employe' => Employee::class,
-    'gold_evaluator' => \App\Domain\Garantee\Entity\Evaluator::class,
-    'gold_supervisor' => \App\Domain\Garantee\Entity\Supervisor::class,
-    'credit_agent' => \App\Domain\Mounting\Entity\CreditAgent::class,
-    'credit_supervisor' => \App\Domain\Mounting\Entity\CreditSupervisor::class
-])]
-class Employee implements UserInterface, PasswordAuthenticatedUserInterface
+class Employee extends User
 {
-    use IdentifiableTrait;
-    use TimestampTrait;
-    use Notifiable;
-
-    #[ORM\Column(length: 180, unique: true)]
-    protected ?string $email = null;
+    use CanAddRoleTrait;
 
     #[ORM\Column(length: 180)]
-    protected ?string $username = null;
+    protected ?string $fullname = null;
 
-    #[ORM\Column]
-    protected array $roles = [];
+    #[ORM\ManyToOne(targetEntity: EvaluationGageSection::class)]
+    #[ORM\JoinColumn(name: 'evaluation_section_id', referencedColumnName: 'id')]
+    private ?EvaluationGageSection $currentEvaluationSection = null;
 
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    protected ?string $password = null;
+    #[ORM\ManyToOne(targetEntity: MountingSection::class)]
+    #[ORM\JoinColumn(name: 'mounting_section_id', referencedColumnName: 'id')]
+    private ?MountingSection $currentMountingSection = null;
 
-    protected EventDispatcherInterface $event;
-
-    public function __construct()
+    public function getFullname(): ?string
     {
-        $this->setRoles([]);
-        $this->createdAt = new \DateTimeImmutable();
-        $this->updatedAt = new \DateTimeImmutable();
+        return $this->fullname;
     }
 
-    /**
-     * Obtenir l'email de l'utilisateur
-     *
-     * @return string|null
-     */
-    public function getEmail(): ?string
+    public function setFullname(string $fullname): self
     {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
+        $this->fullname = $fullname;
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
+    public function getCurrentEvaluationSection(): ?EvaluationGageSection
     {
-        return (string) $this->email;
+        return $this->currentEvaluationSection;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
+    public function setCurrentEvaluationSection(?EvaluationGageSection $section): static
     {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): static
-    {
-        $this->password = $password;
-
+        $this->currentEvaluationSection = $section;
         return $this;
     }
 
-    public function getUsername(): ?string
+    public function getCurrentMountingSection(): ?MountingSection
     {
-        return $this->username;
+        return $this->currentMountingSection;
     }
 
-    public function setUsername(string $username): self
+    public function setCurrentMountingSection(?MountingSection $section): static
     {
-        $this->username = $username;
+        $this->currentMountingSection = $section;
         return $this;
-    }
-
-    public function getCreatedAt(): \DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        //$this->roles[] = ROLE::USER;
-        return $this->roles;
     }
 
     public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        parent::setRoles($roles);
         return $this;
     }
 
-    public function setEvent(EventDispatcherInterface $event)
+    public function addNewRole(UserRole $newRole): self|\Throwable
     {
-        $this->event = $event;
+        $currentRoles = $this->getRoles();
+        try {
+            $this->verifyCanAddRole($newRole, $currentRoles);
+            $this->setRoles([$newRole->value, ...$currentRoles]);
+        } catch (\Throwable $th) {
+            throw new RoleAttributionException($th->getMessage());
+        }
+
+        return $this;
+    }
+
+    public function removeRole(UserRole $role) 
+    {
+        if ($this->hasRole($role, $this->getRoles())) {
+            $this->setRoles(array_filter($this->getRoles(), fn($removed) => !$removed === $role->value));
+        }
     }
 }

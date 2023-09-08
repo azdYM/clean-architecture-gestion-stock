@@ -2,13 +2,10 @@
 
 namespace App\Tests\Domain\Employee\Repository;
 
+use App\Domain\Auth\UserRole;
+use App\Domain\Employee\Entity\Employee;
 use App\Tests\FixtureTrait;
-use App\Domain\Employee\ROLE;
 use App\Tests\RepositoryTestKase;
-use App\Domain\Garantee\Entity\Evaluator;
-use App\Domain\Garantee\Entity\Supervisor;
-use App\Domain\Mounting\Entity\CreditAgent;
-use App\Domain\Mounting\Entity\CreditSupervisor;
 use App\Domain\Employee\Repository\EmployeeRepository;
 
 class EmployeeRepositoryTest extends RepositoryTestKase
@@ -16,50 +13,59 @@ class EmployeeRepositoryTest extends RepositoryTestKase
     use FixtureTrait;
 
     protected $repositoryEntity = EmployeeRepository::class;
+    private Employee $evaluator;
+    private Employee $sealer;
+    private Employee $agent;
+    private Employee $creditSupervisor;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        
+        [
+            'evaluator' => $this->evaluator,
+            'evaluation_supervisor' => $this->sealer,
+            'credit_agent' => $this->agent,
+            'credit_supervisor' => $this->creditSupervisor
+        ] = $this->loadFixtures(['employee']);
+
+    }
 
     public function testEmployeeIsEvaluatorInSectionOr()
     {
-        /**
-         * @var Evaluator $evaluator
-         */
-        ['evaluator' => $evaluator] = $this->loadFixtures(['employee']);
-        $this->assertEquals('azad_hassani@meck-moroni.org', $evaluator->getEmail());
-        $this->assertContains(ROLE::AGENT, $evaluator->getRoles());
-        $this->assertEquals('gold', $evaluator->getGageSection()->getEvaluationGageService()->getServiceName());
+        $this->em->persist($this->evaluator);
+        $this->em->flush();
+        $this->assertEquals('azad_hassani@meck-moroni.org', $this->evaluator->getEmail());
+        $this->assertContains(UserRole::GageEvaluator->value, $this->evaluator->getRoles());
+        $this->assertEquals('gold', $this->evaluator
+            ->getCurrentEvaluationSection()->getEvaluationGageService()->getServiceName()
+        );
     }
 
     public function testEmployeeIsSupervisorInSectionOr()
     {
-        /**
-         * @var Supervisor $sealer
-         */
-        ['evaluation_supervisor' => $sealer] = $this->loadFixtures(['employee']);
-        $this->assertEquals('imamou_mina@meck-moroni.org', $sealer->getEmail());
-        $this->assertContains(ROLE::SUPERVISOR, $sealer->getRoles());
-        $this->assertEquals('gold', $sealer->getGageSection()->getEvaluationGageService()->getServiceName());
+        $this->assertEquals('imamou_mina@meck-moroni.org', $this->sealer->getEmail());
+        $this->assertContains(UserRole::GageSupervisor->value, $this->sealer->getRoles());
+        $this->assertEquals('gold', $this->sealer
+            ->getCurrentEvaluationSection()->getEvaluationGageService()->getServiceName()
+        );
     }
 
     public function testEmployeeIsCreditAgentInSectionGage()
     {
-        /**
-         * @var CreditAgent $agent
-         */
-        ['credit_agent' => $agent] = $this->loadFixtures(['employee']);
-
-        $this->assertEquals('radjabou_saandi@meck-moroni.org', $agent->getEmail());
-        $this->assertContains(ROLE::AGENT, $agent->getRoles());
-        $this->assertEquals('gage', $agent->getMountingSection()->getMountingFolderService()->getServiceName());
+        $this->assertEquals('radjabou_saandi@meck-moroni.org', $this->agent->getEmail());
+        $this->assertContains(UserRole::CreditAgent->value, $this->agent->getRoles());
+        $this->assertEquals('gage', $this->agent
+            ->getCurrentMountingSection()->getMountingFolderService()->getServiceName()
+        );
     }
 
     public function testEmployeeIsSupervisorInSectionGage()
     {
-        /**
-         * @var CreditSupervisor $supervisor
-         */
-        ['credit_supervisor' => $supervisor] = $this->loadFixtures(['employee']);
-
-        $this->assertEquals('abdoul_karim@meck-moroni.org', $supervisor->getEmail());
-        $this->assertContains(ROLE::SUPERVISOR, $supervisor->getRoles());
-        $this->assertEquals('gage', $supervisor->getMountingSection()->getMountingFolderService()->getServiceName());
+        $this->assertEquals('abdoul_karim@meck-moroni.org', $this->creditSupervisor->getEmail());
+        $this->assertContains(UserRole::CreditSupervisor->value, $this->creditSupervisor->getRoles());
+        $this->assertEquals('gage', $this->creditSupervisor
+            ->getCurrentMountingSection()->getMountingFolderService()->getServiceName()
+        );
     }
 }

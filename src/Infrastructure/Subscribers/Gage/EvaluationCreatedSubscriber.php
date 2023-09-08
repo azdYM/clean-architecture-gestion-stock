@@ -15,6 +15,9 @@ class EvaluationCreatedSubscriber implements EventSubscriberInterface
         private NotificationService $notifier
     ){}
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return 

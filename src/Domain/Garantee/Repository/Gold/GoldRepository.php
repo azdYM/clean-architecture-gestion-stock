@@ -6,6 +6,14 @@ use App\Domain\Garantee\Entity\Gold\Gold;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
+/**
+ * @extends AbstractRepository<GoldRepository>
+ *
+ * @method GoldRepository|null find($id, $lockMode = null, $lockVersion = null)
+ * @method GoldRepository|null findOneBy(array $criteria, array $orderBy = null)
+ * @method GoldRepository[]    findAll()
+ * @method GoldRepository[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class GoldRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

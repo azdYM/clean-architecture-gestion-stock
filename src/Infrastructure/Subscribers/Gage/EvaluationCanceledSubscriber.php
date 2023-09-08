@@ -3,7 +3,6 @@
 namespace App\Infrastructure\Subscribers\Gage;
 
 use App\Domain\Garantee\Event\EvaluationCanceledEvent;
-use App\Domain\Garantee\Gold\Entity\Evaluator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\Notification\NotificationService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -16,6 +15,9 @@ class EvaluationCanceledSubscriber implements EventSubscriberInterface
         private NotificationService $notifier
     ){}
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return 
@@ -27,7 +29,6 @@ class EvaluationCanceledSubscriber implements EventSubscriberInterface
     public function onNotify(): void
     {
         $attestation = $this->event->getAttestation();
-        /** @var Evaluator $evaluator */
         $evaluator = $attestation->getEvaluator();
         $repository = $this->em->getRepository(NotificationRepository::class);
 

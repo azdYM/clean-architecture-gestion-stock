@@ -2,13 +2,20 @@
 
 namespace App\Tests\Domain\Garantee;
 
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Garantee\DTO\Garantee;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
+use App\Infrastructure\Generator\Item\GoldEvaluator;
+use App\Domain\Employee\Service\GageEvaluationService;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 trait EvaluationGaranteeTrait
 {
-    private function evaluate(array $requirements): GoldAttestation
+    private function evaluate(array $requirements, Employee $evaluator): GoldAttestation
     {
+        $itemEvaluator = new GoldEvaluator;
+        $service = new GageEvaluationService($evaluator, new EventDispatcher);
+
         $garantee = (new Garantee())
             ->setClient($this->individual)
             ->setCreditTypeTargeted($this->creditType)
@@ -26,6 +33,6 @@ trait EvaluationGaranteeTrait
             $garantee->addArticle($article);
         }
 
-        return $this->evaluator->evaluateAndGenerateAttestation($this->itemEvaluator, $garantee);
+        return $service->evaluateAndGenerateAttestation($itemEvaluator, $garantee);
     }
 }

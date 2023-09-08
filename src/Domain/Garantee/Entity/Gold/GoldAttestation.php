@@ -37,7 +37,7 @@ class GoldAttestation extends Attestation implements CancellableInterface
 
     #[ORM\ManyToOne(targetEntity: Employee::class)]
     #[ORM\JoinColumn(name: 'evaluator_id', referencedColumnName: 'id')]
-    private Evaluator $evaluator;
+    private Employee $evaluator;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $evaluatorDescription = null;

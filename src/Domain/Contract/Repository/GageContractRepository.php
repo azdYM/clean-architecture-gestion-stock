@@ -4,17 +4,18 @@ namespace App\Domain\Contract\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use App\Domain\Contract\Entity\GageContract;
+use App\Infrastructure\Orm\AbstractRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<GageContract>
+ * @extends AbstractRepository<GageContract>
  *
  * @method GageContract|null find($id, $lockMode = null, $lockVersion = null)
  * @method GageContract|null findOneBy(array $criteria, array $orderBy = null)
  * @method GageContract[]    findAll()
  * @method GageContract[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GageContractRepository extends ServiceEntityRepository
+class GageContractRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

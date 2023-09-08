@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\Subscribers\Credit;
 
-use App\Domain\Credit\CreditApprovedEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Domain\Credit\Event\CreditApprovedEvent;
 use App\Domain\Notification\NotificationService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -15,6 +15,9 @@ class CreditApprovedSubscriber implements EventSubscriberInterface
         private NotificationService $notifier
     ){}
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return 

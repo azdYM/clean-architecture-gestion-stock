@@ -3,18 +3,19 @@
 namespace App\Domain\Customer\Repository;
 
 use App\Domain\Customer\Entity\Location;
+use App\Infrastructure\Orm\AbstractRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Location>
+ * @extends AbstractRepository<Location>
  *
  * @method Location|null find($id, $lockMode = null, $lockVersion = null)
  * @method Location|null findOneBy(array $criteria, array $orderBy = null)
  * @method Location[]    findAll()
  * @method Location[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class LocationRepository extends ServiceEntityRepository
+class LocationRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

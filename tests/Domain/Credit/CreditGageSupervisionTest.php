@@ -5,26 +5,26 @@ namespace App\Tests\Domain\Credit;
 use App\Tests\FixtureTrait;
 use App\Tests\KernelTestKase;
 use App\Domain\Application\CancellableInterface;
-use App\Domain\Credit\Gage\Entity\GageCredit;
 use App\Domain\Credit\Service\GageCreditApprovalService;
-use App\Domain\Credit\Service\GageCreditCreationService;
 use App\Domain\Credit\Service\GageCreditRejectionService;
 use App\Domain\Customer\Entity\Individual;
+use App\Domain\Employee\Entity\Employee;
+use App\Domain\Employee\Service\CreditSupervisionService;
 use App\Domain\Mounting\DTO\CreditRequirements;
-use App\Domain\Mounting\Entity\CreditAgent;
-use App\Domain\Mounting\Entity\CreditSupervisor;
 use App\Domain\Mounting\FolderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class GageCreditTest extends KernelTestKase
+class CreditGageSupervisionTest extends KernelTestKase
 {
     use FixtureTrait;
+    use CreationCreditTrait;
 
     private Individual $individual;
-    private CreditAgent $creditAgent;
+    private Employee $creditAgent;
     private FolderInterface $folder;
-    private CreditSupervisor $supervisor;
+    private Employee $supervisor;
     private CreditRequirements $requirements;
+    private CreditSupervisionService $service;
     
     public function setUp(): void
     {
@@ -36,24 +36,14 @@ class GageCreditTest extends KernelTestKase
             'credit_requirement' => $this->requirements
         ] = $this->loadFixtures(['employee', 'credit_type', 'dto_credit', 'person', 'folder', 'attestation']);
 
-        $this->creditAgent->setEvent(new EventDispatcher());
-        $this->supervisor->setEvent(new EventDispatcher());
-    }
-
-    public function testGageCreditCreation()
-    {
-        $credit = $this->createCredit();
-
-        $this->assertEquals($credit, $this->folder->getCredit());
-        $this->assertEquals($credit->getCreditAgent(), $this->creditAgent);
-        $this->assertEquals($credit->getCapital(), $this->requirements->capital);
+        $this->service = new CreditSupervisionService($this->supervisor, new EventDispatcher);
     }
 
     public function testGageCreditApproval()
     {
         $service = new GageCreditApprovalService();
-        $credit = $this->createCredit();
-        $approval = $this->supervisor->approveCredit($service, $credit);
+        $credit = $this->createGageCredit();
+        $approval = $this->service->approveCredit($service, $credit);
 
         $this->assertContains($approval, $credit->getApprovals());
         $this->assertEquals($approval->getApproving(), $this->supervisor);
@@ -62,9 +52,9 @@ class GageCreditTest extends KernelTestKase
     public function testGageCreditRejecttion()
     {
         $service = new GageCreditRejectionService();
-        $credit = $this->createCredit();
+        $credit = $this->createGageCredit();
         $cause = "Ce credit est mal fait ! Veuillez changer la durée de cette crédit";
-        $rejection = $this->supervisor->rejectCredit($service, $credit, $cause);
+        $rejection = $this->service->rejectCredit($service, $credit, $cause);
 
         $this->assertContains($rejection, $credit->getRejections());
         $this->assertEquals($rejection->getApproving(), $this->supervisor);
@@ -73,19 +63,13 @@ class GageCreditTest extends KernelTestKase
 
     public function testGageCreditCancellation()
     {
-        $credit = $this->createCredit();
+        $credit = $this->createGageCredit();
         $cause = "Le client veut annuler son credit";
         /** @var CancellableInterface $creditCancelled */
-        $creditCancelled = $this->supervisor->cancelCredit($credit, $cause);
+        $creditCancelled = $this->service->cancelCredit($credit, $cause);
 
         $this->assertNotNull($creditCancelled->getCancelledAt());
         $this->assertEquals($creditCancelled->getCancellationCause(), $cause);
         $this->assertEquals($credit->getCancelledBy(), $this->supervisor);
-    }
-
-    private function createCredit(): GageCredit
-    {
-        $service = new GageCreditCreationService($this->folder);
-        return $this->creditAgent->createCredit($service, $this->requirements);
     }
 }

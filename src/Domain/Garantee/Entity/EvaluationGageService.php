@@ -22,9 +22,9 @@ class EvaluationGageService
     #[ORM\JoinColumn(name: 'agency_id', referencedColumnName: 'id')]
     private ?Agency $agency = null;
 
-    #[ORM\OneToOne(targetEntity: GageSection::class, inversedBy: 'evaluationGageService')]
+    #[ORM\OneToOne(targetEntity: EvaluationGageSection::class, inversedBy: 'evaluationGageService')]
     #[ORM\JoinColumn(name: 'section_id', referencedColumnName: 'id')]
-    private ?GageSection $section = null;
+    private ?EvaluationGageSection $section = null;
 
     public function __construct()
     {
@@ -54,12 +54,12 @@ class EvaluationGageService
         return $this;
     }
 
-    public function getSection(): GageSection
+    public function getSection(): EvaluationGageSection
     {
         return $this->section;
     }
 
-    public function setSection(GageSection $section): self
+    public function setSection(EvaluationGageSection $section): self
     {
         $this->section = $section;
         return $this;

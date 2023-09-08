@@ -15,6 +15,9 @@ class CreditCreatedSubscriber implements EventSubscriberInterface
         private NotificationService $notifier
     ){}
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return 

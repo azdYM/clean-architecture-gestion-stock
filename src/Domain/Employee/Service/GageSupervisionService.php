@@ -1,31 +1,30 @@
 <?php
 
-namespace App\Domain\Garantee\Entity;
+namespace App\Domain\Employee\Service;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Employee\Entity\Employee;
-use App\Domain\Garantee\Entity\GageSection;
 use App\Domain\Garantee\AttestationInterface;
 use App\Domain\Garantee\Entity\AttestationApproval;
 use App\Domain\Garantee\Entity\AttestationRejection;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
 use App\Domain\Garantee\Event\EvaluationApprovedEvent;
 use App\Domain\Garantee\Event\EvaluationCanceledEvent;
-use App\Domain\Garantee\WorkingEvaluationSectionTrait;
 use App\Domain\Mounting\Entity\MountingCreditFolderService;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-#[ORM\Entity]
-class Supervisor extends Employee
+class GageSupervisionService
 {
-    use WorkingEvaluationSectionTrait;
+    public function __construct
+    (
+        private Employee $supervisor,
+        private EventDispatcherInterface $event
+    ){}
 
-    #[ORM\ManyToOne(targetEntity: GageSection::class, inversedBy: 'supervisors')]
-    #[ORM\JoinColumn(name: 'gage_section_id', referencedColumnName: 'id')]
-    private ?GageSection $gageSection = null;
-
-    public function approve(GoldAttestation $attestation, MountingCreditFolderService $serviceMountingTargeted, ?string $comment = null): AttestationApproval
+    public function approve(
+        GoldAttestation $attestation, MountingCreditFolderService $serviceMountingTargeted, ?string $comment = null
+    ): AttestationApproval
     {   
-        $approval = $attestation->approved($this, $comment);
+        $approval = $attestation->approved($this->supervisor, $comment);
         $this->event->dispatch(
             new EvaluationApprovedEvent($attestation, $serviceMountingTargeted)
         );
@@ -35,14 +34,14 @@ class Supervisor extends Employee
 
     public function reject(GoldAttestation $attestation, ?string $cause): AttestationRejection
     {
-        $rejection = $attestation->rejected($this, $cause);
+        $rejection = $attestation->rejected($this->supervisor, $cause);
         $this->event->dispatch(new EvaluationCanceledEvent($attestation));
         return $rejection;
     }
 
     public function cancel(GoldAttestation $attestation, ?string $cause): AttestationInterface
     {
-        $attestation->canceled($this, $cause);
+        $attestation->canceled($this->supervisor, $cause);
         $this->event->dispatch(new EvaluationCanceledEvent($attestation));
         return $attestation;
     }

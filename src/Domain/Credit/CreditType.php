@@ -22,8 +22,8 @@ class CreditType {
     #[ORM\Column(unique: true, length: 50)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(targetEntity: MountingSection::class, inversedBy: 'loans')]
-    #[ORM\JoinColumn(name: 'section_id')]
+    #[ORM\ManyToOne(targetEntity: MountingSection::class)]
+    #[ORM\JoinColumn(name: 'section_id', referencedColumnName: 'id')]
     private ?MountingSection $mountingSection = null;
 
     public function getLabel(): ?string

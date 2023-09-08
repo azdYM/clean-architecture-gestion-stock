@@ -4,17 +4,17 @@ namespace App\Domain\Mounting\Repository;
 
 use Doctrine\Persistence\ManagerRegistry;
 use App\Domain\Mounting\Entity\MountingCreditFolderService;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Infrastructure\Orm\AbstractRepository;
 
 /**
- * @extends ServiceEntityRepository<MountingCreditFolderService>
+ * @extends AbstractRepository<MountingCreditFolderService>
  *
  * @method MountingCreditFolderService|null find($id, $lockMode = null, $lockVersion = null)
  * @method MountingCreditFolderService|null findOneBy(array $criteria, array $orderBy = null)
  * @method MountingCreditFolderService[]    findAll()
  * @method MountingCreditFolderService[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class MountingCreditFolderServiceRepository extends ServiceEntityRepository
+class MountingCreditFolderServiceRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

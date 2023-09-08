@@ -15,6 +15,9 @@ class CreditCanceledSubscriber implements EventSubscriberInterface
         private NotificationService $notifier
     ){}
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return 
@@ -39,7 +42,7 @@ class CreditCanceledSubscriber implements EventSubscriberInterface
     private function getChannel(): string
     {
         $agency = $this->event->getAgencyLabel();
-        $section = $this->event->getSectionLabel();
+        $section = $this->event->getCreditCreationServiceName();
         return 'supervisors_credit_'.$section.'_'.$agency;
     }
 

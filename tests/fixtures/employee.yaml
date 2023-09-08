@@ -9,8 +9,8 @@ App\Domain\Garantee\Entity\EvaluationGageService:
     service_name: gold
     agency: '@agency<numberBetween(1, 3)>'
 
-App\Domain\Garantee\Entity\GageSection:
-  gage_section:
+App\Domain\Garantee\Entity\EvaluationGageSection:
+  evaluation_gage_section:
     evaluation_gage_service: '@evaluation_gage_service*'
 
 App\Domain\Mounting\Entity\MountingCreditFolderService:
@@ -22,30 +22,34 @@ App\Domain\Mounting\Entity\MountingSection:
   mounting_section:
     mounting_folder_service: '@mounting_credit_folder_service*'
 
-App\Domain\Garantee\Entity\Evaluator:
+App\Domain\Auth\User:
+  user{1} (extends employee):
+
+App\Domain\Employee\Entity\Employee:
   evaluator (extends employee):
-    username: Azad Hassani
+    username: azad
+    fullname: Azad Hassani
     email: azad_hassani\@meck-moroni.org
-    roles: ['ROLE_AGENT']
-    gage_section: '@gage_section*'
+    roles: ['ROLE_GAGE_EVALUATOR']
+    current_evaluation_section: '@evaluation_gage_section*'
 
-App\Domain\Garantee\Entity\Supervisor:
   evaluation_supervisor (extends employee):
-    username: Imamou Mina
+    fullname: Imamou Mina
+    username: azad
     email: imamou_mina\@meck-moroni.org
-    roles: ['ROLE_SUPERVISOR']
-    gage_section: '@gage_section*'
+    roles: ['ROLE_GAGE_SUPERVISOR']
+    current_evaluation_section: '@evaluation_gage_section*'
 
-App\Domain\Mounting\Entity\CreditAgent:
   credit_agent (extends employee):
-    username: Radjabou Saandi
+    fullname: Radjabou Saandi
+    username: radjabou
     email: radjabou_saandi\@meck-moroni.org
-    roles: ['ROLE_AGENT']
-    mounting_section: '@mounting_section'
+    roles: ['ROLE_CREDIT_AGENT']
+    current_mounting_section: '@mounting_section*'
 
-App\Domain\Mounting\Entity\CreditSupervisor:
   credit_supervisor (extends employee):
-    username: Abdoul-karim Ibrahim
+    fullname: Abdoul-karim Ibrahim
+    username: abdoul_karim
     email: abdoul_karim\@meck-moroni.org
-    roles: ['ROLE_SUPERVISOR']
-    mounting_section: '@mounting_section'
+    roles: ['ROLE_CREDIT_SUPERVISOR']
+    current_mounting_section: '@mounting_section*'

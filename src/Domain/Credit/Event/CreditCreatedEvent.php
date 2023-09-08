@@ -31,12 +31,12 @@ class CreditCreatedEvent
             ->getLabel()
         ; 
     }
-
+    
     private function creditCreationService(): MountingCreditFolderService
     {
         return $this->credit
             ->getCreditAgent()
-            ->getMountingSection()
+            ->getCurrentMountingSection()
             ->getMountingFolderService()
         ;
     }

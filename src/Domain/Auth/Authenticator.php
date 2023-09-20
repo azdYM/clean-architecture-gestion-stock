@@ -96,7 +96,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
     public function start(Request $request, AuthenticationException $authException = null): Response
     {
         $url = $this->getLoginUrl($request);
-
+        
         if ('json' === $request->getContentTypeFormat()) {
             return new JsonResponse([], Response::HTTP_FORBIDDEN);
         }

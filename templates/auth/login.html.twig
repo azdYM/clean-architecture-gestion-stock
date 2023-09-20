@@ -3,12 +3,11 @@
 {% block title 'Se connecter' %}
 
 {% block body %}
-    <div class="auth-container my5">
+    <div class="auth-container container my5">
 
       <h1 class="auth-title fade">Se connecter</h1>
 
       {% if error %}
-          {{ error.messageKey | trans(error.messageData, 'security') }}
         <alert-message type="danger">
           {{ error.messageKey | trans(error.messageData, 'security') }}
         </alert-message>
@@ -27,5 +26,4 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
       </form>
     </div>
-    <waves-shape target=".auth-form"></waves-shape>
 {% endblock %}

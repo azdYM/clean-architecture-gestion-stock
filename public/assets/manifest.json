@@ -1,0 +1,14 @@
+{
+  "app.css": {
+    "file": "app-d6b27be3.css",
+    "src": "app.css"
+  },
+  "app.js": {
+    "css": [
+      "app-d6b27be3.css"
+    ],
+    "file": "app-9c431980.js",
+    "isEntry": true,
+    "src": "app.js"
+  }
+}

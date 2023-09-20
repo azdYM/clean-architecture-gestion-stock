@@ -1,0 +1,63 @@
+// Variables ==================
+:root {
+    --mck-color-red: #f25353;
+    --mck-color-green: #1da660;
+    --mck-color-blue: #2c7eca;
+    --mck-color-black: #000;
+    --mck-color-white: #fff;
+    --mck-light-color-txt: #121c42;
+    --mck-dark-color-txt: #f0f3ff;
+    --mck-color-border: #ccc;
+    --mck-color-gray: #7a7878;
+    --mck-color-shadow: #d8e1e8;
+    --mck-color-transparent: #{rgba(#121c42, 0)};    
+    --color: var(--mck-color-black)
+    --background: var(--mck-color-white)
+    --space-section: 150px;
+    --card-padding: 16px;
+    --header-height: 137px;
+    --gap: 20px;
+    --space: 8px;
+}
+
+// Dark mode =============
+// @include dark {
+//     --background-color: var(--mck-color-black);
+//     --text-color: var(--mck-dark-color-txt);
+//     --border-light: #161e3b;
+//     --shadow: rgba(0, 0, 0, 0.2);
+// }
+
+// Outils ==================
+
+@import './tools/functions';
+@import './tools/mixins';
+@import './tools/layout';
+@import './tools/typography';
+@import './tools/reset';
+
+// Generic ==================
+
+body {
+    font-family: $font;
+    font-size: 16px;
+    color: var(--color);
+    line-height: 1.6;
+    background: var(--background);
+    scroll-margin: 100px 0 0 0;
+    word-break: break-word;
+}  
+
+
+// Modules ==================
+
+@import './modules/btn';
+@import './modules/card';
+@import './modules/search';
+@import './modules/navbar';
+@import './modules/popup';
+@import './modules/scrollbar';
+
+// Pages ==================
+
+@import './pages/login';

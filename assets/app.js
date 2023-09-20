@@ -1,3 +1,3 @@
-console.log("hello")
-import './index.js'
-import './index.css'
+import { $, $$ } from './functions/dom.js'
+import './elements/index.js'
+import './css/app.scss'

@@ -1,0 +1,62 @@
+.auth-container
+{
+    margin: auto;
+    border: 1px solid var(--mck-color-border);
+    border-radius: 5px;
+
+    @include up(800) 
+    {
+        width: 400px;
+        height: 380px;
+        padding: 0 30px;
+    }
+
+    alert-message 
+    {
+        color: var(--mck-color-red);
+        text-align: center;
+        margin-bottom: 1rem;
+        display: block;
+    }
+    
+}
+
+.auth-title
+{
+    text-align: center;
+    padding-top: 12px;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-form
+{
+    button 
+    {
+        margin-top: 12px;
+        color: var(--mck-color-white);
+        background-color: var(--mck-color-green);
+    }
+}
+
+.form-group
+{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 12px;
+    
+    input 
+    {
+        height: 40px;
+        border-radius: 5px;
+        border: 1px solid var(--mck-color-border);
+        outline: none;
+        transition: all .3s ease-in-out;
+        padding: 0 12px;
+        &:focus 
+        {
+            border: 1px solid var(--mck-color-blue);
+        }
+    }
+}

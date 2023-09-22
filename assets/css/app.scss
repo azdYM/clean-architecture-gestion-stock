@@ -2,13 +2,23 @@
 :root {
     --mck-color-red: #f25353;
     --mck-color-green: #1da660;
+    --mck-color-pink: rgb(255, 192, 203);
     --mck-color-blue: #2c7eca;
+    --mck-color-gray: #b3b3b3;
+
+
+    --mck-color-red-1: #f25353a2;
+    --mck-color-green-1: #1da65f3d;
+    --mck-color-pink-1: rgba(255, 192, 203, 0.404);
+    --mck-color-blue-1: #2c7ecaa2;
+
     --mck-color-black: #000;
     --mck-color-white: #fff;
+
     --mck-light-color-txt: #121c42;
     --mck-dark-color-txt: #f0f3ff;
+
     --mck-color-border: #ccc;
-    --mck-color-gray: #7a7878;
     --mck-color-shadow: #d8e1e8;
     --mck-color-transparent: #{rgba(#121c42, 0)};    
     --color: var(--mck-color-black)
@@ -18,6 +28,7 @@
     --header-height: 137px;
     --gap: 20px;
     --space: 8px;
+    --navbar: 56px
 }
 
 // Dark mode =============
@@ -38,26 +49,40 @@
 
 // Generic ==================
 
-body {
+body 
+{
     font-family: $font;
     font-size: 16px;
     color: var(--color);
     line-height: 1.6;
-    background: var(--background);
+    background: var(--mck-color-white);
     scroll-margin: 100px 0 0 0;
     word-break: break-word;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+    scrollbar-width: thin;
 }  
 
+gcrdt-app
+{
+    display: block;
+    position: relative;
+    height: 100vh;
+}
 
 // Modules ==================
 
 @import './modules/btn';
 @import './modules/card';
 @import './modules/search';
-@import './modules/navbar';
 @import './modules/popup';
 @import './modules/scrollbar';
 
 // Pages ==================
 
 @import './pages/login';
+@import './pages/navbar';
+@import './pages/content';
+@import './pages/guide';
+@import './pages/page';

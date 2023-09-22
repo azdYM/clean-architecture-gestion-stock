@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom'
 import { useContext } from "react"
 import { useDisplayPopUp } from "/functions/hooks"
 import { SearchContext } from "/functions/context"
 import { Icon } from "./Icon"
+import { routes } from "/functions/links"
 
 
 export const SearchBox = () =>
@@ -22,19 +24,19 @@ function SearchBoxWrapper({displayed})
 
     const { search } = useContext(SearchContext)
     const searchResults = [
-        {path: '#', fullname: "Abdoul-wahid Hassani", folio: "66166"},
-        {path: '#', fullname: "Abdoul-karim Ibrahim", folio: "23453"},
-        {path: '#', fullname: "Radjabou Saandi Islam", folio: "45643"},
-        {path: '#', fullname: "Nasma Abdoul-fatah", folio: "32431"},
-        {path: '#', fullname: "Imamou Mina", folio: "63421"},
-        {path: '#', fullname: "Said Hassani", folio: "67900"},
-        {path: '#', fullname: "Mohamed Adam", folio: "10234"},
-    ]
-
+        {fullname: "Abdoul-wahid Hassani", folio: "66166"},
+        {fullname: "Abdoul-karim Ibrahim", folio: "23453"},
+        {fullname: "Radjabou Saandi Islam", folio: "45643"},
+        {fullname: "Nasma Abdoul-fatah", folio: "32431"},
+        {fullname: "Imamou Mina", folio: "63421"},
+        {fullname: "Said Hassani", folio: "67900"},
+        {fullname: "Mohamed Adam", folio: "10234"},
+    ].map(result => ({...result, path: `${routes.showCustomer.replace('/:id', '')}/${result.folio}`}))
+    
     return (
         <div className="popup-wrapper content-search-result" >
             <div id="spinner"></div>
-            <SearchResults results={searchResults}/>
+            <SearchResults results={searchResults} />
         </div>
     )
 }
@@ -49,12 +51,12 @@ function SearchResults({results})
 function ItemSearchResult({item}) 
 {
     return (
-        <a className="link-menu" href={item.path}>
+        <Link to={item.path} className="link-menu">
             <Icon className="link-icon" name="result-search" size={70} />
             <div className="client-about">
                 <span>{item.fullname}</span>
                 <span className="folio">{item.folio}</span>
             </div>
-        </a>
+        </Link>
     )
 }

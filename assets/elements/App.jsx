@@ -1,19 +1,22 @@
 import ReactDOM from 'react-dom/client'
-import React, { useContext, createContext, useRef } from 'react'
-import { Navbar } from '/components/Navbar'
+import React, { useRef } from 'react'
+import { MastheadContainer } from './Navbar'
+import { AppContext, PopupContext } from '/functions/context'
+import { RendererGuideContent } from './Guide'
+import { PageManager } from './PageManager'
 import { PopupContainer } from '/components/PopUpContainer'
+import { BrowserRouter } from 'react-router-dom'
 
-const PopupContext = createContext({popupActived: false})
-const AppContext = createContext({})
-
-const PopupProvider = ({ children }) => {
-	const popup = useRef(true)
-	console.log(popup, 'child')
-  	return (
-		<PopupContext.Provider value={{popupActived: popup, updatePopup: () => !popup.current}}>
-			{ children }
-		</PopupContext.Provider>
-	)
+export default class App extends HTMLElement
+{
+	connectedCallback()
+	{
+		ReactDOM.createRoot(this).render(
+			<BrowserRouter>
+				<Container />
+			</BrowserRouter>
+		)
+	}
 }
 
 const AppProvider = ({ children }) => {
@@ -24,42 +27,20 @@ const AppProvider = ({ children }) => {
 	)
 }
 
-export const usePopup = () => {
-	return useContext(PopupContext)
-}
-
-export default class App extends HTMLElement
-{
-	connectedCallback()
-	{
-		ReactDOM.createRoot(this).render(<Container />)
-	}
-}
-
 function Container()
 {
 	return (
 		<AppProvider>
-			<PopupProvider >
-				<Navbar />
-				<Sidebar />
-				<Content />
-				<PopupContainer />
-			</PopupProvider>
+			<div id='content'>
+				<MastheadContainer />
+
+				<div id='guide-wrapper'>
+					<div id="guide-space"></div>
+					<RendererGuideContent />
+				</div>
+				<PageManager />
+			</div>
+			<PopupContainer />
 		</AppProvider>
-	)
-}
-
-function Sidebar()
-{
-	return (
-		<div></div>
-	)
-}
-
-function Content()
-{
-	return (
-		<div></div>
 	)
 }

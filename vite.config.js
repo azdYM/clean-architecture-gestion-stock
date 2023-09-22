@@ -22,12 +22,12 @@ const twigRefreshPlugin = () => ({
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), twigRefreshPlugin()],
-  root: './assets',
-  base: '/assets',
+  base: '/assets/',
   build: {
+    polyfillDynamicImport: false,
     assetsDir: '',
     manifest: true,
-    outDir: '../public/assets',
+    outDir: '../public/assets/',
     rollupOptions: {
       output: {
         manualChunks: undefined, // Desactive la separation du vendor
@@ -36,5 +36,6 @@ export default defineConfig({
         app: resolve(__dirname, 'assets/app.js')
       }
     }
-  }
+  },
+  root: './assets'
 })

@@ -1,21 +1,25 @@
-import { createContext, useContext, useState } from "react"
-import { GuideSidebarButton } from "./GuideSidebarButton"
-import { Icon } from "./Icon"
-import { Logo } from "./Logo"
-import { SearchBox } from "./SearchBox"
-import { SearchInput } from "./SerchInput"
-import { TopBarAvatar } from "./TopBarAvatar"
-import { TopBarNotificationButton } from "./TopBarNotificationButton"
+import { useState } from "react"
+import { GuideSidebarButton } from "../components/GuideSidebarButton"
+import { Icon } from "../components/Icon"
+import { Logo } from "../components/Logo"
+import { SearchBox } from "../components/SearchBox"
+import { SearchInput } from "../components/SerchInput"
+import { TopBarAvatar } from "../components/TopBarAvatar"
+import { TopBarNotificationButton } from "../components/TopBarNotificationButton"
 import { SearchContext } from "/functions/context"
 
-export const Navbar = () =>
+export const MastheadContainer = () =>
 {
 	return (
-		<nav className="container navbar">
-			<NavbarStartElement />
-			<NavbarCenterElement />
-			<NavbarEndElement />
-		</nav>
+		<div className="masthead-container">
+			<gck-masthead>
+				<nav className="container gck-masthead">
+					<NavbarStartElement />
+					<NavbarCenterElement />
+					<NavbarEndElement />
+				</nav>
+			</gck-masthead>
+		</div>
 	)
 }
 

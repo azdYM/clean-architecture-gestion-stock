@@ -1,0 +1,53 @@
+
+gck-guide-section-renderer
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+}
+
+.sections {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+}
+
+gck-guide-section-renderer
+{
+    display: block;
+}
+
+mck-guide-collaps-entry-rendering
+{
+    display: block;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--mck-color-border);
+}
+
+mck-guide-entry-renderer
+{
+    display: block;
+    margin-bottom: 5px;
+
+    .link-menu{
+        height: 38px;
+        &.clicked
+        {
+            color: var(--mck-color-green);
+            svg {
+                fill: var(--mck-color-green);
+                color: var(--mck-color-green);
+            }
+        }
+    }
+
+    .link-icon
+    {
+        width: 28px;
+        height: 28px;
+        justify-content: flex-start;
+    }
+}

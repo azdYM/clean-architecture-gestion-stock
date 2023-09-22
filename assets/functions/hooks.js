@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { $ } from '/functions/dom'
+import { $, $$ } from '/functions/dom'
 
 export function useDisplayPopUp(elementName, callback = null)
 {
@@ -19,16 +19,37 @@ export function useDisplayPopUp(elementName, callback = null)
             targetElement.style.display = 'none';
             setDiplayed(false)
         }
-        const onClicTargetElement = (e) => {
+
+        /**
+         * 
+         * @param {Event} e 
+         */
+        const onClickTargetElement = (e) => {
+            const target = e.target
+
+            const targetIsLink = () => target.tagName === "A";
+            const targetIsChildOfLink = () => target.closest(".link-menu") !== null
+
+            // Je ne veux pas stoper la propagation si le target est un lient
+            if (targetIsLink()) {
+                return
+            } 
+
+            // Je ne veux pas non plus stoper la propagation si le target est un 
+            // enfant d'un lien
+            if (targetIsChildOfLink()) {
+                return
+            }
+
             e.stopPropagation()
         }
         
-        targetElement.addEventListener('click', onClicTargetElement)
+        targetElement.addEventListener('click', onClickTargetElement)
         document.addEventListener('click', onClickDocument)
 
         return () => {
             document.removeEventListener('click', onClickDocument)
-            targetElement.removeEventListener('click', onClicTargetElement)
+            targetElement.removeEventListener('click', onClickTargetElement)
         }
     }, [])
 

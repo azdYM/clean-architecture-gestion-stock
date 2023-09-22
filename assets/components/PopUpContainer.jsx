@@ -3,7 +3,6 @@ import { $ } from '/functions/dom'
 import { useDisplayPopUp } from '/functions/hooks'
 import { RenderContentMenu, RenderHeaderMenu } from './Menu'
 import { RenderContentNotification, RenderHeaderNotification } from './Notification'
-import { usePopup } from '/elements/App'
 
 export const PopupContainer = () =>
 {
@@ -16,7 +15,6 @@ export const PopupContainer = () =>
 
 function RenderPopUp()
 {
-    console.log(usePopup(), 'hehehehe')
     return (
         <div>
             <PopUpDropDown />

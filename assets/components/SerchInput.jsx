@@ -7,7 +7,7 @@ export const SearchInput = () =>
 {    
     const { updateSearch } = useContext(SearchContext)
 
-    const handleInput = (e) => {
+    const handleChange = (e) => {
         const parent = getSearchBox(e.currentTarget)
         const positionX = parent.getBoundingClientRect().left
         const positionY = parent.getBoundingClientRect().bottom
@@ -39,7 +39,7 @@ export const SearchInput = () =>
     return (
         <div className="search-input">
             <input 
-                onInput={handleInput} onBlur={handleBlur} onFocus={handleFocus}
+                onChange={handleChange} onBlur={handleBlur} onFocus={handleFocus}
                 name="search_query" type="text" placeholder="Rechercher" 
                 aria-label="Rechercher" autoCapitalize="none" autoComplete="off" autoCorrect="off" tabIndex="0" 
             />

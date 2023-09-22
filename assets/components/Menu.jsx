@@ -27,15 +27,15 @@ export const RenderContentMenu = () =>
 {
     const links = 
     [
-        {href: '/logout', label: 'Se déconnecter', icon: 'logout'},
-        {href: '#', label: 'Gérer mon compte', icon: 'user-circle-gear'},
-        {href: '#', label: 'Apparence : thème claire', icon: 'theme'},
-        {href: '#', label: 'Paramètres', icon: 'settings'}
+        {path: '/logout', label: 'Se déconnecter', icon: 'logout'},
+        {path: '#', label: 'Gérer mon compte', icon: 'user-circle-gear'},
+        {path: '#', label: 'Apparence : thème claire', icon: 'theme'},
+        {path: '#', label: 'Paramètres', icon: 'settings'}
     ]
 
     return (
         <div className="popup-content content-menu">
-            {links.map((link, i) => <LinkMenu key={i} link={link} />)}
+            {links.map((link, i) => <LinkMenu key={i} label={link.label} path={link.path} icon={link.icon} />)}
         </div>
     )
 }
@@ -135,12 +135,12 @@ function ShowManagerInformationAboutWork({role})
 
 /** =============== Composant liée au contenu ============= */
 
-function LinkMenu({link})
+export function LinkMenu({label, icon, path, className=''})
 {
     return (
-        <a href={link.href} className="link-menu">
-            <Icon className="link-icon" size={80} name={link.icon} />
-            <span className="link-label">{link.label}</span>
+        <a href={path} className={`link-menu ${className}`}>
+            <Icon className="link-icon" size={80} name={icon} />
+            <span className="link-label">{label}</span>
         </a>
     )
 }

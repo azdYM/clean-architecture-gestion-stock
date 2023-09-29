@@ -1,0 +1,109 @@
+.gck-search-client
+{
+	width: 300px;
+	margin-bottom: 2rem;
+}
+
+.gck-search-client-input
+{
+	display: grid;
+	width: 100%;
+	position: relative;
+	grid-template-columns: calc(100% - 55px) 50px;
+	align-items: center;
+	@extend %gck-input;
+	padding: 0;
+	gap: 5px;
+	font-size: 15px;
+
+	&.focus
+	{
+		border: 2px solid var(--mck-color-blue);
+		.search-link-icon
+		{
+			height: 33px;
+		}
+	}
+
+	input {
+		display: block;
+		background-color: none;
+		border: none;
+		outline: none;
+		padding: 2px 8px;
+	}
+}
+
+.search-link-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--mck-color-border);
+	border-top-right-radius: inherit;
+	border-bottom-right-radius: inherit;
+	cursor: pointer;
+	height: var(--input-height);
+	transition: background-color .3s ease-in;
+
+	&:hover {
+		background-color: var(--mck-color-green-1);
+		color: var(--mck-color-green);
+	}
+}
+
+.gck-entries-empty
+{
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between; 
+	gap: 8px;
+
+    
+}
+
+.gck-input-groups
+{
+	@extend .grid;
+	font-size: .85rem;
+}
+
+.gck-text-input, .gck-select-input
+{
+	display: flex;
+	flex-direction: column;
+
+	.gck-input 
+	{
+		display: flex;
+		gap: 3px;
+		flex-direction: column;
+
+		input, select 
+		{
+			@extend %gck-input;
+			outline: none;
+			background-color: var(--mck-color-white);
+		}
+
+		input:focus, select:focus{
+			border: 2px solid var(--mck-color-blue);
+		}
+	}
+}
+
+.gck-button-submit 
+{
+	height: var(--input-height);
+	padding: 0 12px;
+	background-color: var(--mck-color-green);
+	color: var(--mck-color-white);
+	margin-top: 14px;
+	border-radius: 8px;
+	font-size: 15px;
+	transition: .3s ease-out;
+
+	&:hover {
+		background-color: var(--mck-color-green-1);
+	}
+}

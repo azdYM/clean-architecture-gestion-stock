@@ -7,11 +7,11 @@
     --mck-color-gray: #b3b3b3;
 
 
-    --mck-color-red-1: #f25353a2;
-    --mck-color-green-1: #1da65f3d;
+    --mck-color-red-1: #f253533a;
+    --mck-color-green-1: #1da65f3a;
     --mck-color-pink-1: rgba(255, 192, 203, 0.404);
-    --mck-color-blue-1: #2c7ecaa2;
-
+    --mck-color-blue-1: #2c7eca3a;
+    --mck-color-gray-1: #f0efef;
     --mck-color-black: #000;
     --mck-color-white: #fff;
 
@@ -28,7 +28,9 @@
     --header-height: 137px;
     --gap: 20px;
     --space: 8px;
-    --navbar: 56px
+    --navbar: 56px;
+    --shadow: 0px 0px 22px -6px rgba(74,74,74,0.24),
+    0px 15px 12px 0px rgba(0,0,0,0.22);
 }
 
 // Dark mode =============
@@ -46,6 +48,7 @@
 @import './tools/layout';
 @import './tools/typography';
 @import './tools/reset';
+@import './tools/table';
 
 // Generic ==================
 
@@ -72,7 +75,7 @@ gcrdt-app
 }
 
 // Modules ==================
-
+@import './modules/menu.scss';
 @import './modules/btn';
 @import './modules/card';
 @import './modules/search';
@@ -86,3 +89,6 @@ gcrdt-app
 @import './pages/content';
 @import './pages/guide';
 @import './pages/page';
+@import './pages/addCustomer';
+@import './pages/evaluateGage';
+@import './pages/checkAttestations';

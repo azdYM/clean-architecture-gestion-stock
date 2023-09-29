@@ -60,8 +60,3 @@ export function createElement(tagName, attributes={}, ...children) {
 
   return e
 }
-
-export const setDocumentTitle = (title) =>
-{
-  document.title = title
-}

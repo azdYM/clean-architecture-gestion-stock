@@ -1,9 +1,3 @@
-#content
-{
-    
-    
-}
-
 .masthead-container
 {
     position: fixed;
@@ -26,9 +20,6 @@
     overflow-y: auto;
     scrollbar-width: thin;
     z-index: 2022;
-
-    
-
     #guide-space
     {
         margin-top: var(--navbar);
@@ -59,11 +50,11 @@
 gck-page-manager
 {
     display: block;
-    height: 1000px;
-    border: 1px solid var(--mck-color-border);
+    // border: 1px solid var(--mck-color-border);
     border-radius: 5px;
     margin-top: var(--navbar);
-    margin-left: 245px;
+    // margin-left: 245px;
+    height: 100%;
 }
 
 @include down(770)

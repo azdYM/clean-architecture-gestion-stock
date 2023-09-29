@@ -1,8 +1,7 @@
 import { Icon } from "/components/Icon"
-import { $ } from "/functions/dom"
 import { getUserActions, routes } from "/functions/links"
 import { substring } from "/functions/string"
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 export const RendererGuideContent = () => {
     return (
@@ -25,7 +24,7 @@ function RenderBaseSection()
 {
     const userRoles = [
         {key: 'ROLE_GAGE_EVALUATOR', value: 'Evaluateur de gage'},
-        {key: 'ROLE_GAGE_SUPERVISOR', value: 'Superviseur de gage'}
+        {key: 'ROLE_CREDIT_AGENT', value: 'Agent de crédit'}
     ]
 
     return (
@@ -42,7 +41,9 @@ function RenderBaseLinks()
 {
     const links = [
         {label: 'Acceuil', path: routes.home, icon: 'home'},
-        {label: 'Historique', path: routes.history, icon: 'history'}
+        {label: 'Historique', path: routes.history, icon: 'history'},
+        {label: 'Attestations de gage', path: routes.attestations, icon: 'list-attestation'},
+        {label: 'Contrats de crédit', path: routes.credits, icon: 'list-credit'}
     ]
 
     return (
@@ -91,16 +92,15 @@ function RenderLink({action})
 
 function LinkWrapper({label, icon, path, className=''})
 {
-    const handleClick = (e) => {
-        const classNameWhenClicked = 'clicked';
-        $(`.${classNameWhenClicked}`, $('#guide-content', document))?.classList.remove(classNameWhenClicked)
-        e.currentTarget.classList.add(classNameWhenClicked)
-    }
-
     return (
-        <Link onClick={handleClick} className={`link-menu ${className}`} to={path}>
+        <NavLink 
+            className={({isActive}) => 
+                isActive ? 'link-menu clicked' : `link-menu ${className}`
+            }
+            to={path}
+        >
             <Icon className="link-icon" size={80} name={icon} />
             <span className="link-label">{label}</span>
-        </Link>
+        </NavLink>
     )
 }

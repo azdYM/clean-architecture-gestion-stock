@@ -1,0 +1,103 @@
+.page-title {
+    margin: 10px 20px;
+    font-size: 1.8rem;
+    padding: 0 6px;
+}
+
+.gck-form-wrapper
+{
+    height: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    --input-height: 38px;
+}
+
+%gck-input
+{
+    height: var(--input-height);
+    border-radius: 8px;
+    border: 1px solid var(--mck-color-border);
+    padding: 0 10px;
+    &:focus {
+        border: none;
+    }
+}
+
+.gck-form
+{
+    padding: 1rem 1.5rem;
+    width: 100%;
+    form {
+        --col: 230px;
+    }
+    .form-title {
+        font-size: 1.8rem;
+        margin-bottom: 1.2rem;
+    }
+}
+
+%btn-action
+{
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 5px;
+    transform: scale(1);
+    transition: .3s ease;
+    color: var(--mck-color-white);
+}
+
+.gck-collection-fields
+{
+    .btn-add
+    {
+        @extend %btn-action;
+        margin-top: 5px;
+        background-color: var(--mck-color-blue);
+    }
+
+    .btn-add:hover
+    {
+        background-color: var(--mck-color-blue-1);
+        transform: scale(1.02);
+        color: var(--mck-color-blue);
+    }
+
+    .btn-delete
+    {
+        @extend %btn-action;
+        flex: 0 0 85px;
+        background-color: var(--mck-color-red);
+        width: 85px;
+    }
+
+    .btn-delete:hover
+    {
+        background-color: var(--mck-color-red-1);
+        transform: scale(1.02);
+        color: var(--mck-color-red);
+    }
+}
+
+
+@include down(430)
+{
+    .page-title {
+        font-size: 1.4rem;
+    }
+
+    .gck-form
+    {
+        padding: 12px;
+        form {
+            --col: 95%;
+        }
+    }
+    
+    .gck-search-client
+    {
+        width: 100%;
+        margin-bottom: 1.2rem;
+    }
+}

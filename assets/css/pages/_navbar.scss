@@ -63,7 +63,7 @@ gck-masthead
 
     &.focus
     {
-        border: 1px solid var(--mck-color-blue);
+        border: 2px solid var(--mck-color-blue);
     }
 
     form
@@ -177,7 +177,7 @@ gck-masthead
     width: 46px;
     height: 46px;
     border-radius: 50%;
-    background-color: var(--mck-color-green);
+    background-color: var(--mck-color-gray);
     color: var(--mck-color-white);
     display: flex;
     align-items: center;

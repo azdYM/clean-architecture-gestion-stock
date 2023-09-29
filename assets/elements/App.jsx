@@ -1,9 +1,9 @@
 import ReactDOM from 'react-dom/client'
-import React, { useRef } from 'react'
+import React from 'react'
 import { MastheadContainer } from './Navbar'
-import { AppContext, PopupContext } from '/functions/context'
+import { AppContext } from '/functions/context'
 import { RendererGuideContent } from './Guide'
-import { PageManager } from './PageManager'
+import { AppPageManager } from './AppPageManager'
 import { PopupContainer } from '/components/PopUpContainer'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -38,7 +38,7 @@ function Container()
 					<div id="guide-space"></div>
 					<RendererGuideContent />
 				</div>
-				<PageManager />
+				<AppPageManager />
 			</div>
 			<PopupContainer />
 		</AppProvider>

@@ -1,12 +1,21 @@
 export const routes = {
     home: '/',
-    history: '/historique',
-    addCustomer: '/ajouter-client',
+    history: '/history',
+    addCustomer: '/add-client',
     showCustomer: '/client/:id',
-    evaluateGage: '/evaluer-gage',
-    showGage: '/gage/:id',
-    checkAttestations: '/chack-attestations',
-    showAttestation: '/attestation/:id'
+    evaluateGage: '/evaluate-gold',
+    showGage: '/gold-attestation/:id',
+    attestations: '/attestations',
+    showAttestation: '/attestation/:id',
+    createCredit: 'add-credit',
+    showCredit: 'credit/:id',
+    credits: '/credits',
+    showCredit: '/credit/:id',
+
+    allAttestations: '/',
+    rejectedAttestations: 'rejected',
+    acceptedAttestations: 'accepted'
+    
 }
 
 const userActions = [
@@ -37,22 +46,22 @@ const userActions = [
     {
         role: 'ROLE_CREDIT_AGENT',
         links: [
-    
+            // {path: routes.addCustomer, label: "Ajouter un client", icon: "user-add"},
+            {path: routes.createCredit, label: "Créer un crédit", icon: "create-credit"},
         ]
     },
     {
         role: 'ROLE_GAGE_EVALUATOR',
         links: [
             {path: routes.addCustomer, label: "Ajouter un client", icon: "user-add"},
-            {path: routes.evaluateGage, label: "Evaluer un gage", icon: "evaluation"},
+            {path: routes.evaluateGage, label: "Evaluer un gage", icon: "create-gage"},
         ]
     },
     {
         role: 'ROLE_GAGE_SUPERVISOR',
         links: [
-            {path: routes.checkAttestations, label: "Check attestations", icon: "check"},
-            {path: routes.showAttestation, label: "Attestations", icon: "certificate"},
-
+            // {path: routes.checkAttestations, label: "Check attestations", icon: "check"},
+            // {path: routes.showAttestation, label: "Attestation", icon: "certificate"},
         ]
     }
 ]

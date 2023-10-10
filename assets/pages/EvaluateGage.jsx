@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { Page } from '../components/Page'
-import { SearchClientFromADBanking } from '/components/SearchClient'
+import { SearchClientFromServer } from '/components/SearchClient'
 import { ClientDataProvider } from '/components/Providers'
 import { useCustomContext } from '/functions/hooks'
 import { ClientContext } from '/functions/context'
@@ -57,7 +57,7 @@ function SearchClient()
   const { client } = useCustomContext(ClientContext)
   return (
     <>
-      { client === null &&  <SearchClientFromADBanking /> }
+      { client === null &&  <SearchClientFromServer/> }
     </>
   )
 }

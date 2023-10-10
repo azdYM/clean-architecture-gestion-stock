@@ -1,0 +1,29 @@
+api_platform:
+    title: Hello API Platform
+    version: 1.0.0
+    # Good defaults for REST APIs
+    defaults:
+        stateless: true
+        pagination_client_items_per_page: false
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+        extra_properties:
+            standard_put: true
+
+    show_webby: false
+    mapping:
+        paths:
+        - '%kernel.project_dir%/src/Http/Api\DTO'
+    patch_formats:
+        json: ['application/merge-patch+json']
+    # swagger:
+    #     versions: [3]
+    formats:
+        json: ['application/json']
+        html: ['text/html']
+        jsonld: ['application/ld+json']
+    collection:
+        pagination:
+            items_per_page_parameter_name: count
+    mercure:
+        enabled: false

@@ -3,7 +3,7 @@ import { Icon } from "./Icon"
 import { ClientContext } from "/functions/context"
 import { useCustomContext } from "/functions/hooks"
 
-export const SearchClientFromADBanking = () =>
+export const SearchClientFromServer = () =>
 {
   const input = useRef(null)
   const {updateClient} = useCustomContext(ClientContext)

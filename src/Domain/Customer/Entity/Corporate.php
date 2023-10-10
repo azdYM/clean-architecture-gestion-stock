@@ -4,26 +4,26 @@ namespace App\Domain\Customer\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Customer\Entity\Location;
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Customer\Repository\CorporateRepository;
 
 /**
  * Corporate représente les entités corporatives dans le système de gestion de crédits. 
  * Une entité corporative peut être une entreprise, une société, une organisation ou toute autre entité 
  * légale distincte des individus.
  */
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: CorporateRepository::class)]
 class Corporate extends Client
 {
     #[ORM\Column(length: 255)]
     private ?string $legalForm = null;
     
     #[ORM\OneToOne(targetEntity:Location::class)]
-    private ?Location $createdLocation;
+    private ?Location $createdLocation = null;
 
     #[ORM\OneToOne(targetEntity:Location::class)]
-    private ?Location $centralLocation;
+    private ?Location $centralLocation = null;
 
     #[ORM\Column(length: 255)]
     private ?string $activityDomain = null;
@@ -46,7 +46,12 @@ class Corporate extends Client
         $this->managers = new ArrayCollection();
     }
 
-    public function getLegalForm(): string
+    public function getFolio(): ?int
+    {
+        return $this->folio;
+    }
+
+    public function getLegalForm(): ?string
     {
         return $this->legalForm;
     }
@@ -57,7 +62,7 @@ class Corporate extends Client
         return $this;
     }
 
-    public function getCreatedLocation(): Location
+    public function getCreatedLocation(): ?Location
     {
         return $this->createdLocation;
     }
@@ -68,7 +73,7 @@ class Corporate extends Client
         return $this;
     }
 
-    public function getCentralLocation(): Location
+    public function getCentralLocation(): ?Location
     {
         return $this->centralLocation;
     }
@@ -79,7 +84,7 @@ class Corporate extends Client
         return $this;
     }
 
-    public function getActivityDomain(): string
+    public function getActivityDomain(): ?string
     {
         return $this->activityDomain;
     }
@@ -90,7 +95,7 @@ class Corporate extends Client
         return $this;
     }
 
-    public function getComercialRegistry(): string
+    public function getComercialRegistry(): ?string
     {
         return $this->comericialRegistry;
     }

@@ -21,6 +21,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            # entry_point: App\Http\Security\AuthenticationEntryPoint
             lazy: true
             provider: employee_provider
             user_checker: App\Domain\Auth\Security\UserChecker
@@ -40,8 +41,10 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
-        # - { path: ^/login, roles: PUBLIC_ACCESS }
-        # - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/connexion, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: PUBLIC_ACCESS }
+
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

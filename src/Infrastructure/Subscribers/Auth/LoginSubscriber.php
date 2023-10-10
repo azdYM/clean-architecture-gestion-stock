@@ -14,6 +14,9 @@ class LoginSubscriber implements EventSubscriberInterface
     public function __construct(private readonly LoginAttemptService $loginAttemptService, private EventDispatcherInterface $em)
     {}
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [

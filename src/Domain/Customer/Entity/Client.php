@@ -9,21 +9,18 @@ use App\Domain\Application\Entity\Portfolio;
 use App\Domain\Application\PortfolioInterface;
 
 #[ORM\MappedSuperclass]
-class Client extends Person implements ClientInterface
+abstract class Client extends Person implements ClientInterface
 {
     #[ORM\Column(type: 'integer', unique: true)]
     protected ?int $folio = null;
 
-    #[ORM\Column(type: 'datetime', name: 'membership_at')]
-    protected ?DateTimeInterface $membershipAt;
+    #[ORM\Column(type: 'datetime', name: 'membership_at', nullable: true)]
+    protected ?DateTimeInterface $membershipAt = null;
 
-    #[ORM\OneToOne(targetEntity: Portfolio::class, mappedBy: 'individual', cascade: ['persist'])]
+    #[ORM\OneToOne(targetEntity: Portfolio::class, mappedBy: 'client', cascade: ['persist'])]
     protected ?PortfolioInterface $portfolio = null;
     
-    public function getFolio(): ?int
-    {
-        return $this->folio;
-    }
+    abstract public function getFolio(): ?int;
 
     public function setFolio(int $folio): self
     {
@@ -31,7 +28,7 @@ class Client extends Person implements ClientInterface
         return $this;
     }
 
-    public function getMembershipAt(): \DateTimeInterface
+    public function getMembershipAt(): ?\DateTimeInterface
     {
         return $this->membershipAt;
     }

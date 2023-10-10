@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   web:
+    container_name: gestioncredit_web
     restart: unless-stopped
     build: 
       context: ./docker
@@ -14,6 +15,7 @@ services:
       - 8080:80
 
   php:
+    container_name: gestioncredit_php
     restart: unless-stopped
     depends_on:
       - database
@@ -37,6 +39,7 @@ services:
       
   database:
     restart: unless-stopped
+    container_name: gestioncredit_database
     image: postgres:${POSTGRES_VERSION:-15}-alpine
     environment:
       POSTGRES_DB: azad

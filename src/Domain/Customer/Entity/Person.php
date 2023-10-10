@@ -64,6 +64,10 @@ class Person
         return $this;
     }
 
+    /**
+     *
+     * @return Collection<Contact>
+     */
     public function getContacts(): Collection
     {
         return $this->contacts;
@@ -87,6 +91,10 @@ class Person
         return $this;
     }
 
+    /**
+     *
+     * @return Collection<Location>
+     */
     public function getLocations(): Collection
     {
         return $this->locations;

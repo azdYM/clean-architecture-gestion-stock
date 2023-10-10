@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { routes } from '/functions/links'
 import { 
-	AddCustomer, 
+	AddOrUpdatedCustomer, 
 	Attestations, 
 	EvaluateGage, 
 	History, 
@@ -19,7 +19,7 @@ export const AppPageManager = () => {
 		<Routes>
 			<Route path={routes.home} element={<Home />} />
 			<Route path={routes.history} element={<History />} />
-			<Route path={routes.addCustomer} element={<AddCustomer />} />
+			<Route path={routes.addCustomer} element={<AddOrUpdatedCustomer />} />
 			<Route path={routes.showCustomer} element={<ShowCustomer />} />
 			<Route path={routes.evaluateGage} element={<EvaluateGage />} />
 			<Route path={routes.showGage} element={<ShowGage />} />

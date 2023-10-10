@@ -1,4 +1,4 @@
-import { AddCustomer } from "./AddCustomer";
+import { AddOrUpdatedCustomer } from "./AddOrUpdateCustomer";
 import { Attestations } from "./Attestations";
 import { Home } from "./Home";
 import { History } from "./History";
@@ -14,7 +14,7 @@ import { RejectedAttestationRenderer } from '/pages/AttestationsRejected'
 import { AllAttestationsRenderer } from '/pages/AttestationsAll'
 
 export {
-    AddCustomer,
+    AddOrUpdatedCustomer,
     Attestations,
     AllAttestationsRenderer,
     AcceptedAttestationsRenderer,

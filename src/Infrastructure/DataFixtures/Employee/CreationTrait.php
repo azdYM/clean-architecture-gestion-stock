@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Infrastructure\DataFixtures;
+namespace App\Infrastructure\DataFixtures\Employee;
 
 use App\Domain\Auth\UserRole;
 use App\Domain\Employee\Entity\Agency;
 use App\Domain\Employee\Entity\Employee;
+use App\Domain\Mounting\Entity\MountingSection;
 use App\Domain\Garantee\Entity\EvaluationGageSection;
 use App\Domain\Garantee\Entity\EvaluationGageService;
 use App\Domain\Mounting\Entity\MountingCreditFolderService;
-use App\Domain\Mounting\Entity\MountingSection;
+use App\Infrastructure\DataFixtures\Employee\EmployeeFactory;
 
 trait CreationTrait
 {

@@ -43,8 +43,6 @@ function HeaderSectionRenderer()
   // if (isEmpty(columns)) {
   //   setColumns(columnsModel)
   // }
-
-  console.log(columns,'renderer header section')
   
   return (
     <div className='gck-header-section'>

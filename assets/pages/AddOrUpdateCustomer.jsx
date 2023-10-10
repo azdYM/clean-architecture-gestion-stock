@@ -4,7 +4,7 @@ import { ClientContext } from '/functions/context'
 import { useCustomContext } from '/functions/hooks'
 import { ClientDataProvider } from '../components/Providers'
 import { SubmitFormButton } from '../components/Fields'
-import { SearchClientFromADBanking } from '/components/SearchClient'
+import { SearchClientFromServer } from '/components/SearchClient'
 import { getFormData } from '/functions/object'
 import { Navigate } from 'react-router-dom'
 import { routes } from '/functions/links'
@@ -15,23 +15,23 @@ import {
 } from '/components/FieldsCollectionForClient'
 import { FormWrapper } from '/components/FormWrapper'
 
-export const AddCustomer = () => {
-  const pageTitle = "Ajout d'un nouveau client"
+export const AddOrUpdatedCustomer = () => {
+  const pageTitle = "Update un client"
 
   return (
     <Page title={pageTitle}>
-      <h1 className='page-title'>Ajouter un nouveau client</h1>
+      <h1 className='page-title'>Ajouter ou modifier un client</h1>
       <FormWrapper>
         <ClientDataProvider>
-          <SearchClientFromADBanking />
-          <FormAddClient />
+          <SearchClientFromServer />
+          <FormAddOrUpdateClient />
         </ClientDataProvider>
       </FormWrapper>
     </Page>
   )
 }
 
-function FormAddClient({method = 'POST'})
+function FormAddOrUpdateClient({method = 'POST'})
 {
   const { client } = useCustomContext(ClientContext)
   const clientTypes = { CUSTOMER: 'Customer', CORPORATE: 'corporate' }

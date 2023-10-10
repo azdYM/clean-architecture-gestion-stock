@@ -1,0 +1,27 @@
+
+<nav class="container">
+    <div class="navbar">
+        <div id="start">
+            <gcrdt-icon-button class="gck-guide-button"></gcrdt-icon-button>
+            <gcrdt-icon class="gck-logo bloc" icon="logo_meck_moroni" size="100"></gcrdt-icon>
+        </div>
+        <div id="center">
+            <gcrdt-searchbox id="search" class="gcrdt-topbar-searchbox">
+                <form id="search-form"  action="">
+                    <div id="searchbox" class="searchbox-content">
+                        <gcrdt-icon icon="search" class="bloc gcrdt-searchicon"></gcrdt-icon>
+                        <div class="search-input">
+                            <input id="search" autocapitalize="none" autocomplete="off" autocorrect="off" name="search_query" tabindex="0" type="text" placeholder="Rechercher" aria-label="Rechercher">
+                        </div>
+                        <div id="search-clear-button"></div>
+                    </div>
+                </form>
+                <button id="search-icon"></button>
+            </gcrdt-searchbox>
+        </div>
+        <div id="buttons">
+            <gcrdt-topbar-notifications-renderer class="gcrdt-topbar-notification"></gcrdt-topbar-notifications-renderer>
+            <gcrdt-topbar-menu-renderer class="gcrdt-topbar-menu center"></gcrdt-topbar-menu-renderer>
+        </div>
+    </div>
+</nav>

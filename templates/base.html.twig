@@ -12,7 +12,20 @@
     </head>
     <body>
         {% block body %}
-            <test-app></test-app>
+            <gcrdt-app>
+                {% block navbar %}
+                    <gcrdt-mck-navbar id="navbar">
+                        {% include "partials/navbar.html.twig" %}
+                    </gcrdt-mck-navbar>
+                {% endblock %}
+                {% block sidebar %}
+                    <gcrdt-mck-sidebar id="sidebar"></gcrdt-mck-sidebar>
+                {% endblock %}
+                {% block content %}
+                    
+                {% endblock %}
+                <gcrdt-popup-container><gcrdt-popup-container>
+            </gcrdt-app>
         {% endblock %}
     </body>
 </html>

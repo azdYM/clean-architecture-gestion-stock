@@ -4,7 +4,6 @@ namespace App\Domain\Garantee\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Employee\Entity\Agency;
-use App\Domain\Garantee\Entity\GageSection;
 use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Garantee\Repository\EvaluationGageServiceRepository;

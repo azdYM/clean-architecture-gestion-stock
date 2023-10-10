@@ -14,6 +14,6 @@ use App\Domain\Application\Entity\Portfolio;
 interface ClientInterface
 {
     public function getFolio(): ?int;
-    public function getMembershipAt(): \DateTimeInterface;
+    public function getMembershipAt(): ?\DateTimeInterface;
     public function getPortfolio(): ?Portfolio;
 }

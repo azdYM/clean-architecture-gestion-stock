@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Infrastructure\DataFixtures;
+namespace App\Infrastructure\DataFixtures\Employee;
 
 use App\Domain\Auth\UserRole;
 use App\Domain\Employee\Entity\Employee;
+use App\Infrastructure\DataFixtures\UserFactory;
 
 class EmployeeFactory extends UserFactory
 {

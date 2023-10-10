@@ -26,18 +26,17 @@ export function useDisplayPopUp(elementName, callback = null)
          */
         const onClickTargetElement = (e) => {
             const target = e.target
-
-            const targetIsLink = () => target.tagName === "A";
-            const targetIsChildOfLink = () => target.closest(".link-menu") !== null
+            const targetIsLink = target.tagName === "A";
+            const targetIsChildOfLink = target.closest(".link-menu") !== null
 
             // Je ne veux pas stoper la propagation si le target est un lient
-            if (targetIsLink()) {
+            if (targetIsLink) {
                 return
             } 
 
             // Je ne veux pas non plus stoper la propagation si le target est un 
             // enfant d'un lien
-            if (targetIsChildOfLink()) {
+            if (targetIsChildOfLink) {
                 return
             }
 

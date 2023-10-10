@@ -7,7 +7,7 @@ use App\Domain\Application\CancellableInterface;
 use App\Domain\Garantee\Entity\AttestationApproval;
 use App\Domain\Garantee\Entity\AttestationRejection;
 
-trait ActionOnAttestationTrait
+trait AttestationActionsTrait
 {
     public function approved(Employee $supervisor, ?string $comment): AttestationApproval
     {

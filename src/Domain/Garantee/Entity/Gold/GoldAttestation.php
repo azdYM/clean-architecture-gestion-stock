@@ -7,7 +7,6 @@ use App\Domain\Credit\CreditType;
 use App\Domain\Garantee\ItemInterface;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Garantee\EvaluationTrait;
-use App\Domain\Garantee\Entity\Evaluator;
 use App\Domain\Garantee\Entity\Gold\Gold;
 use App\Domain\Mounting\Entity\GageFolder;
 use App\Domain\Garantee\Entity\Attestation;
@@ -17,8 +16,8 @@ use App\Domain\Garantee\Entity\RejectionTrait;
 use App\Domain\Application\CancellableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Application\Entity\TimestampTrait;
-use App\Domain\Garantee\ActionOnAttestationTrait;
 use App\Domain\Application\Entity\CancellableTrait;
+use App\Domain\Garantee\AttestationActionsTrait;
 use App\Domain\Garantee\Repository\Gold\GoldAttestationRepository;
 
 #[ORM\Entity(repositoryClass: GoldAttestationRepository::class)]
@@ -28,7 +27,7 @@ class GoldAttestation extends Attestation implements CancellableInterface
     use EvaluationTrait;
     use ApprovalTrait;
     use RejectionTrait;
-    use ActionOnAttestationTrait;
+    use AttestationActionsTrait;
     use CancellableTrait;
 
     /** @var Collection<int, Gold> */

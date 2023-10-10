@@ -8,7 +8,6 @@ import { routes } from '/functions/links'
 
 export const AllAttestationsRenderer = () =>
 {
-
   const items = 
   [
     {id: 1, folio: '1234', name: 'Abdoul-wahid Hassani Dafine', updatedAt: getDate(15),  totalValue: '1 000 000 KMF'},
@@ -40,8 +39,6 @@ function CardAttestation({content})
 {
   const {columns} = useCustomContext(HeaderContentContext)
   const {updateContents} = useCustomContext(BodyContentContext)
-
-  console.log(columns, 'renderer row section')
   
   useEffect(() => {
     updateContents(content)

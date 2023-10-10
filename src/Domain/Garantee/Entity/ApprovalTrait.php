@@ -3,7 +3,6 @@
 namespace App\Domain\Garantee\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Employee\Employee;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Garantee\Entity\AttestationApproval;
 

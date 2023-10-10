@@ -1,35 +1,17 @@
-
-/**
- * 
- * @param {string} selector 
- * @param {HTMLElement} element 
- * @returns {HTMLElement}
- */
-export function $(selector, element=null) {
+export function $(selector: string, element?: HTMLElement): HTMLElement|null
+{
   return element ? element.querySelector(selector) : document.querySelector(selector) || null
 }
 
-/**
- * 
- * @param {string} selector 
- * @param {HTMLElement} element 
- * @returns {Array}
- */
-export function $$(selector, element=null) {
+
+export function $$(selector: string, element?: HTMLElement)
+{
   const list = element ? element.querySelectorAll(selector) : document.querySelectorAll(selector) || null
   return Array.from(list)
 }
 
 
-/**
- * créer un element HTML
- * 
- * @param {string} tagName 
- * @param {object} attributes
- * @param  {...any} children 
- * @returns {HTMLElement}
- */
-export function createElement(tagName, attributes={}, ...children) {
+export function createElement(tagName: string|Function, attributes: object, ...children: any[]) {
   if (typeof tagName == 'function') {
     return tagName(attributes)
   }
@@ -50,7 +32,7 @@ export function createElement(tagName, attributes={}, ...children) {
 
   for (const child of children) {
     if (typeof child === 'number' || typeof child === 'string') {
-      e.appendChild(document.createTextNode(child))
+      e.appendChild(document.createTextNode(child.toString()))
     } else if (child instanceof HTMLElement) {
       e.appendChild(child)
     } else {

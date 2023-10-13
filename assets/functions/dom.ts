@@ -3,26 +3,33 @@ export function $(selector: string, element?: HTMLElement): HTMLElement|null
   return element ? element.querySelector(selector) : document.querySelector(selector) || null
 }
 
-
 export function $$(selector: string, element?: HTMLElement)
 {
   const list = element ? element.querySelectorAll(selector) : document.querySelectorAll(selector) || null
   return Array.from(list)
 }
 
+interface ElementAttributes {
+  [key: string]: string | Function;
+}
 
-export function createElement(tagName: string|Function, attributes: object, ...children: any[]) {
+export function createElement(tagName: string|Function, attributes: ElementAttributes, ...children: any[]) {
   if (typeof tagName == 'function') {
     return tagName(attributes)
   }
   
-  const e = document.createElement(tagName)
+  const e: HTMLElement = document.createElement(tagName)
 
   for (const k of Object.keys(attributes || {})) {
-    if (typeof attributes[k] === 'function' && k.startsWith('on')) {
-      e.addEventListener(k.substring(2), attributes[k])
-    } else
-      e.setAttribute(k, attributes[k])
+    const attributeValue = attributes[k]
+
+    if (typeof attributeValue === 'function' && k.startsWith('on')) {
+      const eventType = k.substring(2)
+      e.addEventListener(eventType, attributeValue as EventListener)
+    } 
+    
+    else
+      e.setAttribute(k, String(attributeValue))
   }
 
   //On met Tous les enfants au meme niveau (applatir le tableau children)

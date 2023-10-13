@@ -1,8 +1,9 @@
-.masthead-container
+#azd-masthead
 {
     position: fixed;
     top: 0;
     width: 100%;
+    padding: 0 25px;
     z-index: 2023;
     transform: translateY(0);
     transition: transform 0.3s ease;
@@ -10,7 +11,7 @@
 
 #guide-wrapper
 {
-    --guide-width: 240px;
+    --guide-width: 260px;
     width: var(--guide-width);
     height: 100vh;
     font-size: 15px;
@@ -20,6 +21,8 @@
     overflow-y: auto;
     scrollbar-width: thin;
     z-index: 2022;
+
+
     #guide-space
     {
         margin-top: var(--navbar);
@@ -47,13 +50,12 @@
     }
 }
 
-gck-page-manager
+#gck-page-manager
 {
     display: block;
-    // border: 1px solid var(--mck-color-border);
     border-radius: 5px;
     margin-top: var(--navbar);
-    // margin-left: 245px;
+    padding: 0 25px;
     height: 100%;
 }
 
@@ -70,7 +72,7 @@ gck-page-manager
         }
     }
 
-    gck-page-manager
+    #gck-page-manager
     {
         margin-left: 65px;
     }

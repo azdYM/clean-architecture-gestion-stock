@@ -1,10 +1,9 @@
 
-gck-guide-section-renderer
+.gck-guide-section-renderer
 {
-	display: block;
 	width: 100%;
 	height: 100%;
-	padding: 12px;
+	padding: 8px 18px;
 }
 
 .sections {
@@ -14,19 +13,14 @@ gck-guide-section-renderer
 	gap: .8rem;
 }
 
-gck-guide-section-renderer
-{
-  display: block;
-}
-
-mck-guide-collaps-entry-rendering
+.mck-guide-collaps-entry-rendering
 {
 	display: block;
 	margin-top: 0.8rem;
 	padding-top: 0.8rem;
 }
 
-mck-guide-entry-renderer
+.mck-guide-entry-renderer
 {
 	display: block;
 	margin-bottom: 5px;

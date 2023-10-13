@@ -50,7 +50,7 @@ class TwigAssetExtension extends AbstractExtension
 
     public function script(string $name): string
     {
-        $script = $this->preload($name).'<script src="'.$this->uri($name.'.js').'" type="module" defer></script>';
+        $script = $this->preload($name).'<script src="'.$this->uri($name.'.ts').'" type="module" defer></script>';
         if (!$this->isProduction) {
             $script .= <<<HTML
                 <script>

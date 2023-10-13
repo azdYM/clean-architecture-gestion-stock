@@ -1,13 +1,10 @@
-.evaluate-gage
-{
-    .gck-input-groups {
-        --col: 140px;
-        font-size: .85rem;
-    }
-}
-
 .gck-gage-content
 {
+    .gck-input-groups {
+        --col: 150px;
+        font-size: .85rem;
+    }
+
     padding: 8px 5px;
 
     label {

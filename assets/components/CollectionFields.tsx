@@ -4,21 +4,21 @@ import { capitalize, isEmpty, parseInputName } from "../functions/string";
 import { checkEntriesValueIsEmpty, lastInArray } from "../functions/array";
 import { isEmptyObject } from "../functions/object";
 
-type CustomCollectionFieldsType = {
+type CustomCollectionFields = {
 	collectionKey: string,
-	formFieldModels: [],
+	formFieldModels: Array<object|number|string>,
 	customData: {[key: string]: any},
 	textAddButton: string
 }
 
-export type EntrieValuesType = {
+export type EntrieValues = {
 	defaultValue: any,
 	label: string|null,
 	id?: number,
 	type?: any,
 	min?: number,
 	max?: number,
-	disable?: boolean,
+	disabled?: boolean,
 	onChange?: ((e: React.FormEvent) => void)|null
 }
 
@@ -40,10 +40,10 @@ type FieldProps = {
 	index: number;
 	collectionName: string;
 	onUpdateEntrie: (e: React.FormEvent) => void;
-	entrie: [string, EntrieValuesType] 
+	entrie: [string, EntrieValues] 
 }
 
-export const CustomCollectionFields = ({collectionKey, formFieldModels, customData, textAddButton}: CustomCollectionFieldsType) => {
+export const CustomCollectionFields = ({collectionKey, formFieldModels, customData, textAddButton}: CustomCollectionFields) => {
 	const defaultData = formFieldModels.map(
 		model => generateDefaultData(model, customData, true)
 	)
@@ -64,7 +64,6 @@ export const CustomCollectionFields = ({collectionKey, formFieldModels, customDa
 	const handleDeleteRow = function(rowToDelete: number) {
 		setCollection((currentCollection) => currentCollection.filter(row => row.id !== rowToDelete))
 	}
-	console.log(collection, "handle delete row")
 
 	return (
 		<div className='gck-collection-fields mb3'>
@@ -139,7 +138,7 @@ const FieldRenderer = function({index, collectionName, entrie, onUpdateEntrie}: 
 {
 	const [key, value] = entrie
 	const name = `${collectionName.toLocaleLowerCase()}[${index}][${key}]`
-	const {defaultValue, label, onChange, ...props} = value
+	const {defaultValue, label, disabled, onChange, ...props} = value
 	
 	const handleChange = (e: React.FormEvent) => {
 		const input = e.currentTarget as HTMLInputElement
@@ -160,6 +159,7 @@ const FieldRenderer = function({index, collectionName, entrie, onUpdateEntrie}: 
 			placeholder={capitalize(label ?? key)} 
 			defaultValue={defaultValue} 
 			name={name} 
+			disabled={disabled ? true : false}
 			errors={[]} 
 		/>
 	)
@@ -168,7 +168,6 @@ const FieldRenderer = function({index, collectionName, entrie, onUpdateEntrie}: 
 const generateDefaultData = function(model: {}, customData: {[key: string]: any}, useDefaultData?: boolean) 
 {
 	let data: {[key: string]: any} = {}
-	console.log('render')
 	if (isEmptyObject(model)) {
 		for (const [key, value] of Object.entries(customData)) {
 			data[key] = {...value}

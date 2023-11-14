@@ -1,7 +1,6 @@
 .gck-search-client
 {
 	width: 300px;
-    --search-box-heigth: 38px;
 	margin-bottom: 2rem;
 }
 
@@ -9,19 +8,17 @@
 {
 	display: grid;
 	width: 100%;
-    height: var(--search-box-heigth);
 	position: relative;
 	grid-template-columns: calc(100% - 55px) 50px;
 	align-items: center;
 	@extend %gck-input;
-	padding: 0 !important;
+	padding: 0;
 	gap: 5px;
 	font-size: 15px;
 
 	&.focus
 	{
 		border: 2px solid var(--mck-color-blue);
-		
 	}
 
 	input {
@@ -43,7 +40,7 @@
 	border-top-right-radius: inherit;
 	border-bottom-right-radius: inherit;
 	cursor: pointer;
-	height: var(--search-box-heigth);
+	height: calc(var(--input-height) - 3px);
 	transition: background-color .3s ease-in;
 
 	&:hover {

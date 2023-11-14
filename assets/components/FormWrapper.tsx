@@ -8,11 +8,12 @@ type FormWrapperProps = {
 }
 
 export const FormWrapper = ({children, method = 'POST', onSubmit, className}: React.PropsWithChildren<FormWrapperProps>) => {
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget as HTMLFormElement)
     const formDataObject = formDataToStructuredObject(formData)
-
+    
     onSubmit(formDataObject)
   }
 

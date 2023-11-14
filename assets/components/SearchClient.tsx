@@ -2,13 +2,15 @@ import React, { useRef } from "react"
 import { Icon } from "./Icon"
 import { isEmpty } from "../functions/string"
 import { $ } from "../functions/dom"
+import { FetchStatus } from "@tanstack/react-query"
 
 type SearchClientFieldProps = {
-  isLoading: boolean,
-  onSearchClient: (searchValue: (number|string)) => void
+  status: string,
+  fetchStatus: FetchStatus
+  onSearchClient: (searchValue: (string)) => void
 }
 
-export const SearchClientField = ({onSearchClient, isLoading = false}: SearchClientFieldProps) =>
+export const SearchClientField = ({onSearchClient, status, fetchStatus}: SearchClientFieldProps) =>
 {
   const input = useRef<HTMLInputElement>(null)
 
@@ -39,10 +41,7 @@ export const SearchClientField = ({onSearchClient, isLoading = false}: SearchCli
     const value = input.value
     
     if (!isEmpty(value)) {
-      const folio = Number(value)
-      if (!isNaN(folio)) {
-        onSearchClient(folio)
-      }
+      onSearchClient(value)
     }
   }
 
@@ -53,7 +52,7 @@ export const SearchClientField = ({onSearchClient, isLoading = false}: SearchCli
           onKeyUp={handlKeyUp} onBlur={handleBlur} onFocus={handleFocus} 
           ref={input} placeholder='Rechercher client par folio' type="text" 
         />
-        {isLoading 
+        {fetchStatus === 'fetching' 
           ? <span>...</span>
           : <Icon className="search-link-icon" name="result-search" size={60}
               onClick={handleClick} 

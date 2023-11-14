@@ -10,7 +10,6 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    --input-height: 38px;
 }
 
 %gck-input
@@ -18,7 +17,7 @@
     height: var(--input-height);
     border-radius: 8px;
     border: 1px solid var(--mck-color-border);
-    padding: 0 10px;
+
     &:focus {
         border: none;
     }

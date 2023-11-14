@@ -12,7 +12,7 @@ type InputProps = {
 
 export type Option = {
   label: string;
-  value: string;
+  value: string|number;
 };
 
 type SelectProps = {
@@ -30,7 +30,7 @@ type SelectInputProps = {
   label: string;
   name: string;
   defaultValue: string | null;
-  errors: string[];
+  errors?: string[];
   onChange?: (value: string) => void;
   onFocus?: (value: string) => void;
   onBlur?: (value: string) => void;
@@ -61,24 +61,14 @@ const Input = function({onChange, ...props}: InputProps)
   )
 }
 
-// export const SelectInput = ({options, label, name, defaultValue = null, errors = []}) =>
-// {
-//   return (
-//     <div className='gck-select-input'>
-//       <Select options={options} label={label} name={name} defaultValue={defaultValue} />
-//       <ShowErrors errors={errors}/>
-//     </div>
-//   );
-// }
-
 export const SelectInput: React.FC<SelectInputProps> = ({ options, label, name, defaultValue, errors, onChange, onFocus, onBlur }) => {
   return (
     <div className="gck-select-input">
       <Select options={options} label={label} name={name} defaultValue={defaultValue} onChange={onChange} onFocus={onFocus} onBlur={onBlur} />
-      <ShowErrors errors={errors}/>
+      {errors !== undefined && <ShowErrors errors={errors}/>}
     </div>
   );
-};
+}
 
 const Select: React.FC<SelectProps> = ({ options, name, label, defaultValue, onChange, onFocus, onBlur }) => {
   const [selectedOption, setSelectedOption] = useState<string | null >(defaultValue);
@@ -122,45 +112,7 @@ const Select: React.FC<SelectProps> = ({ options, name, label, defaultValue, onC
       </select>
     </div>
   );
-};
-
-
-// const Select = function({options, name, label, defaultValue})
-// {
-//   const [selectedOption, setSelectedOption] = useState(defaultValue)
-
-//   const handleSelectChange = (e) => {
-//     setSelectedOption(e.currentTarget.value)
-//   }
-
-//   const handleSelectFocus = (e) => {
-//     setSelectedOption(e.currentTarget.value)
-//   }
-
-//   const handleSelectBlur = (e) => {
-//     setSelectedOption(e.currentTarget.value)
-//   }
-
-//   return (
-//     <div className='gck-input'>
-//         <label htmlFor={name}>{label}</label>
-//         <select
-//           name={name}
-//           value={selectedOption}
-//           onChange={handleSelectChange}
-//           onFocus={handleSelectFocus}
-//           onBlur={handleSelectBlur}
-//         >
-//           <option value="" disabled>{label || 'Sélectionnez une option'}</option>
-//           {options.map((option, index) => (
-//             <option key={index} value={option.value}>
-//               {option.label}
-//             </option>
-//           ))}
-//         </select>
-//     </div>
-//   )
-// }
+}
 
 const ShowErrors = function({errors}: {errors: string[]})
 {

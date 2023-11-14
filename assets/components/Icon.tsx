@@ -9,7 +9,7 @@ type IconPropsType = {
 
 export function Icon ({name, size, className, onClick}: IconPropsType) {
 	const svgcClassName = `icon icon-${name}`
-	const href = `assets/sprite.svg#${name}`
+	const href = `/assets/sprite.svg#${name}`
 
     const handleClick = (e: React.MouseEvent) => {
         onClick !== undefined && onClick(e)

@@ -21,7 +21,7 @@ export const MastheadContainer = () =>
 	)
 }
 
-function NavbarStartElement()
+const NavbarStartElement = function()
 {
 	return (
 		<div id="start">
@@ -31,7 +31,7 @@ function NavbarStartElement()
 	)
 }
 
-function NavbarCenterElement()
+const NavbarCenterElement = function()
 {
 	return (
 		<SearchProvider >
@@ -47,7 +47,7 @@ function NavbarCenterElement()
 	)
 }
 
-function SearchProvider({children}: React.PropsWithChildren)
+const SearchProvider = function({children}: React.PropsWithChildren)
 {
 	const [search, setSearch] = useState('')
 
@@ -58,7 +58,7 @@ function SearchProvider({children}: React.PropsWithChildren)
 	)
 }
 
-function TopSearchBar({children}: React.PropsWithChildren)
+const TopSearchBar = function({children}: React.PropsWithChildren)
 {
     return (
         <div id="search" className="gcrdt-topbar-searchbox">
@@ -72,15 +72,14 @@ function TopSearchBar({children}: React.PropsWithChildren)
     )
 }
 
-
-function SearchClearButton()
+const SearchClearButton = function()
 {
     return (
         <div id="search-clear-button"></div>
     )
 }
 
-function NavbarEndElement()
+const NavbarEndElement = function()
 {
 	return (
 		<div id="buttons">

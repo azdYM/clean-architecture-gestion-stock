@@ -30,6 +30,7 @@
 			@extend %gck-input;
 			outline: none;
 			background-color: var(--mck-color-white);
+			padding: 0 12px;
 		}
 
 		input:focus, select:focus{

@@ -12,25 +12,36 @@ import { ClientContext, ClientSearchResult, CorporateType, IndividualType } from
 import { INDIVIDUAL } from '../functions/const'
 import { useContext, useState } from 'react'
 import { ClientProvider } from '../components/Providers'
+import { CardError } from '../components/CardError'
 
-export const searchClient = async function(folio: any): Promise<ClientSearchResult>
-{
-  const res = await fetch(`http://localhost:8000/api/search-client/${folio}`)
-  return res.json()
+export const searchClient = async function(folio: any): Promise<ClientSearchResult> {
+  try {
+    const res = await fetch(`http://localhost:8000/api/search-client/${folio}`);
+    
+    if (!res.ok) {
+      throw new Error(`Request failed with status ${res.status}`);
+    }
+
+    return res.json();
+  } catch (error) {
+    throw new Error(`An error occurred: ${error}`);
+  }
 }
 
 export const AddOrUpdatedCustomer = () => {
-  const [folio, setFolio] = useState(14)
+  const [folio, setFolio] = useState<number|string|null>(null)
 
-  const { data, isLoading } = useQuery({
+  const { data, status, fetchStatus, error } = useQuery({
     queryKey: ['clientSearch', folio],
-    queryFn: () => searchClient(folio)
-  })
+    queryFn: () => searchClient(folio),
+    enabled: !!folio
+  })  
+
+  console.log(data, error, "hehhehe")
 
   const handleSearchClient = function (searchFolio: number|string) {
-    console.log(searchFolio, "recherche client")
     if (searchFolio !== folio) {
-      setFolio(folio)
+      setFolio(searchFolio)
     }
   }
 
@@ -42,15 +53,20 @@ export const AddOrUpdatedCustomer = () => {
     <Page pageTitle="Update un client">
       <h1 className='page-title'>
         {data === null ? 'Recherche un client ' : (
-          data?.persisted ? 'Mettre à jour les données de ce client' : 'Ajouter ce client'
+          data?.persisted ? 'Mettre à jour les données du client' : 'Ajouter d\'un client'
         )}
       </h1>
-      <SearchClientField onSearchClient={handleSearchClient} isLoading={isLoading} />
-      <FormWrapper onSubmit={handleSubmitForm}>
-        <ClientProvider client={data}>
-          <FormFieldsClient />
-        </ClientProvider>
-      </FormWrapper>
+      <SearchClientField onSearchClient={handleSearchClient} status={status} fetchStatus={fetchStatus} />
+      {error 
+        ? <CardError error={error as Error} />
+        : (
+          <FormWrapper onSubmit={handleSubmitForm}>
+            <ClientProvider client={data}>
+              <FormFieldsClient />
+            </ClientProvider>
+          </FormWrapper>
+        )
+      }
     </Page>
   )
 }
@@ -91,8 +107,6 @@ const FieldsForCorporate = function({client, update}: {client: CorporateType, up
     </div>
   )
 }
-
-
 
 const LocationFields = function() 
 {

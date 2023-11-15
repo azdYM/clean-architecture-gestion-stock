@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { ClientData } from "../components/CardClient";
 
 export type IndividualType = {
     id: number,
@@ -25,6 +26,11 @@ export type ClientSearchResult = {
     clientType: string,
     client: (IndividualType|CorporateType),
     persisted: boolean
+}
+
+export type UserData = {
+    id: number,
+    fullname: string,
 }
 
 type SearchContextValuesType = {
@@ -54,4 +60,6 @@ export const HeaderContentContext = createContext<HeaderContentContextType>({col
 
 export const BodyContentContext = createContext<BodyContentContextType>({contents: [], updateContents: null})
 
-export const ClientContext = createContext<ClientSearchResult|null>(null)
+export const ClientContext = createContext<ClientData|null>(null)
+
+export const UserContext = createContext<UserData|null>(null)

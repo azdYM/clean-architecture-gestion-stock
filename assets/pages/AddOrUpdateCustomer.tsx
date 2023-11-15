@@ -37,8 +37,6 @@ export const AddOrUpdatedCustomer = () => {
     enabled: !!folio
   })  
 
-  console.log(data, error, "hehhehe")
-
   const handleSearchClient = function (searchFolio: number|string) {
     if (searchFolio !== folio) {
       setFolio(searchFolio)

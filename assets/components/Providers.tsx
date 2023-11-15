@@ -1,18 +1,6 @@
-import { BodyContentContext, ClientContext, ClientSearchResult, HeaderContentContext } from "../functions/context"
+import { BodyContentContext, ClientContext, HeaderContentContext, UserContext, UserData } from "../functions/context"
 import React, {useState} from "react"
-
-// export const ClientSearchProvdier = ({children}: React.PropsWithChildren) =>
-// {
-//   const [searchValue, setSearchValue] = useState(null)
-
-//   return (
-//     <ClientSearchContext.Provider value={
-//       {result: resultClientSearch, search: (data) => setResultClientSearch(data)}
-//     }>
-//       {children}
-//     </ClientSearchContext.Provider>
-//   )
-// }
+import { ClientData } from "./CardClient"
 
 export const HeaderContentProvider = ({children}: React.PropsWithChildren) => 
 {
@@ -43,7 +31,7 @@ export const BodyContentProvider = ({children}: React.PropsWithChildren) =>
   )
 }
 
-export const ClientProvider = function ({children, client}: React.PropsWithChildren<{client: ClientSearchResult|undefined}>)
+export const ClientProvider = function ({children, client}: React.PropsWithChildren<{client: ClientData|undefined}>)
 {
   if (client === null || client === undefined) {
     return 
@@ -53,5 +41,18 @@ export const ClientProvider = function ({children, client}: React.PropsWithChild
     <ClientContext.Provider value={client}>
       {children}
     </ClientContext.Provider>
+  )
+}
+
+export const UserProvider = function ({children, user}: React.PropsWithChildren<{user: UserData|undefined}>)
+{
+  if (user === null || user === undefined) {
+    return 
+  }
+
+  return (
+    <UserContext.Provider value={user}>
+      {children}
+    </UserContext.Provider>
   )
 }

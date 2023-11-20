@@ -13,7 +13,7 @@ type InputProps = {
 export type Option = {
   label: string;
   value: string|number;
-};
+}
 
 type SelectProps = {
   options: Option[];
@@ -23,7 +23,7 @@ type SelectProps = {
   onChange?: (value: string) => void;
   onFocus?: (value: string) => void;
   onBlur?: (value: string) => void;
-};
+}
 
 type SelectInputProps = {
   options: Option[];
@@ -34,7 +34,14 @@ type SelectInputProps = {
   onChange?: (value: string) => void;
   onFocus?: (value: string) => void;
   onBlur?: (value: string) => void;
-};
+}
+
+type SubmitFormButtonProps = {
+  text?: string, 
+  status?: "error" | "success" | "loading" | "idle"
+}
+
+
 
 export const TextInput: React.FC<TextInputProps> = ({onChange, errors = [], ...props}) =>
 {  
@@ -49,7 +56,6 @@ export const TextInput: React.FC<TextInputProps> = ({onChange, errors = [], ...p
 const Input = function({onChange, ...props}: InputProps)
 {
   const {placeholder, className = '', ...attrs} = props
-
   return(
     <div className={`gck-input ${className}`} >
       <label>{placeholder}</label>
@@ -123,10 +129,16 @@ const ShowErrors = function({errors}: {errors: string[]})
   )
 }
 
-export const SubmitFormButton = function({text = 'Sauvegarder'}: {text?: string})
+export const SubmitFormButton = function({text = 'Sauvegarder', status}: SubmitFormButtonProps)
 {
   return (
-    <button type='submit' className='gck-button-submit'>{text}</button>
+    <button 
+      disabled={status === 'loading' ? true : false} 
+      type='submit' 
+      className='gck-button-submit'
+    >
+      {status === 'loading' ? 'chargement...' : text}
+    </button>
   )
 }
 

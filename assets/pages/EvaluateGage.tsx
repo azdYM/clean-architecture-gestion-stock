@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useRef, useState, forwardRef } from 'react'
+import React, { FormEvent, useRef, useState, forwardRef } from 'react'
 import { Page } from '../components/Page'
 import { SearchClientField } from '../components/SearchClient'
 import { CustomCollectionFields } from '../components/CollectionFields'
@@ -11,20 +11,222 @@ import { CardError } from '../components/CardError'
 import { SelectInput, SubmitFormButton } from '../components/Fields'
 import { routes } from '../functions/links'
 import { ContentWrapperWithCard } from '../components/ContentWrapperWithCard'
+import { ClientSearchResult } from '../functions/context'
+import { AttestationData, Gage } from '../api/attestation'
+import { useNavigate } from 'react-router-dom'
 
 
-type GageArticle = {
-  name: string,
-  quantity: number,
-  carrat: number,
-  weight: number,
-  price: number
+type FormGageEvaluationProps = {
+  data: ClientSearchResult | AttestationData | undefined,
+  error: unknown,
+  pageRef: React.RefObject<HTMLElement>,
 }
 
-export const mutateGage = async function(data: {}) {
+type FormFieldsGageEvaluationProps = {
+  articles: Gage[]|null,
+  creditTypeTargeted?: string,
+  description?: string,
+  status: "error" | "success" | "loading" | "idle",
+}
+
+export const EvaluateGage = () => {
+  const pageRef = useRef<HTMLDivElement>(null)
+  const [folio, setFolio] = useState<string|null>(null)
+
+  const { data, status, fetchStatus, error } = useQuery({
+    queryKey: ['clientSearch', folio],
+    queryFn: () => searchClient(folio),
+    enabled: !!folio,
+  })
+  
+  const handleSearchClient = function (searchFolio: string) {
+    if (searchFolio !== folio) {
+      setFolio(searchFolio)
+    }
+  }
+
+  return (
+    <Page pageTitle='Evaluation gage' sidebarShowed={false} ref={pageRef}>
+      <h1 className='page-title'>Evaluation d'un gage</h1>
+      <SearchClientField onSearchClient={handleSearchClient} status={status} fetchStatus={fetchStatus} />
+      <FormGageEvaluation 
+        error={error}
+        data={data}
+        pageRef={pageRef}
+      />
+    </Page>
+  )
+}
+
+export const FormGageEvaluation = function({data, error, pageRef}: FormGageEvaluationProps) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
+
+  let mutateUri = 'api/evaluate-gold'
+  let articles = null
+  let description = null
+  let creditTypeTargeted = null
+
+  if (isAttestationData(data)) {
+    articles = mapItemsToSelectedProperties(data.items)
+    mutateUri = `api/update-gold/${data.id}`
+    description = data.evaluatorDescription
+    creditTypeTargeted = data.creditTypeTargeted
+  }
+ 
+  const {mutate, status} = useMutation({
+    mutationFn: (data: {}) => {
+      return mutateGage(data, mutateUri)
+    },
+
+    onError: (error, variables, context) => {
+      console.log(error, 'error')
+      console.log(variables, 'variables')
+      console.log(context, 'contexte')
+    },
+
+    onSuccess: (data) => {
+      const attestationUrl = routes.showAttestation.replace(':id', data.id)
+      navigate(attestationUrl)
+    }
+  })
+
+  const handleSubmit = function(values: {}) {
+    const clientIdentification = getClientIdentification(`${data?.client.folio}`)
+    if (typeof clientIdentification === 'number') {
+      mutate({...values, clientFolio: clientIdentification})
+    }
+  }
+
+  return (
+    <>
+    {error 
+      ? <CardError error={error as Error} />
+      : (
+        <ClientProvider client={data?.client}>
+          <ContentWrapperWithCard componentsRef={{pageRef, cardRef, contentRef}} positionCard='right'>
+            <FormWrapper onSubmit={handleSubmit} className='form-gage-content'>
+              <FormFieldsGageEvaluation
+                status={status}
+                articles={articles} 
+                description={description ?? undefined}
+                creditTypeTargeted={creditTypeTargeted ?? undefined}
+                ref={contentRef}
+              />
+            </FormWrapper>
+            <CardClient width="340px" height="70vh" ref={cardRef} />
+          </ContentWrapperWithCard>
+        </ClientProvider>
+      )
+    }
+    </>
+  )
+}
+
+const FormFieldsGageEvaluation =  forwardRef<HTMLDivElement, FormFieldsGageEvaluationProps>(function(
+  {articles, description, status, creditTypeTargeted}, ref
+) {  
+  return(
+    <div ref={ref} className='gck-gage-content'>
+      <GageArticlesFields models={articles ?? undefined} />
+      <div>
+        <CreditTypeTargeted defaultCreditTypeTargeted={creditTypeTargeted} />
+        <Description defaultDescription={description} />
+      </div>
+      <SubmitFormButton status={status} text='Enregistrer' />
+    </div>
+  ) 
+})
+
+const GageArticlesFields = function({models}: {models?: Gage[]}) {
+
+  const customData = {
+    id:         {type: 'number', label: 'id', hidden: true},
+    name:       {type: 'string', label: "Nom de l'article"}, 
+    quantity:   {type: 'number', label: 'Quantité', min: 0}, 
+    carrat:     {type: 'number', onChange: handleChangeCarrat, min: 0}, 
+    weight:     {type: 'number', label: 'Poid', min: 0}, 
+    unitPrice:  {type: 'number', label: 'Prix par gramme', disabled: true}, 
+  }
+
+  function handleChangeCarrat(e: FormEvent<HTMLInputElement>) {
+    const input = e.currentTarget
+    console.log(input.value, "changer le prix unitaire selon le carrat saisit")
+  }
+
+  return (
+    <CustomCollectionFields 
+      customData={customData} 
+      formFieldModels={models ?? []}
+      collectionKey='articles' 
+      textAddButton="Ajouteur une article"  
+    />
+  )
+}
+
+const CreditTypeTargeted = function({defaultCreditTypeTargeted}: {defaultCreditTypeTargeted?: string|number}) {
+  const creditChoices = [
+    {label: 'Prêt sur gage', value: 1}
+  ]
+
+  if (defaultCreditTypeTargeted) {
+    defaultCreditTypeTargeted = creditChoices.filter(
+      choice => choice.label === defaultCreditTypeTargeted || choice.value === defaultCreditTypeTargeted
+    )[0].value
+  }
+
+  return (
+    <SelectInput 
+      options={creditChoices} 
+      defaultValue={String(defaultCreditTypeTargeted) ?? ''} 
+      name='creditTypeTargeted' 
+      label='Type de crédit ciblé' 
+    />
+  )
+}
+
+const Description = function({defaultDescription}: {defaultDescription?: string}) {
+  return (
+    <div className='mt-3 w-full'>
+      <label>Description</label><br />
+      <textarea 
+        defaultValue={defaultDescription}
+        placeholder='description' 
+        name="description"
+      ></textarea>
+    </div>
+  )
+}
+
+const isAttestationData = function(object: any): object is AttestationData 
+{
+  return (
+    typeof object === 'object' 
+    && object !== null 
+    && 'items' in object
+    && 'currentPlace' in object
+  )
+}
+
+const getClientIdentification = function(identification: string|null): string|number 
+{
+  if (identification === null) {
+    throw new Error("L'identification du client ne peut pas être null")
+  }
+
+  const folio = parseInt(identification)
+  if (!isNaN(folio)) {
+    return folio
+  }
+
+  return identification
+}
+
+export const mutateGage = async function(data: {}, uri: string) {
   try {
     const res = await fetch(
-      'api/evaluate-gold',
+      uri,
       {
         method: 'POST',
         body: JSON.stringify(data),
@@ -45,147 +247,13 @@ export const mutateGage = async function(data: {}) {
   }
 }
 
-export const EvaluateGage = () => {
-  const pageRef = useRef<HTMLDivElement>(null)
-  const cardRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-
-  const [folio, setFolio] = useState<string|null>(null)
-
-  const { data, status, fetchStatus, error } = useQuery({
-    queryKey: ['clientSearch', folio],
-    queryFn: () => searchClient(folio),
-    enabled: !!folio
-  }) 
-
-  const {mutate} = useMutation({
-    mutationFn: (data: {}) => {
-      return mutateGage(data)
-    },
-
-    onError: (error, variables, context) => {
-      console.log(error, 'error')
-      console.log(variables, 'variables')
-      console.log(context, 'contexte')
-    },
-
-    onSuccess: (data) => {
-      const attestationUrl = routes.showAttestation.replace(':id', data.id)
-      window.location.replace(`${attestationUrl}`)
-    }
-  })
-
-  const handleSubmit = function(values: {}) {
-    const clientIdentification = getClientIdentification(folio)
-
-    if (typeof clientIdentification === 'number') {
-      mutate({...values, clientFolio: clientIdentification})
-    }
-  }
-
-  const handleSearchClient = function (searchFolio: string) {
-    if (searchFolio !== folio) {
-      setFolio(searchFolio)
-    }
-  }
-
-  return (
-    <Page pageTitle='Evaluation gage' sidebarShowed={false} ref={pageRef}>
-      <h1 className='page-title'>Evaluation d'un gage</h1>
-      <SearchClientField onSearchClient={handleSearchClient} status={status} fetchStatus={fetchStatus} />
-      {error 
-        ? <CardError error={error as Error} />
-        : (
-          <ClientProvider client={data?.client}>
-            {/* Ici je veux afficher le card a droit */}
-            <ContentWrapperWithCard componentsRef={{pageRef, cardRef, contentRef}} positionCard='right'>
-              <FormWrapper onSubmit={handleSubmit} className='form-gage-content'>
-                <FormFieldsGageEvaluation ref={contentRef}/>
-              </FormWrapper>
-              <CardClient width="340px" height="70vh" ref={cardRef} />
-            </ContentWrapperWithCard>
-          </ClientProvider>
-        )
-      }
-    </Page>
-  )
-}
-
-
-const FormFieldsGageEvaluation =  forwardRef<HTMLDivElement>(function({}, ref) 
-{  
- 
-  return(
-    <div ref={ref} className='gck-gage-content'>
-      <GageArticlesFields />
-      <div>
-        <CreditTypeTargeted />
-        <Description />
-      </div>
-      <SubmitFormButton text='Enregistrer' />
-    </div>
-  ) 
-})
-
-const GageArticlesFields = function({models}: {models?: GageArticle[]}) {
-
-  const customData = {
-    name:     {type: 'string', label: "Nom de l'article"}, 
-    quantity: {type: 'number', label: 'Quantité', min: 0}, 
-    carrat:   {type: 'number', onChange: handleChangeCarrat, min: 0}, 
-    weight:   {type: 'number', label: 'Poid', min: 0}, 
-    price:    {type: 'number', label: 'Prix par gramme', disabled: true}, 
-  }
-
-  function handleChangeCarrat(e: FormEvent<HTMLInputElement>) {
-    const input = e.currentTarget
-    console.log(input.value, "change carrat")
-  }
-
-  return (
-    <CustomCollectionFields 
-      customData={customData} 
-      formFieldModels={models ?? []}
-      collectionKey='articles' 
-      textAddButton="Ajouteur une article"  
-    />
-  )
-}
-
-const CreditTypeTargeted = function({creditType}: {creditType?: string}) {
-  const creditChoices = [
-    {label: 'Prêt sur gage', value: 1}
-  ]
-
-  return (
-    <SelectInput 
-      options={creditChoices} 
-      defaultValue={creditType ?? ''} 
-      name='creditTypeTargeted' 
-      label='Type de crédit ciblé' 
-    />
-  )
-}
-
-const Description = function({description}: {description?: string}) {
-  return (
-    <div className='mt-3 w-full'>
-      <label>Description</label><br />
-      <textarea placeholder='description' name="description">{description}</textarea>
-    </div>
-  )
-}
-
-const getClientIdentification = function(identification: string|null): string|number 
-{
-  if (identification === null) {
-    throw new Error("L'identification du client ne peut pas être null")
-  }
-
-  const folio = parseInt(identification)
-  if (!isNaN(folio)) {
-    return folio
-  }
-
-  return identification
+export const mapItemsToSelectedProperties = function(items: Gage[]) {
+  return items.map(item => ({
+    id: item.id,
+    name: item.name,
+    quantity: item.quantity,
+    carrat: item.carrat,
+    weight: item.weight,
+    unitPrice: item.unitPrice,
+  }))
 }

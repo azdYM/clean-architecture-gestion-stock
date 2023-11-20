@@ -5,60 +5,73 @@ import { BodySectionRenderer } from '../components/AttestationsBodySection'
 import { useCustomContext } from '../functions/hooks'
 import { routes } from '../functions/links'
 import { getAcronyme, substring } from '../functions/string'
+import { useQuery } from '@tanstack/react-query'
+import { CardError } from '../components/CardError'
+import { AttestationData, AttestationWorkflowPlaces, getAllAttestation } from '../api/attestation'
+import { formatNumber, formatRelativeDate } from '../functions/format'
+import { calculateTotalValues } from './ShowAttestation'
+
+
+
 
 export const AllAttestationsRenderer = () =>
 {
-  const data = 
-  [
-    {id: 1, folio: '1234', name: 'Abdoul-wahid Hassani Dafine', updatedAt: getDate(15),  totalValue: '1 000 000 KMF'},
-    {id: 2, folio: '66165', name: 'Abdoul-Karim Ibrahim', updatedAt: getDate(60),  totalValue: '32 000 000 KMF'},
-    {id: 3, folio: '50123', name: 'Radjabou Saandi Islam', updatedAt: getDate(2), totalValue: '500 000 KMF'},
-    {id: 3, folio: '50123', name: 'Faida Moussa', updatedAt: getDate(9), totalValue: '1 000 000 KMF'},
-    {id: 3, folio: '50123', name: 'Nasma Abdoul-fatah', updatedAt: getDate(12), totalValue: '5 000 000 KMF'},
-    {id: 1, folio: '1234', name: 'Abdoul-wahid Hassani Dafine', updatedAt: getDate(18),  totalValue: '1 000 000 KMF'},
-    {id: 2, folio: '66165', name: 'Abdoul-Karim Ibrahim', updatedAt: getDate(3),  totalValue: '32 000 000 KMF'},
-    {id: 3, folio: '50123', name: 'Radjabou Saandi Islam', updatedAt: getDate(120), totalValue: '500 000 KMF'},
-    {id: 3, folio: '50123', name: 'Faida Moussa', updatedAt: getDate(39), totalValue: '1 000 000 KMF'},
-    {id: 3, folio: '50123', name: 'Nasma Abdoul-fatah', updatedAt: getDate(29), totalValue: '5 000 000 KMF'},
-    {id: 3, folio: '50123', name: 'Mohamed Adam', updatedAt: getDate(390), totalValue: '5 000 000 KMF'},  
-  ]
-
-	function getDate(time: number)
-	{
-    const currentDate = new Date().getMinutes()
-		return `${new Date(currentDate - time).getSeconds()/60} min`
-	}
+  const { data, status, error } = useQuery({
+    queryKey: ['all_attestation'],
+    queryFn: () => getAllAttestation(),
+  }) 
 
   return (
     <BodySectionRenderer>
-      {data.map((item, index) => 
-        <CardAttestation key={index} content={item} />)
+      {status === 'loading' && <p>Loading...</p>}
+      {error 
+        ? <CardError error={error as Error} />
+        : (
+          data?.map((item, index) => 
+            <CardAttestation key={index} attestation={item} />
+          )
+        )
       }
     </BodySectionRenderer>
   )
 }
 
-function CardAttestation({content}: {content: {[key: string]: any}})
+const CardAttestation = function({attestation}: {attestation: AttestationData})
 {
-  const {updateContents} = useCustomContext(BodyContentContext)
-  
+  const { updateContents } = useCustomContext(BodyContentContext)
+  const { totalValorisation } = calculateTotalValues(attestation.items)
+  const currentPlace = getWorkflowPlaceProperties(attestation.currentPlace)
+
   useEffect(() => {
     if (!updateContents) return
-    updateContents(content)
+    updateContents(attestation)
     return () => updateContents({})
   }, [])
 
   return (
     <article className='gck-card-article'>
-      <Link to={`${routes.showAttestation.replace('/:id', '')}/${content.id}`}>
+      <Link to={`${routes.showAttestation.replace(':id', `${attestation.id}`)}`}>
         <div className='article-header'>
-          <ArticleAvatarRenderer avatar={getAcronyme(content.name)} />
-          <ArticleHeaderContentRenderer name={content.name} folio={content.folio} />
+          <ArticleAvatarRenderer 
+            avatar={getAcronyme(attestation.client.name)} 
+          />
+          <ArticleHeaderContentRenderer 
+            name={attestation.client.name} 
+            folio={attestation.client.folio} 
+          />
         </div>
 
         <div className='article-body'>
-          <span>{`Attestation valorisé à ${content.totalValue}`}</span>
-          <span>{`Mise à jour il y a ${content.updatedAt}`}</span>
+          <span>{`Attestation valorisé à ${formatNumber(totalValorisation)}`}</span>
+          <span>
+            {`Il contient ${attestation.items.length} article${attestation.items.length > 1 ? 's' : ''}`}
+          </span>
+          {attestation.currentPlace !== 'created' &&
+            <span className={currentPlace.className}>{currentPlace.label}</span>
+          }
+          <p className='time'>
+            {`Mise à jour ${formatRelativeDate(new Date(attestation.updatedAt)) }`}
+          </p>
         </div>
         <div className='article-footer'></div>
       </Link>
@@ -66,7 +79,7 @@ function CardAttestation({content}: {content: {[key: string]: any}})
   )
 }
 
-function ArticleAvatarRenderer({avatar}: {avatar: string})
+const ArticleAvatarRenderer = function({avatar}: {avatar: string})
 {
   return (
     <div className="article-avatar">
@@ -75,7 +88,7 @@ function ArticleAvatarRenderer({avatar}: {avatar: string})
   )
 }
 
-function ArticleHeaderContentRenderer({name, folio}: {name: string, folio: number})
+const ArticleHeaderContentRenderer = function({name, folio}: {name: string, folio: number})
 {
   return (
     <div className='article-header-content'>
@@ -83,4 +96,24 @@ function ArticleHeaderContentRenderer({name, folio}: {name: string, folio: numbe
       <span>{`Folio - ${folio}`}</span>
     </div>
   )
+}
+
+const getWorkflowPlaceProperties = function (currentPlace: keyof typeof AttestationWorkflowPlaces) {
+  
+  switch (currentPlace) {
+    case 'created':
+      return {label: "Crée", className: 'created'}
+    case 'evaluated':
+      return {label: "Evalué", className: 'success'}
+    case 'pending_approval':
+      return {label: "En attente d'approbation", className: 'urgent'}
+    case 'approved':
+      return {label: "Approuvé", className: 'sucess'}
+    case 'rejected':
+      return {label: "Rejeté", className: 'urgent'}
+    case 'canceled':
+      return {label: "Annulé", className: 'canceled'}
+    default:
+      throw new Error(`${currentPlace} n'est pas une valeur correcte pour le workflow de l'attestation`)
+  }
 }

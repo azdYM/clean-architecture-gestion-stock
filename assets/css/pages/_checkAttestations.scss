@@ -91,19 +91,44 @@
 
 .article-body
 {
-    display: flex;
-    flex-direction: column;
     padding: 5px 8px;
 
     span:nth-child(1)
     {
         font-weight: 600;
+        display: block;
         font-size: 15px;
         margin-bottom: 5px;
         word-wrap: break-word;
     }
 
     span:nth-child(2)
+    {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 5px;
+        word-wrap: break-word;
+    }
+
+    span:nth-child(3) {
+        display: inline-block;
+        padding: 0px 5px;
+        border-radius: 8px;
+        font-size: 14px;
+        margin: 6px 0;
+
+        &.success {
+            background-color: var(--mck-color-green);
+            color: var(--mck-color-white);
+        }
+
+        &.urgent {
+            background-color: var(--mck-color-reed);
+            color: var(--mck-color-white);
+        }
+    }
+
+    p.time
     {
         color: var(--mck-color-gray);
         font-size: 14px;

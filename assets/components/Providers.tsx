@@ -1,6 +1,23 @@
-import { BodyContentContext, ClientContext, HeaderContentContext, UserContext, UserData } from "../functions/context"
+import { 
+  AppContext, 
+  BodyContentContext, 
+  ClientContext, 
+  HeaderContentContext, 
+  UserContext, 
+} from "../functions/context"
 import React, {useState} from "react"
 import { ClientData } from "./CardClient"
+import { UserData } from "../api/user"
+
+export const AppProvider = ({children, user}: React.PropsWithChildren<{user?: UserData}>) => {
+	return (
+		<AppContext.Provider value={{}}>
+			<UserContext.Provider value={user}>
+				{ children }
+			</UserContext.Provider>
+		</AppContext.Provider>
+	)
+}
 
 export const HeaderContentProvider = ({children}: React.PropsWithChildren) => 
 {

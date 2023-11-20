@@ -19,6 +19,7 @@ export type EntrieValues = {
 	min?: number,
 	max?: number,
 	disabled?: boolean,
+	hidden?: boolean,
 	onChange?: ((e: React.FormEvent) => void)|null
 }
 
@@ -67,7 +68,11 @@ export const CustomCollectionFields = ({collectionKey, formFieldModels, customDa
 
 	return (
 		<div className='gck-collection-fields mb3'>
-			<FieldsRowsRenderer collectionKey={collectionKey} defaulCollectionData={collection} onDeleteRow={handleDeleteRow} />
+			<FieldsRowsRenderer 
+				collectionKey={collectionKey} 
+				defaulCollectionData={collection} 
+				onDeleteRow={handleDeleteRow} 
+			/>
 			<button onClick={handleAddRow} className='btn-add'>{textAddButton}</button>
 		</div>
 	)
@@ -88,8 +93,8 @@ const FieldsRowsRenderer = function({collectionKey, defaulCollectionData, onDele
 
 const FieldsRowRenderer = function({defaultKey, fieldIndex, defaultFields, onDeleteRow}: FieldsRowProps)
 {
-	const {id, ...usedDefaultFields} = defaultFields; // 
-	const [field, setField] = useState(usedDefaultFields) 
+	// const {id, ...usedDefaultFields} = defaultFields
+	const [field, setField] = useState(defaultFields) 
 	const entries = Object.entries(field)
 	const isEmpty = checkEntriesValueIsEmpty(entries)
 
@@ -113,7 +118,7 @@ const FieldsRowRenderer = function({defaultKey, fieldIndex, defaultFields, onDel
 	
 	const handleDelete = (e: React.FormEvent) => {
 		e.preventDefault()
-		onDeleteRow !== undefined && onDeleteRow(id)
+		onDeleteRow !== undefined && onDeleteRow(defaultFields.id)
 	}
 	
 	return(
@@ -138,8 +143,7 @@ const FieldRenderer = function({index, collectionName, entrie, onUpdateEntrie}: 
 {
 	const [key, value] = entrie
 	const name = `${collectionName.toLocaleLowerCase()}[${index}][${key}]`
-	const {defaultValue, label, disabled, onChange, ...props} = value
-	
+	const {defaultValue, label, disabled, hidden, onChange, ...props} = value
 	const handleChange = (e: React.FormEvent) => {
 		const input = e.currentTarget as HTMLInputElement
 		
@@ -154,39 +158,73 @@ const FieldRenderer = function({index, collectionName, entrie, onUpdateEntrie}: 
 	}
 	
 	return(
-		<TextInput 
-			onChange={handleChange} 
-			placeholder={capitalize(label ?? key)} 
-			defaultValue={defaultValue} 
-			name={name} 
-			disabled={disabled ? true : false}
-			errors={[]} 
-		/>
+		<>
+			{hidden 
+				? <input name={name} hidden defaultValue={defaultValue} />
+				: (
+					<TextInput 
+						onChange={handleChange} 
+						placeholder={capitalize(label ?? key)} 
+						defaultValue={defaultValue} 
+						name={name} 
+						hidden={hidden ? true : false}
+						disabled={disabled ? true : false}
+						errors={[]} 
+					/>
+				)
+			}
+		</>
 	)
 }
 
-const generateDefaultData = function(model: {}, customData: {[key: string]: any}, useDefaultData?: boolean) 
+const generateDefaultData = function(model: {[key: string]: any}|string|number, customData: {[key: string]: any}, useDefaultData?: boolean) 
 {
 	let data: {[key: string]: any} = {}
+
 	if (isEmptyObject(model)) {
 		for (const [key, value] of Object.entries(customData)) {
-			data[key] = {...value}
+			if (key === 'id') {
+				data[key] = {...value, defaultValue: 1}
+			}
+			else {
+				data[key] = {...value}
+			}
 		} 
-
-		data.id = 1
 	}
 
 	else {
-		for (const [key, defaultValue] of Object.entries(model)) {
+		for (const [key] of Object.entries(customData)) {
 			if (key === 'id') {
-				data.id = Number(defaultValue) + 1
+				//Je recupère la valeur de la clé id
+				let value = getKeyValueFromModel(key, model)
+
+				// s'il s'agit d'un objet, je recuper la valeur exacte contenu dans la propriété defaultValue
+				if (typeof value === 'object') {
+					value = value.defaultValue
+				}
+
+				// Je remet toutes les propriété de la clé id
+				// Si je veux utiliser les valeur par défaut (c'est a dire que modele possede des vraies données, c'est peut être une modification)
+				// je garde cette valeur, sinon je prend la valeur et je le rajoute plus un parce qu'il s'agit 
+				// de la denrière ligne de la collection et qu l'identifiant existe déjà
+				data.id = {...customData['id'], defaultValue: useDefaultData ? value : Number(value) + 1}
+				// puisque je ne veux pas écraser la clé id, je passe a la prochaine clé (itération)
 				continue
 			} 
-			
-			data[key] = {defaultValue: useDefaultData === true ? defaultValue : null, ...customData[key] ?? ''}
+
+			// je rajoute les clés qui reste
+			data[key] = {defaultValue: useDefaultData ? getKeyValueFromModel(key, model) : null, ...customData[key] ?? ''}
 		} 
 	}
 	
 	return data
+}
+
+const getKeyValueFromModel = function(key: string, value: string|number|{[key: string]: any}) {
+	if (typeof value === 'object') {
+		return value[key]
+	}
+
+	return value
 }
 

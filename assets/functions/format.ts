@@ -20,6 +20,6 @@ export const formatRelativeDate = function(date: Date): string {
       const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
-      return `${day}/${month}/${year}`;
+      return `Le ${day}/${month}/${year}`;
     }
   };

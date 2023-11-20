@@ -1,36 +1,18 @@
 import { Page } from '../components/Page'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState, forwardRef } from 'react'
 import { CardError } from '../components/CardError'
-import { CardClient, ClientData } from '../components/CardClient'
+import { CardClient } from '../components/CardClient'
 import { useRef } from 'react'
-import { ClientProvider, UserProvider } from '../components/Providers'
-import { getAttestation } from '../api/attestation'
+import { ClientProvider } from '../components/Providers'
+import { AttestationData, Gage, getAttestation } from '../api/attestation'
 import { ContentWrapperWithCard } from '../components/ContentWrapperWithCard'
-import { UserData } from '../functions/context'
 import { formatNumber, formatRelativeDate } from '../functions/format'
-
-type AttestationData = {
-  id: number,
-  client: ClientData,
-  evaluator: UserData,
-  items: Gage[],
-  evaluatorDescription: string,
-  creditTypeTargeted: string,
-  updatedAt: string
-}
-
-type Gage = {
-  id: number,
-  name: string,
-  quantity: number,
-  carrat: number,
-  unitPrice: number,
-  weight: number,
-  createdAt?: string,
-  updatedAt: string
-}
+import { useCustomContext } from '../functions/hooks'
+import { UserContext } from '../functions/context'
+import { routes } from '../functions/links'
+import { mapItemsToSelectedProperties } from './EvaluateGage'
 
 type ErrorResponse = {
   message: string
@@ -59,20 +41,18 @@ export const ShowAttestation = () => {
   })
   
   return (
-    <Page ref={pageRef} pageTitle={pageTitle}>
+    <Page ref={pageRef} sidebarShowed={false} pageTitle={pageTitle}>
       <h1 className="page-title">{pageTitle}</h1>
       {status === 'loading' && <p>Loading...</p>}
       {error 
         ? <CardError error={error as Error} />
         : (
           <ClientProvider client={data?.client}>
-            <UserProvider user={data?.evaluator}>
-              {/* Ici je veux afficher le card a droit */}
-              <ContentWrapperWithCard componentsRef={{pageRef, cardRef, contentRef}} positionCard='right'>
-                <Attestation ref={contentRef} data={data} />
-                <CardClient width="340px" height="70vh" ref={cardRef} />
-              </ContentWrapperWithCard>
-            </UserProvider>
+            {/* Ici je veux afficher le card a droit */}
+            <ContentWrapperWithCard componentsRef={{pageRef, cardRef, contentRef}} positionCard='right'>
+              <Attestation ref={contentRef} data={data} />
+              <CardClient width="340px" height="70vh" ref={cardRef} />
+            </ContentWrapperWithCard>
           </ClientProvider>
         )
       }
@@ -82,17 +62,14 @@ export const ShowAttestation = () => {
 
 const Attestation = forwardRef<HTMLDivElement, {data?: AttestationData}>(function({data}, ref) {
   if (data === undefined) return
+  const navigate = useNavigate()
+  const user = useCustomContext(UserContext)
+  const items = mapItemsToSelectedProperties(data.items)
 
-  const items = data.items.map(item => ({
-    id: item.id,
-    name: item.name,
-    quantity: item.quantity,
-    carrat: item.carrat,
-    weight: item.weight,
-    unitPrice: item.unitPrice,
-    updatedAt: item.updatedAt
-  }))
-
+  const handleUpdateAttestation = () => {
+    navigate(routes.updateAttestation.replace(':id', String(data.id)))
+  }
+  
   return (
     <div ref={ref}>
       <div className='attestation-content'>
@@ -100,9 +77,19 @@ const Attestation = forwardRef<HTMLDivElement, {data?: AttestationData}>(functio
         <TotalItemsAttestation items={items} />
       </div>
       <div className='attestation-actions'>
-        <button>Modifier</button>
-        <button>Valider</button>
-        <button>Imprimer</button>
+        {Number(user?.id) === Number(data.evaluator.id) && (
+          <>
+            {data.canUpdate && 
+              <button onClick={handleUpdateAttestation}>Modifier</button>
+            }
+            {user?.roles.includes('ROLE_GAGE_EVALUATOR') && 
+              <button>Valider</button>
+            }
+            <button>Imprimer</button>
+          </>
+          )
+        }
+      
       </div>
     </div>
   )
@@ -135,7 +122,6 @@ const TableContentItemsAttestation = function({items}: {items: Gage[]}) {
 }
 
 const ArticleColumn = function({column}: {column: keyof Gage}) {
-  console.log(column)
   switch (column) {
     case 'id':
       return <td>ID</td>
@@ -210,7 +196,7 @@ const TotalItemsAttestation = function({items}: {items: Gage[]}) {
   )
 }
 
-const calculateTotalValues = function(items: Gage[]) {
+export const calculateTotalValues = function(items: Gage[]) {
   const initialValue = {
     totalValorisation: 0,
     totalGram: 0,

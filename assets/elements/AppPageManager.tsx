@@ -13,6 +13,7 @@ import {
 	ShowGage 
 } from '../pages'
 import { routes } from '../functions/links'
+import { UpdateAttestation } from '../pages/UpdateAttestation'
 
 export const AppPageManager = () => {
 	return (
@@ -25,6 +26,7 @@ export const AppPageManager = () => {
 			<Route path={routes.showGage} element={<ShowGage />} />
 			<Route path={`${routes.attestations}/*`} element={<Attestations />} />
 			<Route path={routes.showAttestation} element={<ShowAttestation />} />
+			<Route path={routes.updateAttestation} element={<UpdateAttestation />} />
 			<Route path={routes.createCredit} element={<CreateCredit />} />
 			<Route path={routes.showCredit} element={<ShowCredit />} />
 			<Route path={routes.credits} element={<Contracts />} />

@@ -11,7 +11,9 @@ export const lastInArray = <T>(array: Array<T>) =>
 
 export const checkEntriesValueIsEmpty = <T extends (number|string|{[key: string]: unknown})>(entries: [string, T][]) =>
 {
-    for (const [, value] of entries) {
+    for (const [key, value] of entries) {
+
+        if (key === 'id') continue // Le champ id n'est pas pris en compte, on s'en fout s'il est vide ou pas
         if (value === null) continue
         const checkedValue = typeof value === 'object' ? value['defaultValue'] : value
         

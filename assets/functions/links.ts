@@ -7,6 +7,7 @@ export const routes = {
     showGage: '/evaluation/:id',
     attestations: '/attestations',
     showAttestation: '/attestation/:id',
+    updateAttestation: '/attestation-update/:id',
     createCredit: 'add-credit',
     showCredit: 'credit/:id',
     credits: '/credits',

@@ -1,12 +1,12 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import { AppContext } from '../functions/context'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { BrowserRouter, ErrorResponse } from 'react-router-dom'
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import { MastheadContainer } from './Navbar'
-import { RendererGuideContent } from './Guide'
+import { GuideContent } from './Guide'
 import { AppPageManager } from './AppPageManager'
 import { PopupContainer } from '../components/PopUpContainer'
+import { AppProvider } from '../components/Providers'
+import { UserData, getCurrentUser } from '../api/user'
 
 export default class App extends HTMLElement
 {
@@ -20,32 +20,38 @@ export default class App extends HTMLElement
 	}
 }
 
-const AppProvider = ({ children }: React.PropsWithChildren) => {
+const Container = function()
+{
+	const queryClient = new QueryClient()
+	
+	
+	
 	return (
-		<AppContext.Provider value={{}}>
-			{ children }
-		</AppContext.Provider>
+		<QueryClientProvider client={queryClient}>
+      		<AppWrapper />
+		</QueryClientProvider>
 	)
 }
 
-
-function Container()
-{
-	const queryClient = new QueryClient()
+const AppWrapper = function () {
+	const {data} = useQuery<UserData, ErrorResponse>({
+		queryKey: ['current_user'],
+		queryFn: () => getCurrentUser(),
+	})
 
 	return (
-		<AppProvider>
-			<QueryClientProvider client={queryClient}>
+		<>
+			<AppProvider user={data} >
 				<div id='content'>
 					<MastheadContainer />
 					<div id='guide-wrapper'>
 						<div id="guide-space"></div>
-						<RendererGuideContent />
+						<GuideContent />
 					</div>
 					<AppPageManager />
 				</div>
 				<PopupContainer />
-			</QueryClientProvider>
-		</AppProvider>
+			</AppProvider>
+		</>
 	)
 }

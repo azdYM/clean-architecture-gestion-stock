@@ -3,7 +3,7 @@ import { Icon } from '../components/Icon'
 import { substring } from '../functions/string'
 import { LinksType, UserRolesType, getUserActions, routes } from '../functions/links'
 
-export const RendererGuideContent = () => {
+export const GuideContent = () => {
 	return (
 		<div className='gck-guide-renderer' id="guide-content">
 			<RenderSections />

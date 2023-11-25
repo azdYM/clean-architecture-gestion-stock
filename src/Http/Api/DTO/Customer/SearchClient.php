@@ -20,7 +20,7 @@ class SearchClient
 
     public ?string $clientType = null;
 
-    public ?ClientDTO $client = null; 
+    public ?Client $client = null; 
 
     public ?bool $persisted = true;
 }

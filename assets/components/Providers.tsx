@@ -1,5 +1,6 @@
 import { 
   AppContext, 
+  AttestationContext, 
   BodyContentContext, 
   ClientContext, 
   HeaderContentContext, 
@@ -8,6 +9,7 @@ import {
 import React, {useState} from "react"
 import { ClientData } from "./CardClient"
 import { UserData } from "../api/user"
+import { AttestationData } from "../api/attestation"
 
 export const AppProvider = ({children, user}: React.PropsWithChildren<{user?: UserData}>) => {
 	return (
@@ -71,5 +73,18 @@ export const UserProvider = function ({children, user}: React.PropsWithChildren<
     <UserContext.Provider value={user}>
       {children}
     </UserContext.Provider>
+  )
+}
+
+export const AttestationProvider = function ({children, data}: React.PropsWithChildren<{data: AttestationData|undefined}>)
+{
+  if (data === null || data === undefined) {
+    return 
+  }
+
+  return (
+    <AttestationContext.Provider value={data}>
+      {children}
+    </AttestationContext.Provider>
   )
 }

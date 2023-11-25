@@ -16,7 +16,7 @@ export type AttestationData = {
   evaluator: UserData,
   items: Gage[],
   evaluatorDescription: string,
-  creditTypeTargeted: string,
+  idCreditTypeTargeted: number,
   canUpdate: boolean,
   updatedAt: string,
   currentPlace: keyof typeof AttestationWorkflowPlaces,

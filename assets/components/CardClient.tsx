@@ -4,11 +4,40 @@ import { ClientContext } from "../functions/context"
 import { getAcronyme } from "../functions/string"
 
 
+export type Location = {
+	id: number,
+	region?: string,
+	city?: string,
+	neighborhood?: string
+}
+
+export type Contact = {
+	id: number,
+	telephone?: string,
+	email?: string
+}
+
+export type Individual = {
+	nickname?: string,
+	gender?: ('M'|'F'),
+	nin?: string,
+	birthDay?: string,
+	birthLocation?: Location
+}
+
+export type Corporate = {
+	legalForm?: string,
+    activityDomain?: string,
+    comericialRegistry?: string
+}
+
 export type ClientData = {
   id: number,
   name: string,
-  folio: number
-}
+  folio: number,
+  locations?: Location[],
+  contacts?: Contact[]
+} & Individual & Corporate
 
 type CardClientProps = {width: string, height: string}
 

@@ -1,0 +1,86 @@
+.print {
+    margin: 15px;
+    position: relative;
+}
+
+.print .attestation-print-header {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    align-items: flex-start;
+    gap: 12px;
+    height: 150px;
+    
+    .header-meck-moroni {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        column-gap: 15px;
+        .logo {
+            height: 90px;
+            background-color: aqua;
+        }
+
+        .presentation {
+            font-size: 13px;
+        }
+    }
+    
+    .information-rows {
+        display: grid;
+        row-gap: 10px;
+        column-gap: 20px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .information-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 8px;
+        border-radius: 5px;
+        border: 1px solid #555;
+        margin-bottom: 6px;
+        font-size: 13;
+
+        span:first-child {
+            font-weight: 600;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+    }
+}
+
+.print .attestation-content {
+    height: 430px;
+}
+
+.attestation-print-footer {
+    display: flex;
+    gap: 12px;
+    z-index: 9;
+    height: 160px;
+
+    .print-footer-card {
+        min-width: 200px;
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: underline;
+        }
+        span {
+            font: 1rem;
+        }
+
+        .signature {
+            div {
+                height: 80px;
+                border: 1px solid #555;
+            }
+        }
+    }
+}
+
+@media print {
+    @page {
+      size: 50mm 150mm;
+    }
+  }

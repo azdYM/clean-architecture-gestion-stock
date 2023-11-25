@@ -15,7 +15,6 @@ import { ClientSearchResult } from '../functions/context'
 import { AttestationData, Gage } from '../api/attestation'
 import { useNavigate } from 'react-router-dom'
 
-
 type FormGageEvaluationProps = {
   data: ClientSearchResult | AttestationData | undefined,
   error: unknown,
@@ -24,7 +23,7 @@ type FormGageEvaluationProps = {
 
 type FormFieldsGageEvaluationProps = {
   articles: Gage[]|null,
-  creditTypeTargeted?: string,
+  creditTypeTargeted?: number,
   description?: string,
   status: "error" | "success" | "loading" | "idle",
 }
@@ -63,21 +62,23 @@ export const FormGageEvaluation = function({data, error, pageRef}: FormGageEvalu
   const contentRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
-  let mutateUri = 'api/evaluate-gold'
+  let mutateUri = '/api/gold-evaluation'
   let articles = null
   let description = null
   let creditTypeTargeted = null
+  let method: ('PUT'|'POST'|'PATCH') = 'POST'
 
   if (isAttestationData(data)) {
     articles = mapItemsToSelectedProperties(data.items)
-    mutateUri = `api/update-gold/${data.id}`
+    mutateUri = `/api/gold-evaluation/attestation/${data.id}`
+    method = 'PUT'
     description = data.evaluatorDescription
-    creditTypeTargeted = data.creditTypeTargeted
+    creditTypeTargeted = data.idCreditTypeTargeted
   }
  
   const {mutate, status} = useMutation({
     mutationFn: (data: {}) => {
-      return mutateGage(data, mutateUri)
+      return mutateGage(data, mutateUri, method)
     },
 
     onError: (error, variables, context) => {
@@ -165,22 +166,22 @@ const GageArticlesFields = function({models}: {models?: Gage[]}) {
   )
 }
 
-const CreditTypeTargeted = function({defaultCreditTypeTargeted}: {defaultCreditTypeTargeted?: string|number}) {
+const CreditTypeTargeted = function({defaultCreditTypeTargeted}: {defaultCreditTypeTargeted?: number}) {
   const creditChoices = [
     {label: 'Prêt sur gage', value: 1}
   ]
 
   if (defaultCreditTypeTargeted) {
     defaultCreditTypeTargeted = creditChoices.filter(
-      choice => choice.label === defaultCreditTypeTargeted || choice.value === defaultCreditTypeTargeted
+      choice => choice.value === defaultCreditTypeTargeted
     )[0].value
   }
 
   return (
     <SelectInput 
       options={creditChoices} 
-      defaultValue={String(defaultCreditTypeTargeted) ?? ''} 
-      name='creditTypeTargeted' 
+      defaultValue={String(defaultCreditTypeTargeted)} 
+      name='idCreditTypeTargeted' 
       label='Type de crédit ciblé' 
     />
   )
@@ -223,12 +224,12 @@ const getClientIdentification = function(identification: string|null): string|nu
   return identification
 }
 
-export const mutateGage = async function(data: {}, uri: string) {
+export const mutateGage = async function(data: {}, uri: string, method?: 'POST'|'PUT'|'PATCH') {
   try {
     const res = await fetch(
       uri,
       {
-        method: 'POST',
+        method: method ?? 'POST',
         body: JSON.stringify(data),
         headers: {
           Accept: 'application/json',

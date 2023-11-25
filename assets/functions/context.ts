@@ -1,6 +1,7 @@
 import { createContext } from "react";
 import { ClientData } from "../components/CardClient";
 import { UserData } from "../api/user";
+import { AttestationData } from "../api/attestation";
 
 export type IndividualType = {
     id: number,
@@ -59,3 +60,5 @@ export const BodyContentContext = createContext<BodyContentContextType>({content
 export const ClientContext = createContext<ClientData|null>(null)
 
 export const UserContext = createContext<UserData|null|undefined>(null)
+
+export const AttestationContext = createContext<AttestationData|null>(null)

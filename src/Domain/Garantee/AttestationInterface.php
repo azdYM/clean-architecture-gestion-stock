@@ -2,7 +2,7 @@
 
 namespace App\Domain\Garantee;
 
-use App\Domain\Credit\CreditType;
+use App\Domain\Credit\Entity\CreditType;
 use App\Domain\Customer\ClientInterface;
 use App\Domain\Employee\Entity\Employee;
 use Doctrine\Common\Collections\Collection;

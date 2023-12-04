@@ -9,6 +9,7 @@ use App\Domain\Customer\Entity\Client;
 use App\Domain\Customer\Entity\Corporate;
 use App\Domain\Customer\Entity\Individual;
 use App\Domain\Garantee\Entity\Attestation;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
 use App\Http\Api\DTO\Customer\Client as DTOClient;
 use App\Http\Api\DTO\Garantee\Attestation as DTOAttestation;
@@ -31,8 +32,8 @@ class AttestationProvider implements ProviderInterface
         }
 
         $idAttestation = $uriVariables['id'];
-        /** @var Attestation $attestation */
-        $attestation = $this->em->find(Attestation::class, $idAttestation);
+        /** @var GaranteeAttestation $attestation */
+        $attestation = $this->em->find(GaranteeAttestation::class, $idAttestation);
         $dtoAttestation = $this->mapEntityToDto($attestation);
 
         return $dtoAttestation;
@@ -40,7 +41,7 @@ class AttestationProvider implements ProviderInterface
 
     private function getAllAttestations(): array
     {
-        $attestations = $this->em->getRepository(Attestation::class)->findAll();
+        $attestations = $this->em->getRepository(GaranteeAttestation::class)->findAll();
         $dtoCollectionAttestation = [];
 
         for ($i=0; $i < count($attestations); $i++) { 
@@ -63,6 +64,7 @@ class AttestationProvider implements ProviderInterface
         $dtoAttestation->evaluatorDescription = $attestation->getEvaluatorDescription();
         $dtoAttestation->idCreditTypeTargeted = $attestation->getCreditTypeTargeted()->getId();
         $dtoAttestation->updatedAt = $attestation->getUpdatedAt();
+        $dtoAttestation->canMountCredit = $this->canMountCredit($attestation);
         
         return $dtoAttestation;
     }
@@ -110,5 +112,12 @@ class AttestationProvider implements ProviderInterface
         foreach($contacts as $key => $contact) {
             $client->contacts[$key] = $contact;
         }
+    }
+
+    private function canMountCredit(GaranteeAttestation $attestation) {
+        $isApproved = $attestation->getCurrentPlace() === GaranteeAttestation::ATTESTATION_APPROVED;
+        $isAlreadyUsed = $attestation->getFolder() !== null;
+
+        return $isApproved && !$isAlreadyUsed;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Domain\Application\Event;
 
-use App\Domain\Credit\CreditApproval;
 use App\Domain\Employee\Entity\Employee;
+use App\Domain\Credit\Entity\CreditApproval;
 
 class ApprovalCreatedEvent
 {

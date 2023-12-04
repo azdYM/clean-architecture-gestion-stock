@@ -32,6 +32,8 @@ class ClientFactory
             };
         }
 
+        $client->makePortfolio();
+
         if ($client instanceof Individual) {
             self::addInformationAboutIndividual($client);
             return $client;

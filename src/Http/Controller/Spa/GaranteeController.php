@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GaranteeController extends BaseController
 {
-    #[Route('/evaluate-gold', name: 'evaluate_gold')]
+    #[Route('/evaluation', name: 'evaluation')]
     public function evaluateGold()
     {
         return $this->render('pages/app.html.twig', []);

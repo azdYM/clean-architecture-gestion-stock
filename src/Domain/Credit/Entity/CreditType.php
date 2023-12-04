@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\Credit;
+namespace App\Domain\Credit\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\CreditType\CreditTypeRepository;
 use App\Domain\Mounting\Entity\MountingSection;
 use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Credit\Repository\CreditTypeRepository;
 
 #[ORM\Entity(repositoryClass: CreditTypeRepository::class)]
 class CreditType {

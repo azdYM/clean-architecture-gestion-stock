@@ -9,8 +9,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EvaluationApprovedSubscriber implements EventSubscriberInterface
 {
+    private EvaluationApprovedEvent $event;
+
     public function __construct(
-        private EvaluationApprovedEvent $event, 
         private EntityManagerInterface $em,
         private NotificationService $notifier,
     ){}
@@ -26,8 +27,9 @@ class EvaluationApprovedSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onNotify(): void
+    public function onNotify(EvaluationApprovedEvent $event): void
     {
+        $this->event = $event;
         $attestation = $this->event->getAttestation();
         $repository = $this->em->getRepository(NotificationRepository::class);
 

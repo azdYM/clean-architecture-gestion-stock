@@ -4,6 +4,7 @@ namespace App\Domain\Customer\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Domain\Customer\Repository\IndividualRepository;
 
 /**

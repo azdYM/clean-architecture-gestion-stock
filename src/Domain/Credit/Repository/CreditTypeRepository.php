@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Domain\Credit\Gage\Repository;
+namespace App\Domain\Credit\Repository;
 
+use App\Domain\Credit\Entity\CreditType;
 use Doctrine\Persistence\ManagerRegistry;
-use App\Domain\Credit\Gage\Entity\GageCredit;
-use App\Infrastructure\Orm\AbstractRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends AbstractRepository<GageCredit>
+ * @extends ServiceEntityRepository<CreditType>
  *
- * @method GageCredit|null find($id, $lockMode = null, $lockVersion = null)
- * @method GageCredit|null findOneBy(array $criteria, array $orderBy = null)
- * @method GageCredit[]    findAll()
- * @method GageCredit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method CreditType|null find($id, $lockMode = null, $lockVersion = null)
+ * @method CreditType|null findOneBy(array $criteria, array $orderBy = null)
+ * @method CreditType[]    findAll()
+ * @method CreditType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GageCreditRepository extends AbstractRepository
+class CreditTypeRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, GageCredit::class);
+        parent::__construct($registry, CreditType::class);
     }
 
 //    /**
-//     * @return GageCredit[] Returns an array of GageCredit objects
+//     * @return CreditType[] Returns an array of CreditType objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class GageCreditRepository extends AbstractRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?GageCredit
+//    public function findOneBySomeField($value): ?CreditType
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

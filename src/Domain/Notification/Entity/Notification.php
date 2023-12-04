@@ -2,14 +2,15 @@
 
 namespace App\Domain\Notification\Entity;
 
-use App\Domain\Application\Entity\IdentifiableTrait;
-use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Auth\User;
 use Doctrine\ORM\Mapping as ORM;
+use App\Domain\Application\Entity\TimestampTrait;
+use App\Domain\Application\Entity\IdentifiableTrait;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Domain\Notification\Repository\NotificationRepository;
 
 
-#[ORM\Entity(repositoryClass: App\Domain\Notification\Repository\NotificationRepository::class)]
+#[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
     use IdentifiableTrait;
@@ -50,7 +51,7 @@ class Notification
         return $this->user;
     }
 
-    public function serUser(User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
         return $this;
@@ -79,7 +80,7 @@ class Notification
 
     public function setUrl(string $url): self
     {
-        return $this->url = $url;
+        $this->url = $url;
         return $this;
     }
 

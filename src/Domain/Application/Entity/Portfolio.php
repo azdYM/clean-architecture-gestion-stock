@@ -9,30 +9,29 @@ use App\Domain\Customer\Entity\Person;
 use App\Domain\Customer\ClientInterface;
 use App\Domain\Mounting\FolderInterface;
 use Doctrine\Common\Collections\Collection;
-use App\Domain\Application\PortfolioInterface;
+use App\Domain\Mounting\Entity\CreditFolder;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Application\Repository\PortfolioRepository;
-use App\Domain\Mounting\Entity\GageFolder;
 
 #[ORM\Entity(repositoryClass: PortfolioRepository::class)]
-class Portfolio implements PortfolioInterface
+class Portfolio
 {
     use IdentifiableTrait;
     use TimestampTrait;
     
-    #[ORM\OneToOne(targetEntity: Person::class, inversedBy: 'portfolio')]
+    #[ORM\OneToOne(targetEntity: Person::class)]
     #[ORM\JoinColumn(name: 'client_id', referencedColumnName: 'id', nullable: false)]
     private ?ClientInterface $client = null;
 
     /**
-     * @var Collection<int, GageFolder>
+     * @var Collection<int, CreditFolder>
      */
-    #[ORM\OneToMany(targetEntity: GageFolder::class, mappedBy: 'portfolio')]
-    private Collection $gageCreditFolders;
+    #[ORM\OneToMany(targetEntity: CreditFolder::class, mappedBy: 'portfolio')]
+    private Collection $creditFolders;
 
     public function __construct()
     {
-        $this->gageCreditFolders = new ArrayCollection();
+        $this->creditFolders = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
     }
@@ -48,15 +47,15 @@ class Portfolio implements PortfolioInterface
         return $this;
     }
 
-    public function getGageCreditFolders(): Collection
+    public function getCreditFolders(): Collection
     {
-        return $this->gageCreditFolders;
+        return $this->creditFolders;
     }
 
-    public function addGageCreditFolder(FolderInterface $folder): self
+    public function addCreditFolder(FolderInterface $folder): self
     {
-        if (!$this->gageCreditFolders->contains($folder)) {
-            $this->gageCreditFolders->add($folder);
+        if (!$this->creditFolders->contains($folder)) {
+            $this->creditFolders->add($folder);
         }
 
         return $this;

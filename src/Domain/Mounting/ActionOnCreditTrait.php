@@ -2,9 +2,9 @@
 
 namespace App\Domain\Mounting;
 
-use App\Domain\Credit\CreditApproval;
-use App\Domain\Credit\CreditRejection;
 use App\Domain\Employee\Entity\Employee;
+use App\Domain\Credit\Entity\CreditApproval;
+use App\Domain\Credit\Entity\CreditRejection;
 use App\Domain\Application\CancellableInterface;
 
 trait ActionOnCreditTrait

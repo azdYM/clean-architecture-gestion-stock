@@ -5,6 +5,7 @@ namespace App\Domain\Mounting\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Employee\Entity\Agency;
 use App\Domain\Mounting\Entity\MountingSection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Mounting\Repository\MountingCreditFolderServiceRepository;
 
@@ -14,10 +15,12 @@ class MountingCreditFolderService
     use IdentifiableTrait;
 
     #[ORM\Column(length: 100, unique: true)]
+    #[Groups(['CurrentUser:read'])]
     private ?string $serviceName;
 
     #[ORM\ManyToOne(targetEntity: Agency::class, inversedBy: 'mountingCreditFolderServices')]
     #[ORM\JoinColumn(name: 'agency_id', referencedColumnName: 'id')]
+    #[Groups(['CurrentUser:read'])]
     private ?Agency $agency = null;
 
     #[ORM\OneToOne(targetEntity: MountingSection::class, inversedBy: 'mountingFolderService')]

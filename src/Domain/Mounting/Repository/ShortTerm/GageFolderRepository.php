@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Domain\Mounting\Repository;
+namespace App\Domain\Mounting\Repository\ShortTerm;
 
 use Doctrine\Persistence\ManagerRegistry;
-use App\Domain\Mounting\Entity\GageFolder;
 use App\Infrastructure\Orm\AbstractRepository;
+use App\Domain\Mounting\Entity\ShortTerm\GageFolder;
 
 /**
  * @extends AbstractRepository<GageFolder>
@@ -19,6 +19,22 @@ class GageFolderRepository extends AbstractRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, GageFolder::class);
+    }
+
+    public function findFolderWithAttestations($id)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $folder = $entityManager->createQuery(
+            'SELECT f, e
+            FROM App\Domain\Mounting\Entity\GageFolder f
+            LEFT JOIN App\Domain\Garantee\Entity\Gold\GoldAttestation e WITH e.folder = f.id
+            WHERE f.id = :identifier'
+        )
+        ->setParameter('identifier', $id) 
+        ->getResult();
+
+        return $folder;
     }
 
 //    /**

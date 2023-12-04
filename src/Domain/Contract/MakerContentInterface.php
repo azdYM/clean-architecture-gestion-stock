@@ -2,7 +2,8 @@
 
 namespace App\Domain\Contract;
 
-use App\Domain\Credit\Entity\Contract\GeneralContent;
+use App\Domain\Contract\Components\GeneralContent;
+
 
 interface MakerContentInterface 
 {

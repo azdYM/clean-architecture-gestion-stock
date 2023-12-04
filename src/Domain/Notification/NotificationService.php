@@ -18,14 +18,13 @@ class NotificationService
 
     public function notifyChannel(string $channel, string $message, ?object $entity = null): Notification
     {
-        $url = $entity ? $this->serializer->serialize($entity, PathEncoder::FORMAT) : null;
+        $url = $entity ? $this->serializer->serialize($entity, PathEncoder::FORMAT, ['groups' => ['Attestation', 'Identifiant:read']]) : null;
         $notification = (new Notification())
             ->setChannel($channel)
             ->setMessage($message)
             ->setTarget($entity ? $this->getHashForEntity($entity) : null)
             ->setUrl($url)
         ;
-
         $this->event->dispatch(new NotificationCreatedEvent($notification));
         return $notification;
     }
@@ -34,7 +33,7 @@ class NotificationService
     {
         $url = $this->serializer->serialize($entity, PathEncoder::FORMAT);
         $notification = (new Notification())
-            ->setEmployee($employee)
+            ->setUser($employee)
             ->setMessage($message)
             ->setTarget($entity ? $this->getHashForEntity($entity) : null)
             ->setUrl($url)

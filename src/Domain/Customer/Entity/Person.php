@@ -2,11 +2,11 @@
 
 namespace App\Domain\Customer\Entity;
 
-use App\Domain\Application\Entity\IdentifiableTrait;
-use App\Domain\Application\Entity\TimestampTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Application\Entity\TimestampTrait;
+use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Customer\Repository\PersonRepository;
 
 #[ORM\Entity(repositoryClass: PersonRepository::class)]

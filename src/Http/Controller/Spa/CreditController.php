@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CreditController extends BaseController
 {
-    #[Route('/add-credit', name: 'add_credit')]
+    #[Route('/create-credit', name: 'add_credit')]
     public function createCredit()
     {
         return $this->render('pages/app.html.twig', []);

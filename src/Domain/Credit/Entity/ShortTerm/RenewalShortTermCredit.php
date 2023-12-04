@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Domain\Credit\Gage\Entity;
+namespace App\Domain\Credit\Entity\ShortTerm;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Mounting\FolderInterface;
-use App\Domain\Mounting\Entity\GageFolder;
-use App\Domain\Credit\Gage\Entity\GageCredit;
 use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Application\Entity\IdentifiableTrait;
-use App\Domain\Credit\Gage\Repository\RenawalGageCreditRepository;
+use App\Domain\Mounting\Entity\ShortTerm\GageFolder;
+use App\Domain\Credit\Repository\ShortTerm\RenewalShortTermCreditRepository;
 
-#[ORM\Entity(repositoryClass: RenawalGageCreditRepository::class)]
-class RenawalGageCredit
+#[ORM\Entity(repositoryClass: RenewalShortTermCreditRepository::class)]
+class RenewalShortTermCredit
 {
     use IdentifiableTrait;
     use TimestampTrait;
@@ -24,8 +23,7 @@ class RenawalGageCredit
     #[ORM\JoinColumn(name: 'new_credit_id', referencedColumnName: 'id')]
     private ?GageCredit $newCredit;
 
-
-    #[ORM\ManyToOne(targetEntity: GageFolder::class, inversedBy: 'renawaledCredits')]
+    #[ORM\ManyToOne(targetEntity: GageFolder::class, inversedBy: 'renewedCredits')]
     #[ORM\JoinColumn(name: 'folder_id', referencedColumnName: 'id')]
     private ?FolderInterface $folder = null;
 

@@ -2,11 +2,11 @@
 
 namespace App\Domain\Garantee\DTO;
 
-use App\Domain\Credit\CreditType;
-use App\Domain\Customer\ClientInterface;
 use App\Domain\Garantee\ItemInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Credit\Entity\CreditType;
+use App\Domain\Customer\ClientInterface;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Garantee 
 {
@@ -17,7 +17,7 @@ class Garantee
 
     public ?string $description = null;
 
-    private CreditType $creditTypeTargeted;
+    public ?CreditType $creditTypeTargeted = null;
 
     public function __construct()
     {

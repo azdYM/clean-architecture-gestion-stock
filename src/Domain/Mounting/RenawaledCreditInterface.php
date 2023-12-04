@@ -2,7 +2,6 @@
 
 namespace App\Domain\Mounting;
 
-use App\Domain\Credit\Entity\RenawalCredit;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -14,9 +13,5 @@ use Doctrine\Common\Collections\Collection;
 
 interface RenawaledCreditInterface 
 {
-    /**
-     * @return Collection<int, RenawalCredit>
-     */
     public function getRenawaledCredits(): Collection;
-    public function addRenawaledCredit(RenawalCredit $credit): self;
 }

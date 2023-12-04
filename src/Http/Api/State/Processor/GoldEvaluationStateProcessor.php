@@ -4,17 +4,17 @@ namespace App\Http\Api\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
 use App\Domain\Garantee\DTO\Garantee;
+use App\Http\Utils\ObtainClientTrait;
+use App\Domain\Credit\Entity\CreditType;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\State\ProcessorInterface;
-use App\Domain\Credit\CreditType;
-use App\Http\Api\DTO\Garantee\GoldEvaluation;
-use App\Infrastructure\Generator\Item\GoldEvaluator;
-use App\Domain\Employee\Service\GageEvaluationService;
-use App\Domain\Garantee\Entity\Attestation;
-use App\Http\Utils\ObtainClientTrait;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use App\Http\Api\DTO\Garantee\GoldEvaluation;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
+use App\Infrastructure\Generator\Item\GoldEvaluator;
+use App\Domain\Employee\Service\GageEvaluationService;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GoldEvaluationStateProcessor implements ProcessorInterface
 {
@@ -22,7 +22,8 @@ class GoldEvaluationStateProcessor implements ProcessorInterface
 
     public function __construct(
         private EntityManagerInterface $em,
-        private Security $security
+        private Security $security,
+        private EventDispatcherInterface $eventDispacher
     ){}
 
     /**
@@ -30,7 +31,7 @@ class GoldEvaluationStateProcessor implements ProcessorInterface
      * @param Operation $operation
      * @param array $uriVariables
      * @param array $context
-     * @return Attestation
+     * @return Garantee
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
@@ -58,16 +59,16 @@ class GoldEvaluationStateProcessor implements ProcessorInterface
             ->setCreditTypeTargeted($creditTypeTargeted)
             ->setDescription($data->description)
         ;
-
+        
         return $garantee;
     }
 
-    private function getAttestationFromGarantee(Garantee $garantee): Attestation
+    private function getAttestationFromGarantee(Garantee $garantee): GaranteeAttestation
     {
         $itemEvaluator = new GoldEvaluator();
         $evaluationService = new GageEvaluationService(
             $this->security->getUser(), 
-            new EventDispatcher
+            $this->eventDispacher
         );
 
         return $evaluationService->evaluateAndGenerateAttestation($itemEvaluator, $garantee);
@@ -80,7 +81,7 @@ class GoldEvaluationStateProcessor implements ProcessorInterface
         }
     }
 
-    private function persistAttestation(Attestation $attestation): void 
+    private function persistAttestation(GaranteeAttestation $attestation): void 
     {
         $this->em->persist($attestation);
     }

@@ -6,10 +6,11 @@ use App\Domain\Auth\User;
 use App\Domain\Auth\UserRole;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Employee\CanAddRoleTrait;
-use App\Domain\Employee\Exception\RoleAttributionException;
 use App\Domain\Mounting\Entity\MountingSection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Domain\Garantee\Entity\EvaluationGageSection;
 use App\Domain\Employee\Repository\EmployeeRepository;
+use App\Domain\Employee\Exception\RoleAttributionException;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 class Employee extends User
@@ -17,7 +18,8 @@ class Employee extends User
     use CanAddRoleTrait;
 
     #[ORM\Column(length: 180)]
-    protected ?string $fullname = null;
+    #[Groups(['Attestation:read', 'CurrentUser:read'])]
+    private ?string $fullname = null;
 
     #[ORM\ManyToOne(targetEntity: EvaluationGageSection::class)]
     #[ORM\JoinColumn(name: 'evaluation_section_id', referencedColumnName: 'id')]

@@ -3,6 +3,7 @@
 namespace App\Domain\Auth;
 
 use App\Domain\Auth\Event\BadPasswordLoginEvent;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +30,7 @@ class Authenticator extends AbstractLoginFormAuthenticator
     private ?Passport $lastPassport = null;
 
     public function __construct(
+        private EntityManagerInterface $em,
         private readonly UserRepository $userRepository,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly EventDispatcherInterface $eventDispatcher,
@@ -40,9 +42,8 @@ class Authenticator extends AbstractLoginFormAuthenticator
     {
         $email = (string) $request->request->get('email', '');
         $request->getSession()->set(Security::LAST_USERNAME, $email);
-        
         $this->lastPassport = new Passport(
-            new UserBadge($email, fn (string $email) => $this->userRepository->findForAuth($email)),
+            new UserBadge($email, fn (string $email) => $this->userRepository->findOneBy(['email' => $email])),
             new PasswordCredentials((string) $request->request->get('password', '')),
             [
                 new CsrfTokenBadge('authenticate', $request->get('_csrf_token')),

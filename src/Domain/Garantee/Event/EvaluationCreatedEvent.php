@@ -2,32 +2,34 @@
 
 namespace App\Domain\Garantee\Event;
 
-use App\Domain\Garantee\AttestationInterface;
-use App\Domain\Garantee\Entity\EvaluationGageService;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class EvaluationCreatedEvent extends Event
 {
     public function __construct(
-        private AttestationInterface $attestation, 
-        private EvaluationGageService $evaluationService
+        private GaranteeAttestation $attestation, 
     ){}
 
-    public function getAttestation(): AttestationInterface
+    public function getAttestation(): GaranteeAttestation
     {
         return $this->attestation;
     }
 
     public function getSectionLabel(): string
     {
-        return $this->evaluationService->getServiceName();
+        return $this->attestation
+            ->getEvaluationService()
+            ->getServiceName()
+        ;
     }
 
-    public function getAgencyLabel(): string
+    public function getAgency(): int
     {
-        return $this->evaluationService
+        return $this->attestation
+            ->getEvaluationService()
             ->getAgency()
-            ->getLabel()
-        ;   
+            ->getId()
+        ;
     }
 }

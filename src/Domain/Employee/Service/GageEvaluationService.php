@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use App\Domain\Garantee\AttestationInterface;
 use App\Domain\Application\ItemEvaluatorException;
 use App\Domain\Application\ItemEvaluatorInterface;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
 use App\Domain\Garantee\Event\EvaluationCreatedEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -37,12 +38,8 @@ class GageEvaluationService
     {
         $this->itemEvaluator = $evaluator;
         $this->evaluateItemsForGarantee($garantee);
-        $attestation = $this->generateAttestationFromGarantee($garantee);
-        
-        $this->event->dispatch(new EvaluationCreatedEvent(
-            $attestation, 
-            $this->evaluator->getCurrentEvaluationSection()->getEvaluationGageService()
-        ));
+        $attestation = $this->generateAttestationFromGarantee($garantee);   
+        $this->event->dispatch(new EvaluationCreatedEvent($attestation));
 
         return $attestation;
     }
@@ -78,10 +75,11 @@ class GageEvaluationService
         return $price;
     }
 
-    private function generateAttestationFromGarantee(Garantee $garantee): GoldAttestation
+    private function generateAttestationFromGarantee(Garantee $garantee): GaranteeAttestation
     {
         $attestation = GoldAttestation::create()
             ->setClient($garantee->getClient())
+            ->setEvaluationService($this->evaluator->getCurrentEvaluationSection()->getEvaluationGageService())
             ->setEvaluator($this->evaluator)
             ->setEvaluatorDescription($garantee->getDescription())
             ->setCreditTypeTargeted($garantee->getCreditTypeTargeted())
@@ -100,6 +98,7 @@ class GageEvaluationService
     {
         foreach($items as $item) {
             $attestation->addItem($item);
+            $item->setAttestation($attestation);
         }
     }
 }

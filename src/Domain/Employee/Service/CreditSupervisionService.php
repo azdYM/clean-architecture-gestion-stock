@@ -2,11 +2,11 @@
 
 namespace App\Domain\Employee\Service;
 
-use App\Domain\Credit\Credit;
-use App\Domain\Credit\CreditApproval;
+use App\Domain\Credit\Entity\Credit;
 use App\Domain\Credit\CreditInterface;
-use App\Domain\Credit\CreditRejection;
 use App\Domain\Employee\Entity\Employee;
+use App\Domain\Credit\Entity\CreditApproval;
+use App\Domain\Credit\Entity\CreditRejection;
 use App\Domain\Credit\Event\CreditApprovedEvent;
 use App\Domain\Credit\Event\CreditCanceledEvent;
 use App\Domain\Credit\Event\CreditRejectedEvent;

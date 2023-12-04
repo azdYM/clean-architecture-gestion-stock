@@ -3,8 +3,8 @@
 namespace App\Domain\Mounting\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Domain\Credit\CreditRejection;
 use Doctrine\Common\Collections\Collection;
+use App\Domain\Credit\Entity\CreditRejection;
 
 trait RejectionTrait
 {

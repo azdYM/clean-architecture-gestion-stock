@@ -11,11 +11,12 @@ use App\Domain\Application\Entity\IdentifiableTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[UniqueEntity(fields: ['email'], repositoryMethod: 'findByCaseInsensitive')]
 #[UniqueEntity(fields: ['username'], repositoryMethod: 'findByCaseInsensitive')]
-#[ORM\Table(name: '`user`')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'discr', type: 'string')]
 #[ORM\DiscriminatorMap([

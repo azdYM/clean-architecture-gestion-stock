@@ -6,7 +6,6 @@ use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Customer\ClientInterface;
 use App\Domain\Application\Entity\Portfolio;
-use App\Domain\Application\PortfolioInterface;
 
 #[ORM\MappedSuperclass]
 abstract class Client extends Person implements ClientInterface
@@ -17,8 +16,9 @@ abstract class Client extends Person implements ClientInterface
     #[ORM\Column(type: 'datetime', name: 'membership_at', nullable: true)]
     protected ?DateTimeInterface $membershipAt = null;
 
-    #[ORM\OneToOne(targetEntity: Portfolio::class, mappedBy: 'client', cascade: ['persist'])]
-    protected ?PortfolioInterface $portfolio = null;
+    #[ORM\OneToOne(targetEntity: Portfolio::class, inversedBy: 'client', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'portfolio_id', referencedColumnName: 'id')]
+    protected ?Portfolio $portfolio = null;
     
     abstract public function getFolio(): ?int;
 
@@ -44,14 +44,17 @@ abstract class Client extends Person implements ClientInterface
         if ($this->portfolio === null) {
             $this->makePortfolio();
         }
-
+        
         return $this->portfolio;
     }
 
-    private function makePortfolio(): void
+    public function makePortfolio(): void
     {
-        $this->portfolio = (new Portfolio)
-            ->setClient($this)
-        ;
+        if ($this->portfolio === null) {
+            $this->portfolio = (new Portfolio)
+                ->setClient($this)
+            ;
+        }
+
     }
 }

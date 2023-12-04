@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Domain\Credit;
+namespace App\Domain\Credit\Entity;
 
-use App\Domain\Credit\Credit;
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Credit\CreditInterface;
 use App\Domain\Employee\Entity\Employee;
-use App\Domain\Credit\Gage\Entity\GageCredit;
-use App\Domain\Mounting\Entity\CreditSupervisor;
 use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Application\Entity\IdentifiableTrait;
 
 #[ORM\Entity]
-class CreditRejection
+class CreditApproval
 {
     use IdentifiableTrait;
     use TimestampTrait;
@@ -21,12 +18,12 @@ class CreditRejection
     #[ORM\JoinColumn(name: 'approving_id', referencedColumnName: 'id')]
     private ?Employee $approving = null;
 
-    #[ORM\ManyToOne(targetEntity: GageCredit::class, inversedBy: 'rejections')]
+    #[ORM\ManyToOne(targetEntity: Credit::class, inversedBy: 'approvals')]
     #[ORM\JoinColumn(name: 'credit_id', referencedColumnName: 'id')]
     private ?Credit $credit = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $cause = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $comment = null;
 
     public function __construct()
     {
@@ -56,14 +53,14 @@ class CreditRejection
         return $this;
     }
 
-    public function getCause(): string
+    public function getComment(): ?string
     {
-        return $this->cause;
+        return $this->comment;
     }
 
-    public function setCause(string $cause): self
+    public function setComment(?string $comment): self
     {
-        $this->cause = $cause;
+        $this->comment = $comment;
         return $this;
     }
 }

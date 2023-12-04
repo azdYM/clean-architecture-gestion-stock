@@ -2,7 +2,7 @@
 
 namespace App\Domain\Notification\Event;
 
-use App\Domain\Employee\Employee;
+use App\Domain\Employee\Entity\Employee;
 
 class NotificationReadEvent 
 {

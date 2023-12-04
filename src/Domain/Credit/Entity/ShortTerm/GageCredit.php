@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Domain\Credit\Gage\Entity;
+namespace App\Domain\Credit\Entity\ShortTerm;
 
-use App\Domain\Credit\Credit;
 use Doctrine\ORM\Mapping as ORM;
+use App\Domain\Credit\Entity\Credit;
 use App\Domain\Contract\Entity\Contract;
 use App\Domain\Employee\Entity\Employee;
-use App\Domain\Mounting\Entity\GageFolder;
-use App\Domain\Garantee\Entity\Attestation;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Application\CancellableInterface;
 use App\Domain\Application\Entity\CancellableTrait;
-use App\Domain\Credit\Gage\Repository\GageCreditRepository;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
+use App\Domain\Mounting\Entity\ShortTerm\GageFolder;
+use App\Domain\Credit\Repository\ShortTerm\GageCreditRepository;
 
 #[ORM\Entity(repositoryClass: GageCreditRepository::class)]
 class GageCredit extends Credit implements CancellableInterface
@@ -41,31 +41,6 @@ class GageCredit extends Credit implements CancellableInterface
 
     #[ORM\OneToOne(targetEntity: GageFolder::class, mappedBy: 'credit')]
     private ?GageFolder $folder = null;
-
-    #[ORM\OneToOne(targetEntity: Attestation::class)]
-    #[ORM\JoinColumn(name: 'attestation_id', referencedColumnName: 'id')]
-    private ?Attestation $attestation = null;
-
-    #[ORM\ManyToOne(targetEntity: Employee::class)]
-    #[ORM\JoinColumn(name: 'agent_id', referencedColumnName: 'id')]
-    private ?Employee $creditAgent = null;
-
-    #[ORM\JoinTable(name: 'contracts_credits')]
-    #[ORM\JoinColumn(name: 'credit_id', referencedColumnName: 'id')]
-    #[ORM\InverseJoinColumn(name: 'contract_id', referencedColumnName: 'id')]
-    #[ORM\ManyToMany(targetEntity: Contract::class)]
-    private Collection $contracts;
-
-    public function getAttestation(): Attestation
-    {
-        return $this->attestation;
-    }
-
-    public function setAttestation(Attestation $attestation): self
-    {
-        $this->attestation = $attestation;
-        return $this;
-    }
 
     public function getCapital(): int
     {
@@ -158,21 +133,5 @@ class GageCredit extends Credit implements CancellableInterface
     {
         $this->folder = $folder;
         return $this;
-    }
-
-    public function getCreditAgent(): Employee
-    {
-        return $this->creditAgent;
-    }
-
-    public function setCreditAgent(Employee $creditAgent): self
-    {
-        $this->creditAgent = $creditAgent;
-        return $this;
-    }
-
-    public function getContracts(): Collection
-    {
-        return $this->contracts;
     }
 }

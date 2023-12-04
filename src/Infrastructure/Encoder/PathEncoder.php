@@ -14,7 +14,7 @@ class PathEncoder implements EncoderInterface
 
     public function encode(mixed $data, string $format, array $context = []): string
     {
-        ['path' => $path, 'params' => $params] = array_merge(['params' => []], $data);
+        ['path' => $path, 'params' => $params] = array_merge(['path' => "evaluation", 'params' => []], $data);
         $hash = isset($data['hash']) ? '#'.$data['hash'] : '';
         $url = $context['url'] ?? false;
 

@@ -2,9 +2,10 @@
 
 namespace App\Domain\Customer\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Customer\Repository\ContactRepository;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -12,9 +13,11 @@ class Contact
     use IdentifiableTrait;
 
     #[ORM\Column(length: 50, unique: true, nullable: true)]
+    #[Groups(['Contact:read'])]
     private ?string $telephone = null;
 
     #[ORM\Column(length: 50, unique: true, nullable: true)]
+    #[Groups(['Contact:read'])]
     private ?string $email = null;
 
     public function getTelephone(): ?string

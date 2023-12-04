@@ -7,6 +7,7 @@ use App\Domain\Garantee\Entity\Attestation;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Garantee\AttestationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
 
 class FolderRequirements
 {
@@ -28,7 +29,7 @@ class FolderRequirements
         return $this->attestations;
     }
 
-    public function addAttestation(Attestation $attestation): self
+    public function addAttestation(GaranteeAttestation $attestation): self
     {
         if (!$this->attestations->contains($attestation)) {
             $this->attestations->add($attestation);

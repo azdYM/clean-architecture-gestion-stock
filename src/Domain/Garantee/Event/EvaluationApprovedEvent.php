@@ -5,12 +5,13 @@ namespace App\Domain\Garantee\Event;
 use App\Domain\Garantee\Entity\Attestation;
 use Symfony\Contracts\EventDispatcher\Event;
 use App\Domain\Garantee\AttestationInterface;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Domain\Mounting\Entity\MountingCreditFolderService;
 
 class EvaluationApprovedEvent extends Event
 {
     public function __construct(
-        private Attestation $attestation,
+        private GaranteeAttestation $attestation,
         private MountingCreditFolderService $mountingService,
     ){}
 

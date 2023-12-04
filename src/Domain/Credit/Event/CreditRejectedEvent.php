@@ -3,7 +3,7 @@
 namespace App\Domain\Credit\Event;
 
 use App\Domain\Credit\CreditInterface;
-use App\Domain\Credit\CreditRejection;
+use App\Domain\Credit\Entity\CreditRejection;
 
 class CreditRejectedEvent
 {

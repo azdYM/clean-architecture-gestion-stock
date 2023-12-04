@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ClientController extends BaseController
 {
-    #[Route('/add-client', name: 'add_client')]
+    #[Route('/ajout-client', name: 'add_client')]
     public function addClient()
     {
         return $this->render('pages/app.html.twig', []);

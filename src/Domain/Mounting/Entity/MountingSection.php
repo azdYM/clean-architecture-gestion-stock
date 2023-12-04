@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\Entity\Supervisor;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Mounting\Entity\MountingCreditFolderService;
 use App\Domain\Mounting\Repository\MountingSectionRepository;
@@ -28,6 +29,7 @@ class MountingSection
     private Collection $supervisors;
 
     #[ORM\OneToOne(targetEntity: MountingCreditFolderService::class, mappedBy: 'section')]
+    #[Groups(['CurrentUser:read'])]
     private ?MountingCreditFolderService $mountingFolderService = null;
 
     /**

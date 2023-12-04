@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Customer\Entity\Location;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Domain\Customer\Repository\CorporateRepository;
 
 /**

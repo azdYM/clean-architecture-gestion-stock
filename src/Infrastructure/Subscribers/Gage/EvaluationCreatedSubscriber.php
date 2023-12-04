@@ -2,15 +2,19 @@
 
 namespace App\Infrastructure\Subscribers\Gage;
 
-use App\Domain\Garantee\Event\EvaluationCreatedEvent;
+use App\Domain\Employee\Entity\Agency;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Domain\Notification\Entity\Notification;
 use App\Domain\Notification\NotificationService;
+use App\Domain\Garantee\Event\EvaluationCreatedEvent;
+use App\Domain\Notification\Repository\NotificationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EvaluationCreatedSubscriber implements EventSubscriberInterface
 {
+    private EvaluationCreatedEvent $event;
+
     public function __construct(
-        private EvaluationCreatedEvent $event, 
         private EntityManagerInterface $em,
         private NotificationService $notifier
     ){}
@@ -26,23 +30,25 @@ class EvaluationCreatedSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onNotify(): void
+    public function onNotify(EvaluationCreatedEvent $event): void
     {
+        $this->event = $event;
         $attestation = $this->event->getAttestation();
-        $repository = $this->em->getRepository(NotificationRepository::class);
+        /** @var NotificationRepository $repository */
+        $repository = $this->em->getRepository(Notification::class);
         $notification = $this->notifier->notifyChannel(
             $this->getChannel(), 
             $this->getMessage(), 
             $attestation
         );
-
+        
         $repository->persistOrUpdate($notification);
     }
 
     private function getChannel(): string
     {
-        $agency = $this->event->getAgencyLabel();
         $section = $this->event->getSectionLabel();
+        $agency = $this->event->getAgency();
         return 'supervisors_evaluation_'.$section.'_'.$agency;
     }
 

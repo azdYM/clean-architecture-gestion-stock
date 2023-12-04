@@ -31,9 +31,12 @@ class EmployeeFixtures extends Fixture
         $gageSection = $this->createGageSection($gageService);
         $mountingSection = $this->createMountingSection($mountingFolderService);
 
+        $gageService->setSection($gageSection);
+        $mountingFolderService->setSection($mountingSection);
+
         $evaluator = $this->createEmployee(
-            fullname: "Issa Mohame", 
-            username: 'issa', 
+            fullname: "Issa Mohame",
+            username: 'issa',
             email: 'issa_mohamed@meck-moroni.org',
             password: 'mina',
             role: UserRole::GageEvaluator,
@@ -48,7 +51,6 @@ class EmployeeFixtures extends Fixture
             role: UserRole::GageSupervisor,
             gageSection: $gageSection
         );
-
 
         $creditAgent = $this->createEmployee(
             fullname: "Imamou Mina", 

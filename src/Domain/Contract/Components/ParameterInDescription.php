@@ -4,7 +4,7 @@ namespace App\Domain\Contract\Components;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Contract\Components\Article;
-use App\Domain\Credit\Entity\Contract\GeneralContent;
+use App\Domain\Contract\Components\GeneralContent;
 use App\Domain\Contract\Components\ParameterInDescriptionRepository;
 
 #[ORM\Entity(repositoryClass: ParameterInDescriptionRepository::class)]

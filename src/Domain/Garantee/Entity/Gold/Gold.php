@@ -2,10 +2,13 @@
 
 namespace App\Domain\Garantee\Entity\Gold;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use App\Domain\Garantee\ItemInterface;
+use App\Domain\Garantee\AttestationInterface;
 use App\Domain\Application\Entity\TimestampTrait;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Domain\Application\Entity\IdentifiableTrait;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
 use App\Domain\Garantee\Repository\Gold\GoldRepository;
@@ -17,23 +20,34 @@ class Gold implements ItemInterface
     use TimestampTrait;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['Attestation:read', 'Evaluation:write'])]
     private ?string $name = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
+    #[Groups(['Attestations:read', 'Evaluation:write'])]
     private int $quantity = 1;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['Attestations:read', 'Evaluation:write'])]
     private int $carrat;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['Attestations:read'])]
     private int $unitPrice;
 
     #[ORM\Column(type: 'integer')]
+    #[Groups(['Attestation:read', 'Evaluation:write'])]
     private int $weight;
 
     #[ORM\ManyToOne(targetEntity: GoldAttestation::class, inversedBy: 'items')]
     #[ORM\JoinColumn(name: 'attestation_id', referencedColumnName: 'id')]
     private ?GoldAttestation $attestation = null; 
+
+    public function __construct()
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
+    }
 
     public function getName(): ?string
     {
@@ -53,7 +67,7 @@ class Gold implements ItemInterface
 
     public function setQuantity(int $quantity): self
     {
-        $this->$quantity = $quantity;
+        $this->quantity = $quantity;
         return $this;
     }
 
@@ -88,5 +102,16 @@ class Gold implements ItemInterface
     {
         $this->weight = $weight;
         return $this;
+    }
+
+    public function setAttestation(AttestationInterface $attestation): self 
+    {
+        $this->attestation = $attestation;
+        return $this;
+    }
+
+    public function getAttestation(): AttestationInterface
+    {
+        return $this->attestation;
     }
 }

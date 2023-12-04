@@ -3,16 +3,16 @@
 namespace App\Domain\Employee\Service;
 
 use App\Domain\Credit\CreditInterface;
+use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\FolderInterface;
 use App\Domain\Mounting\TargetCreditTrait;
 use Doctrine\Common\Collections\Collection;
-use App\Domain\Credit\Gage\Entity\GageCredit;
 use App\Domain\Credit\Event\CreditCreatedEvent;
 use App\Domain\Mounting\DTO\CreditRequirements;
 use App\Domain\Mounting\DTO\FolderRequirements;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Domain\Credit\Entity\ShortTerm\GageCredit;
 use App\Domain\Credit\Service\CreditCreationServiceInterface;
-use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\Service\FolderMountingServiceInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 

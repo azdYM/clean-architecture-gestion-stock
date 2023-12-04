@@ -54,6 +54,7 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
     public function findForAuth(string $username): ?User
     {
         return $this->createQueryBuilder('u')
+            ->select('u.password', 'u.email', 'u.username')
             ->where('LOWER(u.email) = :username')
             ->orWhere('LOWER(u.username) = :username')
             ->setMaxResults(1)

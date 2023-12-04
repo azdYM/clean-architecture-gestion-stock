@@ -6,27 +6,24 @@ use App\Domain\Customer\Entity\Contact;
 use App\Domain\Customer\Entity\Location;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
 class Client
 {
-    #[Groups(['Attestations:read'])]
+    #[Groups(['Attestations:read', 'Folder:read'])]
     public ?int $id;
     
-    #[Groups(['Attestations:read'])]
+    #[Groups(['Attestations:read', 'Folder:read'])]
     public ?string $name = null;
 
-    #[Groups(['Attestations:read'])]
+    #[Groups(['Attestations:read', 'Folder:read'])]
     public ?int $folio;
 
     /**
-     *
      * @var array<int, Location>
      */
     #[Groups(['Location:read'])]
     public array $locations = [];
     
     /**
-     *
      * @var array<int, Contact>
      */
     #[Groups(['Contact:read'])]

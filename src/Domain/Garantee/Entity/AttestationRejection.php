@@ -7,6 +7,7 @@ use App\Domain\Employee\Entity\Employee;
 use App\Domain\Garantee\Entity\Attestation;
 use App\Domain\Garantee\AttestationInterface;
 use App\Domain\Application\Entity\TimestampTrait;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Domain\Application\Entity\IdentifiableTrait;
 
 #[ORM\Entity()]
@@ -15,9 +16,9 @@ class AttestationRejection
     use IdentifiableTrait;
     use TimestampTrait;
 
-    #[ORM\ManyToOne(targetEntity: Attestation::class, inversedBy: 'rejections')]
+    #[ORM\ManyToOne(targetEntity: GaranteeAttestation::class, inversedBy: 'rejections')]
     #[ORM\JoinColumn(name: 'attestation_id', referencedColumnName: 'id')]
-    private ?Attestation $attestation = null;
+    private ?GaranteeAttestation $attestation = null;
 
     #[ORM\ManyToOne(targetEntity: Employee::class)]
     #[ORM\JoinColumn(name: 'supervisor_id', referencedColumnName: 'id')]

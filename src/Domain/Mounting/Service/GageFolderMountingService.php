@@ -3,10 +3,10 @@
 namespace App\Domain\Mounting\Service;
 
 use App\Domain\Mounting\FolderInterface;
-use App\Domain\Mounting\Entity\GageFolder;
-use App\Domain\Garantee\Entity\Attestation;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Application\Entity\Portfolio;
+use App\Domain\Garantee\Entity\GaranteeAttestation;
+use App\Domain\Mounting\Entity\ShortTerm\GageFolder;
 use App\Domain\Mounting\Exception\MountingFolderException;
 
 class GageFolderMountingService implements FolderMountingServiceInterface
@@ -45,7 +45,7 @@ class GageFolderMountingService implements FolderMountingServiceInterface
     private function creditTypeTargetedIsValid(Collection $attestations): bool
     {
         $acc = $attestations->reduce(
-            function (Attestation $acc, Attestation $actual) {
+            function (GaranteeAttestation $acc, GaranteeAttestation $actual) {
                 if ($acc->getCreditTypeTargeted() !== $actual->getCreditTypeTargeted()) {
                     return $actual;
                 } 
@@ -64,6 +64,6 @@ class GageFolderMountingService implements FolderMountingServiceInterface
             throw new MountingFolderException("Le portefeuille fournis n'est pas associé a aucun client :)");
         }
 
-        $portfolio->addGageCreditFolder($folder);
+        $portfolio->addCreditFolder($folder);
     }
 }

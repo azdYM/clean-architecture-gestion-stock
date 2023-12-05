@@ -16,6 +16,7 @@ use App\Domain\Application\Entity\TimestampTrait;
 use App\Domain\Credit\Entity\ShortTerm\GageCredit;
 use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Domain\Application\Entity\IdentifiableTrait;
+use App\Domain\Mounting\Entity\CreditFolder;
 
 #[ORM\Entity]
 #[ORM\InheritanceType('JOINED')]
@@ -33,9 +34,7 @@ abstract class Credit implements CreditInterface
     use ActionOnCreditTrait;
     use TimestampTrait;
 
-    #[ORM\OneToOne(targetEntity: GaranteeAttestation::class)]
-    #[ORM\JoinColumn(name: 'attestation_id', referencedColumnName: 'id')]
-    protected ?GaranteeAttestation $attestation = null;
+    
 
     #[ORM\ManyToOne(targetEntity: Employee::class)]
     #[ORM\JoinColumn(name: 'agent_id', referencedColumnName: 'id')]
@@ -89,14 +88,5 @@ abstract class Credit implements CreditInterface
         return $this;
     }
 
-    public function getAttestation(): GaranteeAttestation
-    {
-        return $this->attestation;
-    }
-
-    public function setAttestation(GaranteeAttestation $attestation): static
-    {
-        $this->attestation = $attestation;
-        return $this;
-    }
+    abstract public function getFolder(): CreditFolder;
 }

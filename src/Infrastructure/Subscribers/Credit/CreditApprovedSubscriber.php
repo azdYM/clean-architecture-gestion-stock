@@ -4,13 +4,16 @@ namespace App\Infrastructure\Subscribers\Credit;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\Credit\Event\CreditApprovedEvent;
+use App\Domain\Notification\Entity\Notification;
 use App\Domain\Notification\NotificationService;
+use App\Domain\Notification\Repository\NotificationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreditApprovedSubscriber implements EventSubscriberInterface
 {
+    private CreditApprovedEvent $event;
+
     public function __construct(
-        private CreditApprovedEvent $event, 
         private EntityManagerInterface $em,
         private NotificationService $notifier
     ){}
@@ -26,15 +29,16 @@ class CreditApprovedSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onNotify(): void
+    public function onNotify(CreditApprovedEvent $event): void
     {
+        $this->event = $event;
         $this->notifyCreditAgentToGenreateContract();
     }
 
     public function notifyCreditAgentToGenreateContract(): void
     {
         $credit = $this->event->getCredit();
-        $repository = $this->em->getRepository(NotificationRepository::class);
+        $repository = $this->em->getRepository(Notification::class);
 
         $notification = $this->notifier->notifyEmployee(
             $credit->getCreditAgent(),

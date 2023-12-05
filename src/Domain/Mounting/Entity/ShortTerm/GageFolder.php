@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Credit\Entity\ShortTerm\GageCredit;
 use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Domain\Credit\Entity\ShortTerm\RenewalShortTermCredit;
+use App\Domain\Mounting\Entity\MountingCreditFolderService;
 use App\Domain\Mounting\Repository\ShortTerm\GageFolderRepository;
 
 #[ORM\Entity(repositoryClass: GageFolderRepository::class)]

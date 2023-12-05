@@ -27,7 +27,7 @@ class GageFolderRepository extends AbstractRepository
 
         $folder = $entityManager->createQuery(
             'SELECT f, e
-            FROM App\Domain\Mounting\Entity\GageFolder f
+            FROM App\Domain\Mounting\Entity\ShortTerm\GageFolder f
             LEFT JOIN App\Domain\Garantee\Entity\Gold\GoldAttestation e WITH e.folder = f.id
             WHERE f.id = :identifier'
         )

@@ -7,8 +7,8 @@ use ApiPlatform\State\ProviderInterface;
 use App\Domain\Customer\Entity\Client;
 use App\Domain\Customer\Entity\Corporate;
 use App\Domain\Customer\Entity\Individual;
-use App\Http\Api\DTO\Customer\Client as ClientDTO;
 use App\Http\Api\DTO\Customer\SearchClient;
+use App\Http\Utils\MapClientEntityToDto;
 use App\Http\Utils\ObtainClientTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,6 +17,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class SearchClientStateProvider implements ProviderInterface
 {
     use ObtainClientTrait;
+    use MapClientEntityToDto;
 
     public function __construct
     (
@@ -77,43 +78,5 @@ class SearchClientStateProvider implements ProviderInterface
         return $searchClient;
     }
 
-    private function mapClientEntityToDto(Client $client): ClientDTO
-    {
-        // Je me repete comme ça parceque de toute façon, cette methode n'est pas 
-        // prevu pour être dans cette classe
-
-        $clientDto = new ClientDTO();
-
-        if ($client instanceof Individual) {
-            $clientDto->name = $client->getName();
-            $clientDto->nickname = $client->getNickname();
-            $clientDto->gender = $client->getGender();
-        }
-
-        elseif ($client instanceof Corporate) {
-            $clientDto->name = $client->getName();
-            $clientDto->legalForm = $client->getLegalForm();
-            $clientDto->activityDomain = $client->getActivityDomain();
-            $clientDto->comericialRegistry = $client->getComercialRegistry();
-        }
-
-        else {
-            throw new \LogicException();
-        }
-
-        $clientDto->folio = $client->getFolio();
-        $clientDto->id = $client->getId();
-
-        foreach($client->getContacts() as $contact)
-        {
-            $clientDto->contacts[] = $contact;
-        }
-
-        foreach($client->getLocations() as $location)
-        {
-            $clientDto->locations[] = $location;
-        }
-
-        return $clientDto;
-    }
+    
 }

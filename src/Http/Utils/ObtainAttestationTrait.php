@@ -19,7 +19,7 @@ trait ObtainAttestationTrait {
         }
         
         $repository = $this->getAttestationRepository(GoldAttestation::class);
-        $attestation = $repository->findFolderWithAttestations($id);
+        $attestation = $repository->find($id);
         
         if ($attestation === null) {
             // on peut apeller d'autre type d'attestation repository, 

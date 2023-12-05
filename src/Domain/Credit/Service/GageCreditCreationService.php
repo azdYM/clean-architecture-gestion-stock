@@ -3,6 +3,7 @@
 namespace App\Domain\Credit\Service;
 
 use App\Domain\Credit\CreditInterface;
+use App\Domain\Credit\Entity\Credit;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\DTO\CreditRequirements;
 use App\Domain\Credit\Entity\ShortTerm\GageCredit;
@@ -13,7 +14,7 @@ class GageCreditCreationService implements CreditCreationServiceInterface
     public function __construct(private GageFolder $folder)
     {}
 
-    public function create(CreditRequirements $requirements, Employee $creditAgent): CreditInterface
+    public function create(CreditRequirements $requirements, Employee $creditAgent): Credit
     {
         $credit = (new GageCredit)
             ->setAttestation($requirements->attestation)

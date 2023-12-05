@@ -29,6 +29,10 @@ abstract class CreditFolder implements FolderInterface
     #[ORM\Column(nullable: true)]
     protected ?string $state = null;
 
+    #[ORM\ManyToOne(targetEntity: MountingCreditFolderService::class)]
+    #[ORM\JoinColumn(name: 'mounting_folder_service_id', referencedColumnName: 'id')]
+    protected ?MountingCreditFolderService $mountingFolderService = null;
+
     #[ORM\ManyToOne(targetEntity: Portfolio::class, inversedBy: 'gageCreditFolders')]
     #[ORM\JoinColumn(name: 'portfolio_id', referencedColumnName: 'id')]
     protected ?Portfolio $portfolio = null;
@@ -66,7 +70,7 @@ abstract class CreditFolder implements FolderInterface
     }
 
     /**
-     * @return Collection<int, AttestationInterface>
+     * @return Collection<int, GaranteeAttestation>
      */
     public function getAttestations(): Collection
     {
@@ -88,6 +92,17 @@ abstract class CreditFolder implements FolderInterface
             $this->attestations->removeElement($attestation);
         }
 
+        return $this;
+    }
+
+    public function getMountingFolderService(): ?MountingCreditFolderService
+    {
+        return $this->mountingFolderService;
+    }
+
+    public function setMountingFolderService(MountingCreditFolderService $mountingFolderService): self
+    {
+        $this->mountingFolderService = $mountingFolderService;
         return $this;
     }
 }

@@ -4,9 +4,6 @@ namespace App\Domain\Credit\Entity\ShortTerm;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Domain\Credit\Entity\Credit;
-use App\Domain\Contract\Entity\Contract;
-use App\Domain\Employee\Entity\Employee;
-use Doctrine\Common\Collections\Collection;
 use App\Domain\Application\CancellableInterface;
 use App\Domain\Application\Entity\CancellableTrait;
 use App\Domain\Garantee\Entity\GaranteeAttestation;
@@ -41,6 +38,10 @@ class GageCredit extends Credit implements CancellableInterface
 
     #[ORM\OneToOne(targetEntity: GageFolder::class, mappedBy: 'credit')]
     private ?GageFolder $folder = null;
+
+    #[ORM\OneToOne(targetEntity: GaranteeAttestation::class)]
+    #[ORM\JoinColumn(name: 'attestation_id', referencedColumnName: 'id')]
+    private ?GaranteeAttestation $attestation = null;
 
     public function getCapital(): int
     {
@@ -132,6 +133,17 @@ class GageCredit extends Credit implements CancellableInterface
     public function setFolder(GageFolder $folder): self
     {
         $this->folder = $folder;
+        return $this;
+    }
+
+    public function getAttestation(): GaranteeAttestation
+    {
+        return $this->attestation;
+    }
+
+    public function setAttestation(GaranteeAttestation $attestation): static
+    {
+        $this->attestation = $attestation;
         return $this;
     }
 }

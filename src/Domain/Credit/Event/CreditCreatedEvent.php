@@ -5,14 +5,10 @@ namespace App\Domain\Credit\Event;
 
 use App\Domain\Credit\CreditInterface;
 use App\Domain\Mounting\Entity\MountingCreditFolderService;
-use App\Domain\Mounting\Entity\MountingSection;
 
 class CreditCreatedEvent
 {
-    public function __construct(
-        private CreditInterface $credit, 
-        private MountingSection $section
-    ){}
+    public function __construct(private CreditInterface $credit,){}
 
     public function getCredit(): CreditInterface
     {
@@ -21,22 +17,23 @@ class CreditCreatedEvent
 
     public function getCreditCreationServiceName(): string
     {
-        return $this->creditCreationService()->getServiceName();
+        return $this->getMountingService()
+            ->getServiceName()
+        ;
     }
 
-    public function getAgencyLabel(): string
+    public function getAgencyId(): string
     {
-        return $this->creditCreationService()
+        return $this->getMountingService()
             ->getAgency()  
-            ->getLabel()
+            ->getId()
         ; 
     }
     
-    private function creditCreationService(): MountingCreditFolderService
+    private function getMountingService(): MountingCreditFolderService
     {
         return $this->credit
-            ->getCreditAgent()
-            ->getCurrentMountingSection()
+            ->getFolder()
             ->getMountingFolderService()
         ;
     }

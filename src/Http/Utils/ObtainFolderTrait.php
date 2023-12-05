@@ -3,7 +3,7 @@
 namespace App\Http\Utils;
 
 use App\Domain\Mounting\FolderInterface;
-use App\Domain\Mounting\Entity\GageFolder;
+use App\Domain\Mounting\Entity\ShortTerm\GageFolder;
 use App\Domain\Mounting\Repository\ShortTerm\GageFolderRepository;
 use Symfony\Component\Translation\Exception\NotFoundResourceException;
 

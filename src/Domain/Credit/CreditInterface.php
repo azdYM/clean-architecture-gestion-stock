@@ -3,15 +3,15 @@
 namespace App\Domain\Credit;
 
 use App\Domain\Employee\Entity\Employee;
-use App\Domain\Mounting\FolderInterface;
 use App\Domain\Contract\ContractInterface;
 use Doctrine\Common\Collections\Collection;
 use App\Domain\Credit\Entity\CreditApproval;
 use App\Domain\Credit\Entity\CreditRejection;
+use App\Domain\Mounting\Entity\CreditFolder;
 
 interface CreditInterface
 {
-    public function getFolder(): FolderInterface;
+    public function getFolder(): CreditFolder;
 
     /**
      * @return Collection<int, ContractInterface>

@@ -4,13 +4,17 @@ namespace App\Infrastructure\Subscribers\Credit;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\Credit\Event\CreditCreatedEvent;
+use App\Domain\Credit\Event\CreditRejectedEvent;
+use App\Domain\Notification\Entity\Notification;
 use App\Domain\Notification\NotificationService;
+use App\Domain\Notification\Repository\NotificationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CreditRejectedSubscriber implements EventSubscriberInterface
 {
+    private CreditRejectedEvent $event;
+
     public function __construct(
-        private CreditCreatedEvent $event, 
         private EntityManagerInterface $em,
         private NotificationService $notifier
     ){}
@@ -22,14 +26,16 @@ class CreditRejectedSubscriber implements EventSubscriberInterface
     {
         return 
         [
-            CreditCreatedEvent::class => 'onNotify'
+            CreditRejectedEvent::class => 'onNotify'
         ];
     }
 
-    public function onNotify(): void
+    public function onNotify(CreditRejectedEvent $event): void
     {
+        $this->event = $event;
+
         $attestation = $this->event->getCredit();
-        $repository = $this->em->getRepository(NotificationRepository::class);
+        $repository = $this->em->getRepository(Notification::class);
         $notification = $this->notifier->notifyChannel(
             $this->getChannel(),
             $this->getMessage(), 
@@ -41,9 +47,8 @@ class CreditRejectedSubscriber implements EventSubscriberInterface
 
     private function getChannel(): string
     {
-        $agency = $this->event->getAgencyLabel();
-        $section = $this->event->getCreditCreationServiceName();
-        return 'supervisors_credit_'.$section.'_'.$agency;
+        
+        return 'On verra ça plus tard';
     }
 
     private function getMessage(): string

@@ -2,7 +2,7 @@
 
 namespace App\Domain\Employee\Service;
 
-use App\Domain\Credit\CreditInterface;
+use App\Domain\Credit\Entity\Credit;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\FolderInterface;
 use App\Domain\Mounting\TargetCreditTrait;
@@ -30,18 +30,24 @@ class CreditMountingService
         FolderMountingServiceInterface $mountingService, FolderRequirements $requirements
     ): FolderInterface
     {
-        return $mountingService->mount(
+        $folder = $mountingService->mount(
             $requirements->getAttestations(), 
             $requirements->getClient()->getPortfolio()
         );
+
+        $folder->setMountingFolderService(
+            $this->creditAgent->getCurrentMountingSection()->getMountingFolderService()
+        );
+
+        return $folder;
     }
 
     public function createCredit(
         CreditCreationServiceInterface $service, CreditRequirements $requirements
-    ): CreditInterface
+    ): Credit
     {
         $credit = $service->create($requirements, $this->creditAgent);
-        $this->event->dispatch(new CreditCreatedEvent($credit, $this->creditAgent->getCurrentMountingSection()));
+        $this->event->dispatch(new CreditCreatedEvent($credit));
         return $credit;
     }
 

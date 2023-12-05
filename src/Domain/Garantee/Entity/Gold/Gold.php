@@ -20,23 +20,23 @@ class Gold implements ItemInterface
     use TimestampTrait;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['Attestation:read', 'Evaluation:write'])]
+    #[Groups(['Attestation:read', 'Evaluation:write', 'Folder:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 1])]
-    #[Groups(['Attestations:read', 'Evaluation:write'])]
+    #[Groups(['Attestations:read', 'Evaluation:write', 'Folder:read'])]
     private int $quantity = 1;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['Attestations:read', 'Evaluation:write'])]
+    #[Groups(['Attestations:read', 'Evaluation:write', 'Folder:read'])]
     private int $carrat;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['Attestations:read'])]
+    #[Groups(['Attestations:read', 'Folder:read'])]
     private int $unitPrice;
 
     #[ORM\Column(type: 'integer')]
-    #[Groups(['Attestation:read', 'Evaluation:write'])]
+    #[Groups(['Attestation:read', 'Evaluation:write', 'Folder:read'])]
     private int $weight;
 
     #[ORM\ManyToOne(targetEntity: GoldAttestation::class, inversedBy: 'items')]

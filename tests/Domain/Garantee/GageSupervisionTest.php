@@ -5,13 +5,13 @@ namespace App\Tests\Domain\Garantee;
 use App\Tests\FixtureTrait;
 use App\Tests\KernelTestKase;
 
-use App\Domain\Mounting\Entity\MountingSection;
-use App\Domain\Application\CancellableInterface;
-use App\Domain\Credit\CreditType;
+use App\Domain\Credit\Entity\CreditType;
 use App\Domain\Customer\ClientInterface;
 use App\Domain\Employee\Entity\Employee;
-use App\Domain\Employee\Service\GageSupervisionService;
+use App\Domain\Mounting\Entity\MountingSection;
+use App\Domain\Application\CancellableInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use App\Domain\Employee\Service\GageSupervisionService;
 
 class GageSupervisionTest extends KernelTestKase
 {

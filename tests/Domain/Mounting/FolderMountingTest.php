@@ -6,12 +6,10 @@ use App\Tests\FixtureTrait;
 use App\Tests\KernelTestKase;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Customer\Entity\Individual;
-use App\Domain\Mounting\Entity\GageFolder;
-use App\Domain\Mounting\Entity\CreditAgent;
 use App\Domain\Mounting\DTO\FolderRequirements;
 use App\Tests\Domain\Garantee\CreationItemTrait;
 use App\Domain\Garantee\Entity\AttestationApproval;
-use App\Domain\Garantee\Entity\Gold\GoldAttestation;
+use App\Domain\Mounting\Entity\ShortTerm\GageFolder;
 use App\Domain\Employee\Service\CreditMountingService;
 use App\Tests\Domain\Garantee\EvaluationGaranteeTrait;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -36,7 +34,7 @@ class FolderMountingTest extends KernelTestKase
         ] = $this->loadFixtures(['employee', 'credit_type', 'person', 'attestation']);
     }
 
-    public function testFolderCreditMounting()
+    public function testFolderCreditIsMounted()
     {
         $attestation = $this->attestationApproval->getAttestation();
         $folderRequirements = (new FolderRequirements)
@@ -45,9 +43,9 @@ class FolderMountingTest extends KernelTestKase
         ;
 
         $service = new CreditMountingService($this->creditAgent, new EventDispatcher);
-        $folder = $service->mountFolder(new GageFolderMountingService($this->creditAgent), $folderRequirements);
+        $folder = $service->mountFolder(new GageFolderMountingService, $folderRequirements);
 
         $this->assertInstanceOf(GageFolder::class, $folder);
-        $this->assertContains($folder, $attestation->getClient()->getPortfolio()->getGageCreditFolders());
+        $this->assertContains($folder, $attestation->getClient()->getPortfolio()->getCreditFolders());
     }
 }

@@ -4,7 +4,7 @@ namespace App\Tests\Domain\Garantee;
 
 use App\Tests\FixtureTrait;
 use App\Tests\KernelTestKase;
-use App\Domain\Credit\CreditType;
+use App\Domain\Credit\Entity\CreditType;
 use App\Domain\Customer\ClientInterface;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Garantee\Entity\EvaluationGageSection;

@@ -2,7 +2,7 @@
 
 namespace App\Tests\Domain\Credit;
 
-use App\Domain\Credit\Gage\Entity\GageCredit;
+use App\Domain\Credit\Entity\ShortTerm\GageCredit;
 use App\Domain\Employee\Service\CreditMountingService;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use App\Domain\Credit\Service\GageCreditCreationService;

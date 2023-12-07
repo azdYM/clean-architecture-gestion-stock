@@ -1,4 +1,4 @@
-App\Domain\Credit\CreditType:
+App\Domain\Credit\Entity\CreditType:
   credit_type:
     label: 'prêt sur gage'
     name: 'prêt sur gage'

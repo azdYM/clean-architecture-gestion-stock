@@ -7,9 +7,10 @@ use Doctrine\ORM\Mapping\Entity;
 use App\Domain\Application\Entity\IdentifiableTrait;
 
 #[Entity(repositoryClass: SignatureLabelRepository::class)]
-class SignatureLabel 
+class SignatureLabel
 {
     use IdentifiableTrait;
+    use ContractTypeTrait;
 
     #[ORM\Column]
     private ?string $label;

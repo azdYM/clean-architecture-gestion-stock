@@ -2,6 +2,11 @@
 
 namespace App\Domain\Employee\Service;
 
+use App\Domain\Contract\Entity\DeathSolidarityContract;
+use App\Domain\Contract\Entity\GageContract;
+use App\Domain\Contract\MakerArticlesInterface;
+use App\Domain\Contract\MakerContentInterface;
+use App\Domain\Contract\MakerSignatureContainLabels;
 use App\Domain\Credit\Entity\Credit;
 use App\Domain\Employee\Entity\Employee;
 use App\Domain\Mounting\FolderInterface;
@@ -11,7 +16,6 @@ use App\Domain\Credit\Event\CreditCreatedEvent;
 use App\Domain\Mounting\DTO\CreditRequirements;
 use App\Domain\Mounting\DTO\FolderRequirements;
 use Doctrine\Common\Collections\ArrayCollection;
-use App\Domain\Credit\Entity\ShortTerm\GageCredit;
 use App\Domain\Credit\Service\CreditCreationServiceInterface;
 use App\Domain\Mounting\Service\FolderMountingServiceInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -51,9 +55,33 @@ class CreditMountingService
         return $credit;
     }
 
-    public function generateContractsForGageCredit(GageCredit $credit): Collection
+    public function generateContractsForGageCredit(
+        Credit $credit,
+        MakerContentInterface $makerContent,
+        MakerArticlesInterface $makerArticle,
+        MakerSignatureContainLabels $makerSignatureContainLabels
+    ): Collection
     {
-        return new ArrayCollection();
+        $contracts = new ArrayCollection();
+        $gageContract = (new GageContract)
+            ->generateAndSetContent($makerContent)
+            ->generateAndSetArticles($makerArticle)
+            ->generateAndSetLabelsForSignature($makerSignatureContainLabels)
+        ;
+
+        // $deathSolidarityContract = (new DeathSolidarityContract)
+        //     ->generateAndSetArticles($makerArticle)
+        //     ->generateAndSetGeneralContent($makerContent)
+        //     ->generateAndSetLabelsForSignature($makerSignatureContainLabels)
+        // ;
+        
+        $contracts->add($gageContract);
+        $credit->addContract($gageContract);
+
+        // $contracts->add($deathSolidarityContract);
+        //$credit->addContract($deathSolidarityContract);
+
+        return $contracts;
     }
 
     public function renawalCredit(): void

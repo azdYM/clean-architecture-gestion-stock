@@ -25,6 +25,13 @@ trait ObtainFolderTrait {
             // a implémenter plus tard.
             // d'ailleur je dois eviter d'utiliser l'identifiant 
         }
+
+        if ($folder === null) {
+            throw new NotFoundResourceException(
+                sprintf("Aucun dossier de crédit n'est associé à l'identifiant %s", 
+                $id
+            ));
+        }
         
         return $folder;
     }

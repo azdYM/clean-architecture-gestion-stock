@@ -2,11 +2,11 @@
 
 namespace App\Domain\Contract;
 
-use App\Domain\Credit\SignatureInterface;
+use App\Domain\Contract\Entity\Contract;
 
 interface MakerSignatureContainLabels
 {
-    public function setContractType(string $type): self;
+    public function setContract(Contract $type): self;    
     
-    public function generate(): SignatureInterface;
+    public function generate(): array;
 }

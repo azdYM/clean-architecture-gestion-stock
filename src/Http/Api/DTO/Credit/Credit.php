@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Api\DTO\Mounting;
+namespace App\Http\Api\DTO\Credit;
 
-use DateTimeInterface;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\ApiResource;
+use App\Domain\Contract\Entity\Contract;
+use App\Http\Api\State\Provider\CreditProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Http\Api\State\Processor\PawnCreditProcessor;
 
@@ -22,11 +24,20 @@ use App\Http\Api\State\Processor\PawnCreditProcessor;
             denormalizationContext: ['groups' => [
                 'Credit:write'
             ]],
+        ),
+        new Get(
+            uriTemplate: '/credit/{id}',
+            provider: CreditProvider::class
         )
     ]
 )]
 class Credit 
 {
+    /**
+     * Identifiant du crédit
+     *
+     * @var integer
+     */
     #[Groups(['Credit:read'])]
     public int $id;
 
@@ -42,6 +53,13 @@ class Credit
     #[Groups(['Credit:read'])]
     public ?Folder $folder = null;
 
+    /**
+     *
+     * @var array<int Contract>
+     */
     #[Groups(['Credit:read'])]
-    public ?DateTimeInterface $updatedAt = null;
+    public ?array $contracts = [];
+
+    #[Groups(['Credit:read'])]
+    public ?\DateTimeInterface $updatedAt = null;
 }

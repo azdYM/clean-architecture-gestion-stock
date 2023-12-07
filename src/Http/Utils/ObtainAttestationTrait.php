@@ -2,7 +2,6 @@
 
 namespace App\Http\Utils;
 
-use App\Domain\Garantee\Entity\Attestation;
 use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Domain\Garantee\Entity\Gold\GoldAttestation;
 use App\Domain\Garantee\Repository\Gold\GoldAttestationRepository;

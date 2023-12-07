@@ -3,30 +3,18 @@
 namespace App\Domain\Contract\Components;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 use App\Domain\Application\Entity\IdentifiableTrait;
-use App\Domain\Contract\Components\ParameterInDescription;
 use App\Domain\Contract\Components\GeneralContentRepository;
 
 #[ORM\Entity(repositoryClass: GeneralContentRepository::class)]
 class GeneralContent
 {
     use IdentifiableTrait;
+    #[ORM\Column(unique: true)]
+    private ?string $contractType = null;
 
     #[ORM\Column(type: 'text')]
-    private ?string $description;
-
-    /**
-     * @var Collection<int, ParameterInDescription>
-     */
-    #[ORM\OneToMany(targetEntity: ParameterInDescription::class, mappedBy: 'generalContent')]
-    private Collection $parametersInDescription;
-
-    public function __construct()
-    {
-        $this->parametersInDescription = new ArrayCollection();
-    }
+    private ?string $description = null;
 
     public function getDescription(): string
     {
@@ -39,20 +27,14 @@ class GeneralContent
         return $this;
     }
 
-    /**
-     * @return Collection<int, ParameterInDescription>
-     */
-    public function getParametersInDescription(): Collection
+    public function getContractType(): ?string
     {
-        return $this->parametersInDescription;
+        return $this->contractType;
     }
 
-    public function addParameterInDescription(ParameterInDescription $parameter): self
+    public function setContractType(string $contractType): self
     {
-        if (!$this->parametersInDescription->contains($parameter)) {
-            $this->parametersInDescription->add($parameter);
-        }
-
+        $this->contractType = $contractType;
         return $this;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Api\DTO\Mounting;
+namespace App\Http\Api\DTO\Credit;
 
 use DateTimeInterface;
 use ApiPlatform\Metadata\Get;

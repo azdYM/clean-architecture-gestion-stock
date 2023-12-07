@@ -2,16 +2,11 @@
 
 namespace App\Domain\Contract\Entity;
 
-use App\Domain\Contract\Components\Article;
-use Doctrine\Common\Collections\Collection;
 use App\Domain\Contract\MakerArticlesInterface;
 
 trait ArticleTrait
 {
-    /**
-     * @return Collection<int, Article>
-     */
-    public function getArticles(): Collection
+    public function getArticles(): array
     {
         return $this->articles;
     }
@@ -19,7 +14,7 @@ trait ArticleTrait
     public function generateAndSetArticles(MakerArticlesInterface $creator): static
     {
         $articles = $creator
-            ->setContractType(get_called_class())
+            ->setContract($this)
             ->generate()
         ;
         
@@ -30,12 +25,17 @@ trait ArticleTrait
         return $this;
     }
 
-    private function addArticle(Article $article): self
+    /**
+     * Ajoute l'article qui devrait contenir un title et description
+     * je devrai dabord checker si article contient bien ces valeurs et levé une exception
+     * dans le cas contraire, mais je suis fatigué et épuisé, je verrai plus tard
+     *
+     * @param array $article
+     * @return self
+     */
+    private function addArticle(array $article): self
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles->add($article);
-        }
-
+        $this->articles[] = $article;
         return $this;
     }
 

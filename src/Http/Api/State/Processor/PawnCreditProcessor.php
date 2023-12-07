@@ -3,8 +3,7 @@
 namespace App\Http\Api\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
-use App\Http\Api\DTO\Mounting\Credit as CreditDto;
-use App\Http\Api\DTO\Mounting\Folder;
+use App\Http\Api\DTO\Credit\Credit as CreditDto;
 use App\Http\Utils\ObtainClientTrait;
 use App\Http\Utils\ObtainFolderTrait;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,12 +39,6 @@ class PawnCreditProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
         $folder = $this->getFolder($data->folderId);
-        if ($folder === null) {
-            throw new NotFoundResourceException(
-                sprintf("Aucun dossier de crédit n'est associé à l'identifiant %s", 
-                $data->folderId
-            ));
-        }
         
         $creditRequirements = $this->createCreditRequirements($data);
         $attestation = $folder->getAttestations()->last();

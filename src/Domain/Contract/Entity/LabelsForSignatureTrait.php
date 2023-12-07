@@ -2,21 +2,19 @@
 
 namespace App\Domain\Contract\Entity;
 
-use Doctrine\Common\Collections\Collection;
-use App\Domain\Contract\Components\SignatureLabel;
 use App\Domain\Contract\MakerSignatureContainLabels;
 
 trait LabelsForSignatureTrait
 {
-    public function getLabelsForSignature(): Collection
+    public function getLabelsForSignature(): array
     {
-        return $this->labelsForSignautre;
+        return $this->labelsForSignature;
     }
 
     public function generateAndSetLabelsForSignature(MakerSignatureContainLabels $creator): self
     {
         $labels = $creator
-            ->setContractType(get_called_class())
+            ->setContract($this)
             ->generate()
         ;
         
@@ -27,12 +25,17 @@ trait LabelsForSignatureTrait
         return $this;
     }
 
-    private function addLabelForSignature(SignatureLabel $label): self
+    /**
+     * Ajoute l'article qui devrait contenir un title et description
+     * je devrai dabord checker si article contient bien ces valeurs et levé une exception
+     * dans le cas contraire, mais je suis fatigué et épuisé, je verrai plus tard
+     *
+     * @param array $article
+     * @return self
+     */
+    private function addLabelForSignature(array $signatureLabel): self
     {
-        if (!$this->labelsForSignautre->contains($label)) {
-            $this->labelsForSignautre->add($label);
-        }
-
+        $this->labelsForSignautre[] = $signatureLabel;
         return $this;
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Api\State\Processor;
 
 use ApiPlatform\Metadata\Operation;
-use App\Http\Api\DTO\Mounting\Folder;
+use App\Http\Api\DTO\Credit\Folder;
 use Doctrine\ORM\EntityManagerInterface;
 use ApiPlatform\State\ProcessorInterface;
 use Symfony\Bundle\SecurityBundle\Security;

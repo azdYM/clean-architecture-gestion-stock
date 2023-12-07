@@ -62,3 +62,5 @@ export const ClientContext = createContext<ClientData|null>(null)
 export const UserContext = createContext<UserData|null|undefined>(null)
 
 export const AttestationContext = createContext<AttestationData|null>(null)
+
+export const AttestationsContext = createContext<AttestationData[]|null>(null)

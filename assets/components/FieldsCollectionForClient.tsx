@@ -43,17 +43,16 @@ type AnotherInformation = {
   errors?: []
 }
 
-export const AdditionalClientInfo = ({title, fields, textButton, errors}: AnotherInformation) =>
+export const AdditionalClientInfo = ({title, fields, textButton}: AnotherInformation) =>
 {
-  const searchClient = useCustomContext(ClientContext)
-  if (searchClient === null) return
-  const { client } = searchClient
+  const client = useCustomContext(ClientContext)
+  if (client === null) return
   return (
     <CustomCollectionFields 
       collectionKey={title} 
       textAddButton={textButton} 
       customData={fields} 
-      formFieldModels={client[title]}
+      formFieldModels={client[title] ?? []}
     />
   )
 }

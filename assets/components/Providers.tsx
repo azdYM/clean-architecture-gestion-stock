@@ -1,6 +1,7 @@
 import { 
   AppContext, 
   AttestationContext, 
+  AttestationsContext, 
   BodyContentContext, 
   ClientContext, 
   HeaderContentContext, 
@@ -86,5 +87,18 @@ export const AttestationProvider = function ({children, data}: React.PropsWithCh
     <AttestationContext.Provider value={data}>
       {children}
     </AttestationContext.Provider>
+  )
+}
+
+export const AttestationsProvider = function ({children, data}: React.PropsWithChildren<{data: AttestationData[]|undefined}>)
+{
+  if (data === null || data === undefined) {
+    return 
+  }
+
+  return (
+    <AttestationsContext.Provider value={data}>
+      {children}
+    </AttestationsContext.Provider>
   )
 }

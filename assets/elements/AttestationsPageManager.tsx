@@ -1,21 +1,31 @@
 import { Routes, Route } from 'react-router-dom'
 import { routes } from '../functions/links'
-import { AcceptedAttestationsRenderer, AllAttestationsRenderer, RejectedAttestationRenderer } from '../pages'
+import { 
+	AttestationsAccepted,
+	AttestationsAll,
+	AttestationsForPawnCredit,
+	AttestationsRejected,
+} from '../pages'
 
 export const AttestationsPageManager = () => {
 	return (
 		<Routes>
+			
 			<Route 
 				path={`${routes.allAttestations}`} 
-				element={<AllAttestationsRenderer />} 
+				element={<AttestationsAll />} 
 			/>
 			<Route 
-				path={`${routes.attestations}/${routes.acceptedAttestations}`} 
-				element={<AcceptedAttestationsRenderer />} 
+				path={`${routes.attestationsAccepted}`} 
+				element={<AttestationsAccepted />} 
 			/>
 			<Route
-				path={`${routes.attestations}/${routes.rejectedAttestations}`} 
-				element={<RejectedAttestationRenderer />} 
+				path={`${routes.attesationsRejected}`} 
+				element={<AttestationsRejected />} 
+			/>
+			<Route
+				path={`${routes.attestationsForPawnCredit}`} 
+				element={<AttestationsForPawnCredit />} 
 			/>
 		</Routes>
 	)

@@ -1,20 +1,21 @@
 export const routes = {
     home: '/',
     history: '/history',
-    addCustomer: '/add-client',
+    addCustomer: '/ajout-client',
     showCustomer: '/client/:id',
     evaluateGage: '/evaluation',
     showGage: '/evaluation/:id',
     attestations: '/attestations',
     showAttestation: '/attestation/:id',
     updateAttestation: '/attestation-update/:id',
-    createCredit: 'add-credit',
-    showCredit: 'credit/:id',
+    createCredit: '/create-credit',
+    showCredit: '/credit/:id',
     credits: '/credits',
 
-    allAttestations: '/',
-    rejectedAttestations: 'rejected',
-    acceptedAttestations: 'accepted'
+    allAttestations: '',
+    attesationsRejected: 'rejected',
+    attestationsAccepted: 'accepted',
+    attestationsForPawnCredit: 'pawncredit',
     
 }
 

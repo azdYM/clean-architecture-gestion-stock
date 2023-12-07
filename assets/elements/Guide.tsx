@@ -2,6 +2,9 @@ import { NavLink } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { substring } from '../functions/string'
 import { LinksType, UserRolesType, getUserActions, routes } from '../functions/links'
+import { useCustomContext } from '../functions/hooks'
+import { UserContext } from '../functions/context'
+import { getUserRoles } from '../api/user'
 
 export const GuideContent = () => {
 	return (
@@ -22,15 +25,12 @@ const RenderSections = function()
 
 const RenderBaseSection = function() 
 {
-	const userRoles = [
-		{key: 'ROLE_GAGE_EVALUATOR', value: 'Evaluateur de gage'},
-		{key: 'ROLE_CREDIT_AGENT', value: 'Agent de crédit'}
-	]
+	const user = useCustomContext(UserContext)
 
 	return (
 		<div className='gck-guide-section-renderer'>
 			<RenderBaseLinks />
-			<RenderCustomLinks roles={userRoles} />
+			{user && <RenderCustomLinks roles={getUserRoles(user.roles)} />}
 		</div>
 	)
 }

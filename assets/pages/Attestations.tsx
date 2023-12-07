@@ -35,11 +35,9 @@ function HeaderSectionRenderer()
     {name: 'attente_to_validate', label: 'En attente de validation', path: 'attente'},
     {name: 'rejected', label: 'Rejeté', path: 'rejected'},
     {name: 'accepted', label: 'Accepté', path: 'accepted'},
+    {name: 'pawncredit', label: 'Prêt sur gage', path: 'pawncredit'},
+
   ]
-  
-  // if (isEmpty(columns) && setColumns !== null) {
-  //   setColumns(columnsModel)
-  // }
 
   useEffect(() => {
     if (setColumns === null) return 
@@ -50,9 +48,13 @@ function HeaderSectionRenderer()
  
   return (
     <div className='gck-header-section'>
-      {columnsModel.map((column, index) => 
-        <LinkColumn key={index} label={column.label} path={`${routes.attestations}/${column.path}` } />
-      )}
+      {columnsModel.map((column, index) => (
+        <LinkColumn 
+          key={index} 
+          label={column.label} 
+          path={`${routes.attestations}/${column.path}`} 
+        />
+      ))}
     </div>
   )
 }

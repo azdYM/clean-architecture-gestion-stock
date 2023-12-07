@@ -1,12 +1,11 @@
 import { AttestationsRenderer, } from '../components/AttestationsBodySection'
 import { useQuery } from '@tanstack/react-query'
-import { getAllAttestation } from '../api/attestation'
+import { getAttestationForPawcredit } from '../api/attestation'
 
-export const AttestationsAll = () =>
-{
+export const AttestationsForPawnCredit = function() {
   const { data, status, error } = useQuery({
-    queryKey: ['all_attestation'],
-    queryFn: () => getAllAttestation(),
+    queryKey: ['attestation_for_paw_credit'],
+    queryFn: () => getAttestationForPawcredit(),
   }) 
 
   return (

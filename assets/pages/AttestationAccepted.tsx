@@ -1,6 +1,5 @@
-import React from 'react'
-
-export const AcceptedAttestationsRenderer = () => {
+export const AttestationsAccepted = function() 
+{
   return (
     <div>AttestationAccepted</div>
   )

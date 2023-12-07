@@ -9,16 +9,18 @@ import { ShowGage } from "./ShowGage";
 import { Contracts } from "./Contracts";
 import { ShowCredit } from "./ShowCredit";
 import { CreateCredit } from "./CreateCredit";
-import { AcceptedAttestationsRenderer } from '../pages/AttestationAccepted'
-import { RejectedAttestationRenderer } from '../pages/AttestationsRejected'
-import { AllAttestationsRenderer } from '../pages/AttestationsAll'
+import { AttestationsAccepted } from '../pages/AttestationAccepted'
+import { AttestationsRejected } from '../pages/AttestationsRejected'
+import { AttestationsAll } from '../pages/AttestationsAll'
+import { AttestationsForPawnCredit } from "./AttestationForPawnCredit";
 
 export {
     AddOrUpdatedCustomer,
     Attestations,
-    AllAttestationsRenderer,
-    AcceptedAttestationsRenderer,
-    RejectedAttestationRenderer,
+    AttestationsAll,
+    AttestationsAccepted,
+    AttestationsRejected,
+    AttestationsForPawnCredit,
     Home,
     History,
     EvaluateGage,

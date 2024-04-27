@@ -13,6 +13,7 @@ interface FolderInterface
     public function getCredit(): ?CreditInterface;
     public function setCredit(CreditInterface $credit): self;
     public function getState(): ?string;
+    
     /**
      * @return Collection<int, GaranteeAttestation>
      */

@@ -16,6 +16,6 @@ interface AttestationInterface
     public function addItem(ItemInterface $item): self;
     public function getValorisation(): int;
     public function getClient(): ClientInterface;
-    public function getCreditTypeTargeted(): CreditType;
+    public function getCreditTypeTargeted(): ?CreditType;
     public function getEvaluator(): Employee;
 }

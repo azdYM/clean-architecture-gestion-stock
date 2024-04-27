@@ -29,7 +29,7 @@ export const AppPageManager = () => {
 			<Route path={routes.updateAttestation} element={<UpdateAttestation />} />
 			<Route path={routes.createCredit} element={<CreateCredit />} />
 			<Route path={routes.showCredit} element={<ShowCredit />} />
-			<Route path={routes.credits} element={<Contracts />} />
+			<Route path={`${routes.credits}/*`} element={<Contracts />} />
 		</Routes>
 	)
 }

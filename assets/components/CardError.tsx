@@ -1,8 +1,7 @@
-
-export const CardError = ({error}: {error: Error}) => {
+export const CardError = ({error}: {error: Error|string}) => {
     return (
         <div>
-        {error.message}
+        {typeof(error) === 'string' ? error : error.message}
         </div>
     )
 }

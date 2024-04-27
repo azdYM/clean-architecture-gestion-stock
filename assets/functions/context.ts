@@ -45,6 +45,11 @@ type BodyContentContextType = {
     updateContents: null|((content: any) => void)
 }
 
+type AttestationContextValue = {
+    data: AttestationData|null,
+    refetch?: CallableFunction
+}
+
 type PopupContextType = {popupActived: boolean}
 
 export const SearchContext = createContext<SearchContextValuesType>({search: null, updateSearch: null});
@@ -61,6 +66,6 @@ export const ClientContext = createContext<ClientData|null>(null)
 
 export const UserContext = createContext<UserData|null|undefined>(null)
 
-export const AttestationContext = createContext<AttestationData|null>(null)
+export const AttestationContext = createContext<AttestationContextValue>({data: null})
 
 export const AttestationsContext = createContext<AttestationData[]|null>(null)

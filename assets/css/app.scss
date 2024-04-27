@@ -2,7 +2,7 @@
 :root {
     --mck-color-red: #f25353;
     --mck-color-green: #1da660;
-    --mck-color-pink: rgb(255, 192, 203);
+    --mck-color-pink: rgb(224, 169, 93);
     --mck-color-blue: #2c7eca;
     --mck-color-gray: #b3b3b3;
 
@@ -84,9 +84,9 @@ gcrdt-app
 @import './modules/popup';
 @import './modules/scrollbar';
 @import './modules/search_client';
+@import './modules/collection';
 
 // Pages ==================
-@import './pages/show.scss';
 @import './pages/login';
 @import './pages/navbar';
 @import './pages/content';
@@ -95,3 +95,6 @@ gcrdt-app
 @import './pages/addCustomer';
 @import './pages/evaluateGage';
 @import './pages/checkAttestations';
+@import './pages/showCredit';
+@import './pages/showAttestation';
+

@@ -51,7 +51,7 @@ export const BodyContentProvider = ({children}: React.PropsWithChildren) =>
   )
 }
 
-export const ClientProvider = function ({children, client}: React.PropsWithChildren<{client: ClientData|undefined}>)
+export const ClientProvider = function ({children, client}: React.PropsWithChildren<{client: ClientData|undefined|null}>)
 {
   if (client === null || client === undefined) {
     return 
@@ -77,14 +77,19 @@ export const UserProvider = function ({children, user}: React.PropsWithChildren<
   )
 }
 
-export const AttestationProvider = function ({children, data}: React.PropsWithChildren<{data: AttestationData|undefined}>)
+type AttestationProviderProps = {
+  data?: AttestationData|null,
+  refetchData?: CallableFunction
+}
+
+export const AttestationProvider = function ({children, data, refetchData}: React.PropsWithChildren<AttestationProviderProps>)
 {
   if (data === null || data === undefined) {
     return 
   }
 
   return (
-    <AttestationContext.Provider value={data}>
+    <AttestationContext.Provider value={{data, refetch: refetchData}}>
       {children}
     </AttestationContext.Provider>
   )

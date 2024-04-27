@@ -9,9 +9,9 @@ import { ShowGage } from "./ShowGage";
 import { Contracts } from "./Contracts";
 import { ShowCredit } from "./ShowCredit";
 import { CreateCredit } from "./CreateCredit";
-import { AttestationsAccepted } from '../pages/AttestationAccepted'
-import { AttestationsRejected } from '../pages/AttestationsRejected'
-import { AttestationsAll } from '../pages/AttestationsAll'
+import { AttestationsAccepted } from './AttestationAccepted'
+import { AttestationsRejected } from './AttestationsRejected'
+import { AttestationsAll, ContractsAll } from './All'
 import { AttestationsForPawnCredit } from "./AttestationForPawnCredit";
 
 export {
@@ -21,6 +21,7 @@ export {
     AttestationsAccepted,
     AttestationsRejected,
     AttestationsForPawnCredit,
+    ContractsAll,
     Home,
     History,
     EvaluateGage,

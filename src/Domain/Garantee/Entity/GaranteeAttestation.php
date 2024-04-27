@@ -35,7 +35,9 @@ abstract class GaranteeAttestation implements AttestationInterface
     use RejectionTrait;
     use AttestationActionsTrait;
 
-    const ATTESTATION_APPROVED = 'approved';
+    const ATTESTATION_APPROVED  = 'approved';
+    const ATTESTATION_EVALUATED = 'evaluated';
+    const ATTESTATION_REJECTED  = 'rejected';
 
     /**
      * Utilisé pour savoir l'état actuel de l'attestation
@@ -66,7 +68,7 @@ abstract class GaranteeAttestation implements AttestationInterface
 
     #[ORM\ManyToOne(targetEntity: Employee::class)]
     #[ORM\JoinColumn(name: 'evaluator_id', referencedColumnName: 'id')]
-    private Employee $evaluator;
+    protected Employee $evaluator;
 
     public function getClient(): ClientInterface
     {
@@ -90,7 +92,7 @@ abstract class GaranteeAttestation implements AttestationInterface
         return $this;
     }
 
-    public function getCreditTypeTargeted(): CreditType
+    public function getCreditTypeTargeted(): ?CreditType
     {
         return $this->creditTypeTargeted;
     }

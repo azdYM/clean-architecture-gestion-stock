@@ -11,6 +11,7 @@ use ApiPlatform\State\ProcessorInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Http\Api\DTO\Garantee\GoldEvaluation;
+use Symfony\Component\Workflow\WorkflowInterface;
 use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Infrastructure\Generator\Item\GoldEvaluator;
 use App\Domain\Employee\Service\GageEvaluationService;
@@ -23,7 +24,8 @@ class GoldEvaluationStateProcessor implements ProcessorInterface
     public function __construct(
         private EntityManagerInterface $em,
         private Security $security,
-        private EventDispatcherInterface $eventDispacher
+        private EventDispatcherInterface $eventDispacher,
+        private WorkflowInterface $attestationGage,
     ){}
 
     /**
@@ -37,7 +39,8 @@ class GoldEvaluationStateProcessor implements ProcessorInterface
     {
         $garantee = $this->createGarantee($data);
         $attestation = $this->getAttestationFromGarantee($garantee);
-
+        
+        $this->attestationGage->apply($attestation, 'evaluate');
         $this->persistArticles($garantee->getArticles());
         $this->persistAttestation($attestation);
         $this->em->flush();

@@ -5,6 +5,7 @@ namespace App\Infrastructure\Subscribers\Gage;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\Notification\NotificationService;
 use App\Domain\Garantee\Event\EvaluationApprovedEvent;
+use App\Domain\Notification\Entity\Notification;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EvaluationApprovedSubscriber implements EventSubscriberInterface
@@ -31,7 +32,7 @@ class EvaluationApprovedSubscriber implements EventSubscriberInterface
     {
         $this->event = $event;
         $attestation = $this->event->getAttestation();
-        $repository = $this->em->getRepository(NotificationRepository::class);
+        $repository = $this->em->getRepository(Notification::class);
 
         $notification = $this->notifier->notifyChannel(
             $this->getChannel(), 

@@ -8,13 +8,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 class Client
 {
-    #[Groups(['Attestations:read', 'Folder:read'])]
+    #[Groups(['Attestations:read', 'Folder:read', 'Credits:read'])]
     public ?int $id;
     
-    #[Groups(['Attestations:read', 'Folder:read'])]
+    #[Groups(['Attestations:read', 'Folder:read', 'Credits:read'])]
     public ?string $name = null;
 
-    #[Groups(['Attestations:read', 'Folder:read'])]
+    #[Groups(['Attestations:read', 'Folder:read', 'Credits:read'])]
     public ?int $folio;
 
     /**

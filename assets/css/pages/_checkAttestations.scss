@@ -39,9 +39,7 @@
 
 .gck-content-section
 {
-    --col: 230px;
-    @extend .grid;
-    column-gap: 10px;
+    
 }
 
 .gck-card-article
@@ -69,25 +67,26 @@
     background-color: var(--mck-color-border);
     border-radius: 5px;
     padding: 12px 8px;
+
+    .client-avatar-header
+    {
+        height: 45px;
+        border-radius: 50%;
+        background-color: var(--mck-color-gray);
+        color: var(--mck-color-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .about-client-header
+    {
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+    }
 }
 
-.article-avatar
-{
-    height: 45px;
-    border-radius: 50%;
-    background-color: var(--mck-color-gray);
-    color: var(--mck-color-white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.article-header-content
-{
-    font-size: 14px;
-    display: flex;
-    flex-direction: column;
-}
 
 .article-body
 {
@@ -97,7 +96,7 @@
     {
         font-weight: 600;
         display: block;
-        font-size: 15px;
+        font-size: 13px;
         margin-bottom: 5px;
         word-wrap: break-word;
     }
@@ -112,10 +111,19 @@
 
     span:nth-child(3) {
         display: inline-block;
-        padding: 0px 5px;
-        border-radius: 8px;
-        font-size: 14px;
+        padding: 1px 10px;
+        border-radius: 50px;
+        font-size: 12px;
         margin: 6px 0;
+        &.approved {
+            border: 1px solid var(--mck-color-green);
+            color: var(--mck-color-green);
+        }
+
+        &.rejected {
+            border: 1px solid var(--mck-color-red);
+            color: var(--mck-color-red);
+        }
 
         &.success {
             background-color: var(--mck-color-green);
@@ -123,7 +131,7 @@
         }
 
         &.urgent {
-            background-color: var(--mck-color-reed);
+            background-color: var(--mck-color-red);
             color: var(--mck-color-white);
         }
     }

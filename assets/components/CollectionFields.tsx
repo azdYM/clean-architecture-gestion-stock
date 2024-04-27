@@ -3,6 +3,7 @@ import { TextInput } from "./Fields";
 import { capitalize, isEmpty, parseInputName } from "../functions/string";
 import { checkEntriesValueIsEmpty, lastInArray } from "../functions/array";
 import { isEmptyObject } from "../functions/object";
+import { formatNumber } from "../functions/format";
 
 type CustomCollectionFields = {
 	collectionKey: string,
@@ -148,10 +149,11 @@ const FieldRenderer = function({index, collectionName, entrie, onUpdateEntrie}: 
 		const input = e.currentTarget as HTMLInputElement
 		
 		if (props.type === 'number' && isNaN(parseInt(input.value, 10))) {
-			input.value = ''
+			input.value = formatNumber(parseInt(input.value.replace(/\s/g, '')))
 			onUpdateEntrie(e)
 			return false
 		}
+
 
 		onUpdateEntrie(e)
 		typeof onChange === 'function' && onChange(e)
@@ -164,9 +166,11 @@ const FieldRenderer = function({index, collectionName, entrie, onUpdateEntrie}: 
 				: (
 					<TextInput 
 						onChange={handleChange} 
+						type={props.type}
 						placeholder={capitalize(label ?? key)} 
 						defaultValue={defaultValue} 
 						name={name} 
+						min={props.min}
 						hidden={hidden ? true : false}
 						disabled={disabled ? true : false}
 						errors={[]} 

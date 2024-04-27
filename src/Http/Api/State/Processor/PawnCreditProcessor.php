@@ -14,7 +14,6 @@ use App\Domain\Mounting\DTO\CreditRequirements;
 use App\Domain\Employee\Service\CreditMountingService;
 use App\Domain\Credit\Service\GageCreditCreationService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class PawnCreditProcessor implements ProcessorInterface
 {
@@ -28,8 +27,6 @@ class PawnCreditProcessor implements ProcessorInterface
     ){}
     
     /**
-     * Undocumented function
-     *
      * @param CreditDto $data
      * @param Operation $operation
      * @param array $uriVariables
@@ -54,8 +51,8 @@ class PawnCreditProcessor implements ProcessorInterface
 
         $this->persistCredit($credit);
         $this->em->flush();
-
-        return $credit;
+        $data->id = $credit->getId();
+        return $data;
     }
 
     private function createCreditRequirements(CreditDto $data): CreditRequirements 

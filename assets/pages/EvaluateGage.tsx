@@ -78,7 +78,7 @@ export const FormGageEvaluation = function({data, error, pageRef}: FormGageEvalu
  
   const {mutate, status} = useMutation({
     mutationFn: (data: {}) => {
-      return mutateGage(data, mutateUri, method)
+      return mutateResource(data, mutateUri, method)
     },
 
     onError: (error, variables, context) => {
@@ -145,9 +145,9 @@ const GageArticlesFields = function({models}: {models?: Gage[]}) {
   const customData = {
     id:         {type: 'number', label: 'id', hidden: true},
     name:       {type: 'string', label: "Nom de l'article"}, 
-    quantity:   {type: 'number', label: 'Quantité', min: 0}, 
-    carrat:     {type: 'number', onChange: handleChangeCarrat, min: 0}, 
-    weight:     {type: 'number', label: 'Poid', min: 0}, 
+    quantity:   {type: 'number', label: 'Quantité', min: 1}, 
+    carrat:     {type: 'number', onChange: handleChangeCarrat, min: 16}, 
+    weight:     {type: 'number', label: 'Poid', min: 1}, 
     unitPrice:  {type: 'number', label: 'Prix par gramme', disabled: true}, 
   }
 
@@ -224,7 +224,7 @@ const getClientIdentification = function(identification: string|null): string|nu
   return identification
 }
 
-export const mutateGage = async function(data: {}, uri: string, method?: 'POST'|'PUT'|'PATCH') {
+export const mutateResource = async function(data: {}, uri: string, method?: 'POST'|'PUT'|'PATCH') {
   try {
     const res = await fetch(
       uri,

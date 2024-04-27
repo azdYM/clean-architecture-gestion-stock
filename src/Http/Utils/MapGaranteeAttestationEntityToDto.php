@@ -12,7 +12,7 @@ trait MapGaranteeAttestationEntityToDto
 
     private function addCollectionAttestationsToDto(array $attestations, array &$dtoCollectionAttestation) 
     {
-        for ($i=0; $i < count($attestations); $i++) { 
+        for ($i = 0; $i < count($attestations); $i++) { 
             $dtoCollectionAttestation[$i] = $this->mapGaranteeAttestationToDto($attestations[$i]);
         }
     }
@@ -24,14 +24,17 @@ trait MapGaranteeAttestationEntityToDto
         $this->addItemsToDtoAttestation($attestation->getItems(), $dtoAttestation);
         $clientDto = $this->mapClientEntityToDto($attestation->getClient());
         $dtoAttestation->client = $clientDto;
-        $dtoAttestation->canUpdate = $this->attestationGage->can($attestation, 'evaluate');
-        $dtoAttestation->currentPlace = $attestation->getCurrentPlace();
+        $dtoAttestation->canEdit = $this->attestationGage->can($attestation, 'validate_evaluation');
+        $dtoAttestation->canPrint = $this->attestationGage->getMarking($attestation)->has('approved');
         $dtoAttestation->evaluator = $attestation->getEvaluator();
         $dtoAttestation->evaluatorDescription = $attestation->getEvaluatorDescription();
         $dtoAttestation->idCreditTypeTargeted = $attestation->getCreditTypeTargeted()->getId();
         $dtoAttestation->updatedAt = $attestation->getUpdatedAt();
         $dtoAttestation->canMountCredit = $this->canMountCredit($attestation);
         
+        $dtoAttestation->currentPlace = $this->hasRejected($attestation) 
+            ? GaranteeAttestation::ATTESTATION_REJECTED : $attestation->getCurrentPlace();
+
         return $dtoAttestation;
     }
 
@@ -47,5 +50,13 @@ trait MapGaranteeAttestationEntityToDto
         $isAlreadyUsed = $attestation->getFolder() !== null;
 
         return $isApproved && !$isAlreadyUsed;
+    }
+
+    private function hasRejected(GaranteeAttestation $attestation)
+    {
+        $rejected = count($attestation->getRejections()) > 0;
+        $currentPlaceIsEvaluated = $attestation->getCurrentPlace() ===  GaranteeAttestation::ATTESTATION_EVALUATED;
+        
+        return $rejected && $currentPlaceIsEvaluated;
     }
 }

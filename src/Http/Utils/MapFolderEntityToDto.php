@@ -22,7 +22,6 @@ trait MapFolderEntityToDto {
         $dtoAttestations = [];
         $attestations = $folder->getAttestations()->toArray();
         $this->addCollectionAttestationsToDto($attestations, $dtoAttestations);
-        
         $dtoFolder->attestations = $dtoAttestations;
         $dtoFolder->updatedAt = $folder->getUpdatedAt();
 

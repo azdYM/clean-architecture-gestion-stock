@@ -18,7 +18,7 @@ class NotificationService
 
     public function notifyChannel(string $channel, string $message, ?object $entity = null): Notification
     {
-        $url = $entity ? $this->serializer->serialize($entity, PathEncoder::FORMAT, ['groups' => ['Attestation', 'Identifiant:read']]) : null;
+        $url = $this->getUrl($entity);
         $notification = (new Notification())
             ->setChannel($channel)
             ->setMessage($message)
@@ -31,7 +31,7 @@ class NotificationService
 
     public function notifyEmployee(Employee $employee, string $message, object $entity): Notification
     {
-        $url = $this->serializer->serialize($entity, PathEncoder::FORMAT);
+        $url = $this->getUrl($entity);
         $notification = (new Notification())
             ->setUser($employee)
             ->setMessage($message)
@@ -52,4 +52,12 @@ class NotificationService
 
         return $hash;
     }
+
+    private function getUrl(?object $entity) {
+        if (is_null($entity)) {
+            return null;
+        }
+
+        return $this->serializer->serialize($entity, PathEncoder::FORMAT, ['groups' => ['Attestation', 'Identifiant:read']]);
+    } 
 }

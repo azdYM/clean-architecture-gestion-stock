@@ -8,6 +8,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Domain\Garantee\Entity\GaranteeAttestation;
 use App\Http\Utils\MapGaranteeAttestationEntityToDto;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Workflow\WorkflowInterface;
 
 class AttestationProvider implements ProviderInterface
@@ -29,6 +30,11 @@ class AttestationProvider implements ProviderInterface
         $idAttestation = $uriVariables['id'];
         /** @var GaranteeAttestation $attestation */
         $attestation = $this->em->find(GaranteeAttestation::class, $idAttestation);
+        if ($attestation === null) {
+            throw new NotFoundResourceException(sprintf(
+                "Impossible de trouver le l'attestation %s", $idAttestation
+            ));
+        }
         $dtoAttestation = $this->mapGaranteeAttestationToDto($attestation);
 
         return $dtoAttestation;

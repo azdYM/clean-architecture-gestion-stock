@@ -7,7 +7,7 @@ import { AttestationContentRenderer } from "./AttestationContent"
 
 export const AttestationToPrint = forwardRef<HTMLDivElement, {}>(function({}, ref) 
 {
-  const attestation = useCustomContext(AttestationContext)
+  const {data: attestation} = useCustomContext(AttestationContext)
   if (attestation === null) throw new Error('Attestation non trouvé ! veuillez resseyer plus tard')
 	const {client, evaluator} = attestation
 

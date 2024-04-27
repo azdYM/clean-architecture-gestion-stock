@@ -17,16 +17,18 @@
   .card-header
   {
     display: grid;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 45px 1fr;
     align-items: flex-start;
     gap: 15px;
     background-color: var(--mck-color-gray-1);   
     border-radius: inherit; 
     padding: 8px;
+    cursor: pointer;
+
     
-    .avatar-client
+    .client-avatar-header
     {
-      height: 40px;
+      height: 45px;
       border-radius: 50%;
       background-color: var(--mck-color-gray);
       color: var(--mck-color-white);
@@ -35,7 +37,7 @@
       justify-content: center;
     }
 
-    .about-client 
+    .about-client-header
     {
       display: flex;
       flex-direction: column;
@@ -49,7 +51,7 @@
 
   .card-content
   {
-    background-color: var(--mck-color-border);
+    margin-top: 15px;
     
   }
 }

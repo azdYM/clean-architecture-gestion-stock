@@ -43,7 +43,7 @@ class Folder
     #[Groups(['Folder:write'])]
     public ?int $clientFolio = null;
 
-    #[Groups(['Folder:read'])]
+    #[Groups(['Folder:read', 'Credits:read'])]
     public ?Client $client = null;
 
     /**

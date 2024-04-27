@@ -26,27 +26,29 @@ export enum RoleUser {
 }
 
 export const getUserRoles = function(roles: Array<keyof typeof RoleUser>) {
-  return roles.map(role => {
-      switch (role) {
-          case 'ROLE_AGENCY_MANAGER':
-              return {key: role, value: "Chef d'agence"}	
-          case 'ROLE_CREDIT_AGENT':
-              return {key: role, value: "Agent de crédit"}
-          case 'ROLE_CREDIT_MANAGER':
-              return {key: role, value: "Chef de crédit"}
-          case 'ROLE_CREDIT_SUPERVISOR':
-              return {key: role, value: "Superviseur de crédit"}
-          case 'ROLE_GAGE_EVALUATOR':
-              return {key: role, value: "Evaluateur de gage"}
-          case 'ROLE_GAGE_MANAGER':
-              return {key: role, value: "Chef de gage"}
-          case 'ROLE_GAGE_SUPERVISOR':
-              return {key: role, value: "Superviseur de gage"}
+  return roles.map(role => getUserRole(role))
+}
 
-          default:
-              throw new Error(`Le role ${role} n'est pris en charge par notre système`);
-      }
-  })
+export const getUserRole = function(role: keyof typeof RoleUser) {
+  switch (role) {
+    case 'ROLE_AGENCY_MANAGER':
+        return {key: role, value: "Chef d'agence"}	
+    case 'ROLE_CREDIT_AGENT':
+        return {key: role, value: "Agent de crédit"}
+    case 'ROLE_CREDIT_MANAGER':
+        return {key: role, value: "Chef de crédit"}
+    case 'ROLE_CREDIT_SUPERVISOR':
+        return {key: role, value: "Superviseur de crédit"}
+    case 'ROLE_GAGE_EVALUATOR':
+        return {key: role, value: "Evaluateur de gage"}
+    case 'ROLE_GAGE_MANAGER':
+        return {key: role, value: "Chef de gage"}
+    case 'ROLE_GAGE_SUPERVISOR':
+        return {key: role, value: "Superviseur de gage"}
+
+    default:
+        throw new Error(`Le role ${role} n'est pris en charge par notre système`);
+}
 }
 
 export const getCurrentUser = async (): Promise<UserData> => {

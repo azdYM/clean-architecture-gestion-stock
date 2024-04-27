@@ -6,11 +6,11 @@ use ApiPlatform\Metadata\Operation;
 use App\Http\Api\DTO\Credit\Folder;
 use ApiPlatform\State\ProviderInterface;
 use App\Http\Utils\MapClientEntityToDto;
+use App\Http\Utils\MapFolderEntityToDto;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Domain\Mounting\Entity\CreditFolder;
-use App\Http\Utils\MapFolderEntityToDto;
 use Symfony\Component\Workflow\WorkflowInterface;
-use App\Http\Utils\MapGaranteeAttestationEntityToDto;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class FolderProvider implements ProviderInterface
 {
@@ -28,6 +28,11 @@ class FolderProvider implements ProviderInterface
         
         $id = $uriVariables['id'];
         $folder = $this->em->find(CreditFolder::class, $id);
+        if ($folder === null) {
+            throw new NotFoundResourceException(sprintf(
+                'Impossible de trouver le dossier %s', $id
+            ));
+        }
         $dtoFolder = $this->mapFolderEntityToDto($folder);
         
         return $dtoFolder;

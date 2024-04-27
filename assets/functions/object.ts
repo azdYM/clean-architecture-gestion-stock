@@ -114,7 +114,7 @@ const convertValue = function(value: any) {
   let typedValue: any = value
 
   if (typeof value === 'string') {
-    const numberValue = parseFloat(value)
+    const numberValue = parseFloat(value.replace(/\s/g, ''))
     if (!isNaN(numberValue)) {
       typedValue = numberValue
     }

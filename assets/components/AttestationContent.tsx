@@ -31,15 +31,15 @@ const TotalItemsAttestation = function() {
       </div>
       <div className='total'>
         <span>Valorisation Total</span>
-        <span>{formatNumber(totalValorisation)}</span>
+        <span>{formatNumber(totalValorisation)} KMF</span>
       </div>
       <div className='total'>
         <span>Gramme Total</span>
-        <span>{formatNumber(totalGram)}</span>
+        <span>{formatNumber(totalGram)} g</span>
       </div>
       <div className='total'>
-        <span>Valorisation moyenne/gramme</span>
-        <span>{formatNumber(averageValuationPerGram)}</span>
+        <span>Valorisation moyenne par gramme</span>
+        <span>{formatNumber(averageValuationPerGram)} KMF/g</span>
       </div>
     </div>
   )
@@ -115,7 +115,7 @@ const AttestationArticle = function({article}: {article: Gage}) {
 }
 
 const getAttestationData = function() {
-  const data = useCustomContext(AttestationContext)
+  const {data} = useCustomContext(AttestationContext)
   if (data === null || data === undefined) {
     throw new Error('Attestation ne devrait pas être null')
   }

@@ -33,5 +33,20 @@ class Contract
     public ?int $creditId = null;
 
     #[Groups(['Contract:read'])]
+    public ?string $content = null;
+    
+    /**
+     * @var Article[] $articles
+     */
+    #[Groups(['Contract:read'])]
+    public ?array $articles = [];
+
+    /**
+     * @var SignatureLabel[] $labelsForSignature
+     */
+    #[Groups(['Contract:read'])]
+    public ?array $labelsForSignature = [];
+
+    #[Groups(['Contract:read'])]
     public ?\DateTimeInterface $updatedAt = null;
 }

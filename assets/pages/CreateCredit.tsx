@@ -1,28 +1,24 @@
-import { forwardRef, useRef, useState } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { Page } from '../components/Page'
-import { useLocation } from 'react-router-dom'
-import { AttestationData, getAttestation, getClientAttestationsCanMountCredit } from '../api/attestation'
-import { useQuery } from '@tanstack/react-query'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { AttestationData, getClientAttestationsCanMountCredit } from '../api/attestation'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { CardError } from '../components/CardError'
 import { ErrorResponse } from './ShowAttestation'
-import { ContentWrapperWithCard } from '../components/ContentWrapperWithCard'
-import { AttestationProvider, AttestationsProvider } from '../components/Providers'
-import { CardAttestation } from '../components/CardAttestation'
+import { AttestationProvider, AttestationsProvider, ClientProvider } from '../components/Providers'
 import { PAWN_CREDIT_TYPE } from '../functions/const'
 import { SearchClientField } from '../components/SearchClient'
 import { searchClient } from './AddOrUpdateCustomer'
 import { ClientSearchResult } from '../functions/context'
-import { SubmitFormButton, TextInput } from '../components/Fields'
+import { Option, SelectInput, SubmitFormButton, TextInput } from '../components/Fields'
 import { FormWrapper } from '../components/FormWrapper'
+import { formatNumber } from '../functions/format'
+import { FolderData, getFolder } from '../api/folder'
+import { lastInArray } from '../functions/array'
+import { mutateResource } from './EvaluateGage'
+import { routes } from '../functions/links'
+import { CreditWrapper } from '../components/Credit'
 
-type CreateCreditWrapperProps = {
-  refs: {
-    page: React.RefObject<HTMLDivElement>,
-    content: React.RefObject<HTMLDivElement>,
-    card: React.RefObject<HTMLDivElement>,
-  }
-  fromMultiAttestation?: boolean,
-}
 
 type CreditRendererProps = {
   clientSearch: ClientSearchResult,
@@ -30,14 +26,14 @@ type CreditRendererProps = {
 }
 
 export const CreateCredit = () => {
-  const pageTitle = "Création d'une crédit"
+  const pageTitle = "Monter un dossier de crédit"
   const pageRef = useRef<HTMLDivElement>(null)
 
   return (
     <Page ref={pageRef} pageTitle={pageTitle}>
 			<h1 className="page-title">{pageTitle}</h1>
 
-      {getCreditTargeted() === PAWN_CREDIT_TYPE && getAttestationId() !== null
+      {getCreditTargeted() === PAWN_CREDIT_TYPE && getFolderId() !== null
         ? <PawnCreditCreate pageRef={pageRef} />
         : <GeneralCreditCreate pageRef={pageRef} />
       }
@@ -48,32 +44,42 @@ export const CreateCredit = () => {
 const PawnCreditCreate = function({pageRef}: {pageRef: React.RefObject<HTMLDivElement>}) {
   const cardRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const attestationId = getAttestationId();
-
+  const folderId = getFolderId();
   const [error, setError] = useState<ErrorResponse | null>(null)
-  const {data, status} = useQuery<AttestationData, ErrorResponse>({
-    queryKey: ['attestationId', attestationId],
-    queryFn: () => getAttestation(attestationId),
-    enabled: !!attestationId,
+
+  const {data: folder, status} = useQuery<FolderData, ErrorResponse>({
+    queryKey: ['folderId', folderId],
+    queryFn: () => getFolder(folderId),
+    enabled: !!folderId,
     onError: (err) => {
       setError(err)
     },
   })
 
+  const lastAttestation: AttestationData|null = useMemo(
+    () => lastInArray(folder?.attestations ?? []), [folder]
+  )
+  
+  if (folder && lastAttestation) {
+    lastAttestation.client = folder?.client
+  }
+  
   return (
-    <div>
+    <>
       {status === 'loading' && <p>Loading...</p>}
       {error 
         ? <CardError error={error as Error} />
         : (
-          <AttestationProvider data={data} >
-            <CreateCreditWrapper refs={{page: pageRef, content: contentRef, card: cardRef}} >
-              <FormCreateCredit ref={contentRef} />
-            </CreateCreditWrapper>
+          <AttestationProvider data={lastAttestation} >
+            <ClientProvider client={lastAttestation?.client}>
+              <CreditWrapper refs={{page: pageRef, content: contentRef, card: cardRef}} >
+                <FormCreateCredit folderId={folder?.id as number} />
+              </CreditWrapper>
+            </ClientProvider>
           </AttestationProvider>
         )
       }
-    </div>
+    </>
   )
 }
 
@@ -106,9 +112,6 @@ const GeneralCreditCreate = function({pageRef}: {pageRef: React.RefObject<HTMLDi
   )
 }
 
-/**
- * Je m'en occuperai plus tard
- */
 const CreditRenderer = function({clientSearch, pageRef}: CreditRendererProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -124,6 +127,11 @@ const CreditRenderer = function({clientSearch, pageRef}: CreditRendererProps) {
     },
   })
 
+  let client = null;
+  if (data) {
+    client = data[0].client
+  }
+
   return (
     <div>
       {status === 'loading' && <p>Loading...</p>}
@@ -131,16 +139,18 @@ const CreditRenderer = function({clientSearch, pageRef}: CreditRendererProps) {
         ? <CardError error={error as Error} />
         : (
           <AttestationsProvider data={data}>
-            <CreateCreditWrapper
-              fromMultiAttestation={true}
-              refs={{
-                page: pageRef,
-                content: contentRef,
-                card: cardRef
-              }}
-            >
-              <div ref={contentRef}>salut ! je suis plutôt bon non 😎</div>
-            </CreateCreditWrapper>
+            <ClientProvider client={client}>
+              <CreditWrapper
+                fromMultiAttestation={true}
+                refs={{
+                  page: pageRef,
+                  content: contentRef,
+                  card: cardRef
+                }}
+              >
+                <div ref={contentRef}>salut ! je suis plutôt bon non 😎</div>
+              </CreditWrapper>
+            </ClientProvider>
           </AttestationsProvider>
         )
       }
@@ -148,48 +158,60 @@ const CreditRenderer = function({clientSearch, pageRef}: CreditRendererProps) {
   )
 }
 
-const CreateCreditWrapper = function({children, refs, fromMultiAttestation}: React.PropsWithChildren<CreateCreditWrapperProps>) {
-  return (
-    <ContentWrapperWithCard 
-      componentsRef={{
-        pageRef: refs.page, 
-        contentRef: refs.content, 
-        cardRef: refs.card
-      }} 
-      positionCard='right'
-    >
-      {children}
-      <CardAttestation
-        multiAttestation={fromMultiAttestation ?? false}
-        width="340px" height="70vh" 
-        ref={refs.card} 
-      />
-    </ContentWrapperWithCard>
-  )
-}
+const FormCreateCredit = function({folderId}: {folderId: number}) {
+  const createCreditUri = '/api/pawn-credit/create'
+  const navigate = useNavigate()
+  const {mutate, status} = useMutation({
+    mutationFn: (data: {}) => {
+      return mutateResource(data, createCreditUri, 'POST')
+    },
 
-const FormCreateCredit = forwardRef<HTMLDivElement, {}>(function({}, ref) {
+    onError: (error, variables, context) => {
+      console.log(error, 'error')
+      console.log(variables, 'variables')
+      console.log(context, 'contexte')
+    },
+
+    onSuccess: (data) => {
+      console.log('credit created with succed')
+      navigate(routes.showCredit.replace(':id', data.id))
+    }
+  })
+  const periodOptions: Option[] = [
+    {label: '6 mois', value: 6},
+    {label: '12 mois', value: 12}
+  ]
+
   const handleSubmit = function(data: object) {
-    console.log(data, 'handle submit')
+    mutate({...data, folderId})
+  }
+
+  const handleCapitalChange = function(e: React.FormEvent) {
+		const input = e.currentTarget as HTMLInputElement
+    const capital = parseInt(input.value.replace(/\s/g, ''))
+    input.value = isNaN(capital) ? '' : formatNumber(capital)
   }
 
   return (
-    <div ref={ref}>
-      <FormWrapper onSubmit={handleSubmit} className='form-gage-content'>
-        <TextInput placeholder="Capital" name='capital' />
-        <TextInput placeholder="Période (Mois)" name='periode' />
-        <SubmitFormButton text='Créer' />
-      </FormWrapper>
-    </div>
+    <FormWrapper onSubmit={handleSubmit} className='form-gage-content'>
+      <TextInput onChange={handleCapitalChange} type='text' placeholder="Capital" name='capital' />
+      <SelectInput 
+        options={periodOptions} 
+        label='Selectionner la période' 
+        defaultValue={periodOptions[0].label}
+        name='duration' 
+      />
+      <SubmitFormButton text={status === 'loading' ? 'Chargement...' : 'Créer'} />
+    </FormWrapper>
   )
-})
+}
 
 const getCreditTargeted = function() {
   return getParamValue('type')
 }
 
-const getAttestationId = function() {
-  return getParamValue('attestation')
+const getFolderId = function() {
+  return getParamValue('folder')
 }
 
 const getParamValue = function(key: string) {

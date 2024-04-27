@@ -1,0 +1,18 @@
+
+.collection-grouped 
+{
+    margin: 30px 0;
+}
+
+.collection-grouped-title 
+{
+    margin: 10px 5px;
+    display: block;
+}
+
+.collection-grouped-content 
+{
+    --col: 230px;
+    @extend .grid;
+    column-gap: 10px;
+}

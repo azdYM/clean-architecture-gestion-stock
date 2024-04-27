@@ -11,6 +11,6 @@ class EvaluationCanceledEvent
 
     public function getAttestation(): AttestationInterface
     {
-        return $this->getAttestation();
+        return $this->attestation;
     }
 }

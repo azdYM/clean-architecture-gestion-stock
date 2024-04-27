@@ -34,7 +34,8 @@ abstract class Credit implements CreditInterface
     use ActionOnCreditTrait;
     use TimestampTrait;
 
-    
+    #[ORM\Column(nullable: true, options: ['default' => 'created'])]
+    protected ?string $currentPlace = null;
 
     #[ORM\ManyToOne(targetEntity: Employee::class)]
     #[ORM\JoinColumn(name: 'agent_id', referencedColumnName: 'id')]
@@ -53,6 +54,17 @@ abstract class Credit implements CreditInterface
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }    
+
+    public function getCurrentPlace(): ?string
+    {
+        return $this->currentPlace;
+    }
+
+    public function setCurrentPlace(string $currentPlace): self
+    {
+        $this->currentPlace = $currentPlace;
+        return $this;
+    }
 
     public function getCreditAgent(): Employee
     {

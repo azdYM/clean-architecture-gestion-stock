@@ -2,7 +2,6 @@
 
 namespace App\Domain\Garantee\Event;
 
-use App\Domain\Garantee\Entity\Attestation;
 use Symfony\Contracts\EventDispatcher\Event;
 use App\Domain\Garantee\AttestationInterface;
 use App\Domain\Garantee\Entity\GaranteeAttestation;
@@ -17,7 +16,7 @@ class EvaluationApprovedEvent extends Event
 
     public function getAttestation(): AttestationInterface
     {
-        return $this->getAttestation();
+        return $this->attestation;
     }
 
     public function getSectionLabel(): string
@@ -29,7 +28,7 @@ class EvaluationApprovedEvent extends Event
     {
         return $this->mountingService
             ->getAgency()
-            ->getLabel()
+            ->getId()
         ;   
     }
 }

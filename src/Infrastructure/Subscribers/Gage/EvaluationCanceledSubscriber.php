@@ -2,9 +2,10 @@
 
 namespace App\Infrastructure\Subscribers\Gage;
 
-use App\Domain\Garantee\Event\EvaluationCanceledEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Domain\Notification\Entity\Notification;
 use App\Domain\Notification\NotificationService;
+use App\Domain\Garantee\Event\EvaluationCanceledEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class EvaluationCanceledSubscriber implements EventSubscriberInterface
@@ -32,7 +33,7 @@ class EvaluationCanceledSubscriber implements EventSubscriberInterface
         $this->event = $event;
         $attestation = $this->event->getAttestation();
         $evaluator = $attestation->getEvaluator();
-        $repository = $this->em->getRepository(NotificationRepository::class);
+        $repository = $this->em->getRepository(Notification::class);
 
         $notification = $this->notifier->notifyEmployee(
             $evaluator, 

@@ -21,13 +21,32 @@ class GageCreditContractFixtures extends Fixture implements FixtureGroupInterfac
     {
         $content = (new GeneralContent())
             ->setDescription(
-                'Capital {capital} Durée {period} Début {started} Fin {end}
-                Intérêt {interest} poids gage {weight} Numéro de contrat de Prêt MECK-Moroni {idFolderAdbanking}
-                Numéro de dossier {folder}	                                        
-                d’une part, représenté par La DIRECTRICE EXECUTIVE (Prêteur) Et	{name} Autre Surnom {surnom}					
-                Date  naissance	{birthDay} Lieu	{birthLocation}	Ci après « le débiteur » d’autre part,						
-                Adresse actuelle {ActualLocation} Origine {location} Tel {tel} Lieu  de Travail	{professionCite} NIN {nin}		
-                Autres Personnes à contacter {anotherPerson} Lien {link} Lieu de travail {professionaCite} Tel {anotherPersonTel}'
+                "Capital : | {capital} |
+                Durée : | {period} |
+                Début : | {started} |
+                Fin : | {end} |
+                Intérêt : | {interest} |
+                Poids gage : | {weight} |
+                Numéro de contrat de Prêt MECK-Moroni : | {idFolderAdbanking} |
+                Numéro de dossier : | {folder} |
+
+                D'une part, représenté par La DIRECTRICE EXECUTIVE (Prêteur)
+                Et {name}, autrement connu sous le nom de {surnom}
+                Date de naissance : | {birthDay} |
+                Lieu de naissance : | {birthLocation} |
+
+                Ci-après dénommé « le débiteur » d'autre part,
+
+                Adresse actuelle : | {ActualLocation} |
+                Origine : | {location} |
+                Téléphone : | {tel} |
+                Lieu de travail : | {professionCite} |
+                NIN : | {nin} |
+                Autres personnes à contacter : | {anotherPerson} |
+                Lien : | {link} |
+                Lieu de travail : | {professionaCite} |
+                Téléphone : | {anotherPersonTel} |
+                "
             )
             ->setContractType(GageContract::class)
         ;

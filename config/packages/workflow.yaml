@@ -1,0 +1,3 @@
+# config/package/workflow.yaml
+imports: 
+    - { resource: '../workflows/*.yaml' }

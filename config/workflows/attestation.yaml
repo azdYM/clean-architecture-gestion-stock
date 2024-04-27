@@ -1,0 +1,35 @@
+framework:
+    workflows:
+        attestation_gage:
+            type: 'state_machine'
+            audit_trail:
+                enabled: true
+            marking_store:
+                type: 'method'
+                property: 'currentPlace'
+            supports:
+                - App\Domain\Garantee\Entity\GaranteeAttestation
+            places:
+                - created
+                - evaluated
+                - pending_approval
+                - approved
+                - rejected
+                - canceled
+            initial_marking: created
+            transitions:
+                evaluate:
+                    from: created
+                    to: evaluated
+                validate_evaluation:
+                    from: evaluated
+                    to: pending_approval
+                approve:
+                    from: pending_approval
+                    to: approved
+                reject:
+                    from: pending_approval
+                    to: evaluated
+                cancel:
+                    from: created
+                    to: canceled

@@ -1,30 +1,22 @@
 import { Avatar } from "./Avatar"
 import { Icon } from "./Icon"
 import { substring } from "../functions/string"
+import { RoleUser, UserData, getUserRole } from "../api/user"
+import { useCustomContext } from "../functions/hooks"
+import { UserContext } from "../functions/context"
 
-export type UserType = {
-    fullname: string,
-    email: string,
-    roles: RoleUser[],
-    agency: string|null,
-    section: string|null
+type ShowAgentInformationAboutWorkProps = {
+	role: keyof typeof RoleUser, 
+	user: UserData
 }
 
-type RoleUser = {
-    key: string,
-    value: string
-}
+/** =============== Composant liée au header ============= */
 
 export const RenderHeaderMenu = () =>
 {
-    const user: UserType = {
-        fullname: 'Abdoul-wahid Hassani', 
-        email: 'abdoul-wahid_hassani@meck-moroni.org',
-        roles: [{key: 'ROLE_EVALUTOR_GAGE', value: 'Evaluateur de gage'}],
-        agency: 'Meck-Moroni Volo-volo',
-        section: 'Evaluation gage'
-    }
-
+    const user = useCustomContext(UserContext)
+    if (!user) return
+	console.log(user, "user")
     return (
         <div className='popup-header header-menu'>
             <div className="about-user-profile"> 
@@ -35,6 +27,101 @@ export const RenderHeaderMenu = () =>
         </div>
     )
 }
+
+const AboutUserProfile = function({user}: {user: UserData}) 
+{
+    return (
+        <div className='about-profile'>
+            <span>{substring(user.fullname, 30)}</span>
+            <span className="email">{substring(user.email, 40)}</span>
+        </div>
+    )
+}
+
+const AboutUserProfession = function({user}: {user: UserData}) 
+{
+    return (
+        <div className='about-profession'>
+            {user.roles.map((role, index) => 
+				<ShowUserFunction key={index} role={role} user={user}/>
+			)}
+        </div>
+    )
+}
+
+const ShowUserFunction = function({role, user}: ShowAgentInformationAboutWorkProps)
+{
+    if (user.roles.includes(role)) {
+        return <ShowAgentInformationAboutWork role={role} user={user} />
+    }
+
+    switch (role) {
+        case 'ROLE_AGENCY_MANAGER':
+            return <ShowAgencyManagerInforamtionAboutWork 
+				role={role} 
+				user={user} 
+			/>
+        case 'ROLE_CREDIT_MANAGER':
+            return <ShowManagerInformationAboutWork role={role} />
+        default:
+            break;
+    }
+}
+
+const ShowAgentInformationAboutWork = function({role, user}: ShowAgentInformationAboutWorkProps)
+{
+	const workAgencyName = user.agency?.label ?? 'Associé à aucune agence'
+	const workSectionName = user.workingService ?? 'Associé à aucune section'
+
+    return (
+        <div className="fonction-agent">
+            <div className="fonction-item">
+                <span>Agence</span>
+                <span>{workAgencyName}</span>
+            </div>
+            <div className="fonction-item">
+                <span>Section</span>
+                <span>{workSectionName}</span>
+            </div>
+            <div className="fonction-item">
+                <span>Fonction</span>
+                <span>{getUserRole(role).value}</span>
+            </div>
+        </div>
+    )
+}
+
+const ShowAgencyManagerInforamtionAboutWork = function({role, user}: ShowAgentInformationAboutWorkProps)
+{
+	const workAgencyName = user.agency?.label ?? 'Associé à aucune agence'
+
+    return (
+        <div className="fonction">
+            <div className="fonction-item">
+                <span>Agence</span>
+                <span>{workAgencyName}</span>
+            </div>
+            <div className="fonction-item">
+                <span>Fonction</span>
+                <span>{getUserRole(role).value}</span>
+            </div>
+        </div>
+    )
+}
+
+const ShowManagerInformationAboutWork = function({role}: {role: keyof typeof RoleUser})
+{
+    return (
+        <div className="fonction">
+            <div className="fonction-item">
+                <span>Fonction</span>
+                <span>{getUserRole(role).value}</span>
+            </div>
+        </div>
+    )
+}
+
+/** =============== Composant liée au contenu ============= */
 
 export const RenderContentMenu = () =>
 {
@@ -52,101 +139,6 @@ export const RenderContentMenu = () =>
         </div>
     )
 }
-
-/** =============== Composant liée au header ============= */
-
-const AboutUserProfile = function({user}: {user: UserType}) 
-{
-    return (
-        <div className='about-profile'>
-            <span>{substring(user.fullname, 30)}</span>
-            <span className="email">{substring(user.email, 40)}</span>
-        </div>
-    )
-}
-
-const AboutUserProfession = function({user}: {user: UserType}) 
-{
-    return (
-        <div className='about-profession'>
-            {user.roles.map((role, index) => <ShowUserFunction key={index} role={role} user={user}/>)}
-        </div>
-    )
-}
-
-const ShowUserFunction = function({role, user}: {role: RoleUser, user: UserType})
-{
-    const agentRoles = 
-    [
-        'ROLE_AGENT_CREDIT',
-        'ROLE_EVALUTOR_GAGE',
-        'ROLE_GAGE_SUPERVISOR',
-        'ROLE_CREDIT_SUPERVISOR'
-    ]
-
-    if (agentRoles.includes(role.key)) {
-        return <ShowAgentInformationAboutWork role={role} user={user} />
-    }
-
-    switch (role.key) {
-        case 'ROLE_AGENCY_MANAGER':
-            return <ShowAgencyManagerInforamtionAboutWork role={role} user={user} />
-        case 'ROLE_MANAGER':
-            return <ShowManagerInformationAboutWork role={role} />
-        default:
-            break;
-    }
-}
-
-const ShowAgentInformationAboutWork = function({role, user}: {role: RoleUser, user: UserType})
-{
-    return (
-        <div className="fonction-agent">
-            <div className="fonction-item">
-                <span>Agence</span>
-                <span>{user.agency}</span>
-            </div>
-            <div className="fonction-item">
-                <span>Section</span>
-                <span>{user.section}</span>
-            </div>
-            <div className="fonction-item">
-                <span>Fonction</span>
-                <span>{role.value}</span>
-            </div>
-        </div>
-    )
-}
-
-const ShowAgencyManagerInforamtionAboutWork = function({role, user}: {role: RoleUser, user: UserType})
-{
-    return (
-        <div className="fonction">
-            <div className="fonction-item">
-                <span>Agence</span>
-                <span>{user.agency}</span>
-            </div>
-            <div className="fonction-item">
-                <span>Fonction</span>
-                <span>{role.value}</span>
-            </div>
-        </div>
-    )
-}
-
-const ShowManagerInformationAboutWork = function({role}: {role: RoleUser})
-{
-    return (
-        <div className="fonction">
-            <div className="fonction-item">
-                <span>Fonction</span>
-                <span>{role.value}</span>
-            </div>
-        </div>
-    )
-}
-
-/** =============== Composant liée au contenu ============= */
 
 export function LinkMenu({label, icon, path, className}: {label: string, icon: string, path: string, className?: string})
 {

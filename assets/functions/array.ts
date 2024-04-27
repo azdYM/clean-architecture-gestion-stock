@@ -6,6 +6,7 @@ export type EntriesUnknownType = {
 
 export const lastInArray = <T>(array: Array<T>) =>
 {
+    if (array.length === 0) return null
     return array[array.length - 1]
 }
 

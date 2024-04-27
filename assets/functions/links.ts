@@ -16,6 +16,8 @@ export const routes = {
     attesationsRejected: 'rejected',
     attestationsAccepted: 'accepted',
     attestationsForPawnCredit: 'pawncredit',
+
+    allConctracts: '',
     
 }
 
